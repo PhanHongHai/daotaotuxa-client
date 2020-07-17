@@ -1,0 +1,6 @@
+export default {
+  DEFAULT: 'DEFAULT',
+  FETCHING: 'FETCHING',
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE',
+};
