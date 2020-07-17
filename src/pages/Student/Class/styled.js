@@ -48,6 +48,34 @@ export const InfoTeacherStyle = styled.div`
 	}
 `;
 
+export const InfoClassStyle = styled.div`
+	ul {
+		padding: 0 !important;
+		li {
+			list-style: none !important;
+			display: flex;
+			align-items: center;
+			div {
+				width: 33px;
+				height: 33px;
+				display: inline-flex;
+				border-radius: 20px;
+				background-color: #d4f2e1 !important;
+				justify-content: center;
+				align-items: center;
+				i {
+					font-size: 1.2rem !important;
+					color: #0ba360 !important;
+				}
+			}
+			p {
+				display: inline-block;
+				margin: 0 0 0 10px !important;
+			}
+		}
+	}
+`;
+
 export const FrameViewLessonStyle = styled(PreviewFileStyle)`
 	.pdf-container {
 		width: 100%;
@@ -267,12 +295,12 @@ export const BoxFeatureStyle = styled.div`
 	padding: 2em;
 	flex-direction: column;
 	align-items: center;
-	i{
+	i {
 		font-size: 20px;
 		margin-bottom: 10px;
 	}
-	h3{
-		font-size:13px;
+	h3 {
+		font-size: 13px;
 	}
 `;
 

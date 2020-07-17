@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Card, Input, Button, Breadcrumb, Typography, Spin } from 'antd';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import TableStudentData from './Component/TableStudentData';
 import TablePoint from './Component/TablePoint';
@@ -326,7 +326,7 @@ function ClassStudent(props) {
 					<Title level={4}>Lớp Học</Title>
 					<Breadcrumb>
 						<Breadcrumb.Item>
-							<a href="/student/dashboard">Dashboard</a>
+							<Link to="/student/dashboard">Dashboard</Link>
 						</Breadcrumb.Item>
 						<Breadcrumb.Item>Lớp học</Breadcrumb.Item>
 					</Breadcrumb>
@@ -335,14 +335,11 @@ function ClassStudent(props) {
 					<InfoClass
 						loading={loadingGetDetailOfClassByStudent}
 						info={{ countStudent, infoTeacher, infoClass }}
-						handleChangeTab={handleChangeTab}
-						tabList={tabList}
-						tabKey={tabKey}
 					/>
 				</Col>
-				<Col xs={24} md={24} className="mt-5">
+				{/* <Col xs={24} md={24} className="mt-5">
 					{contentList[tabKey]}
-				</Col>
+				</Col> */}
 			</Row>
 		</div>
 	);
