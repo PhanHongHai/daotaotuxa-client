@@ -14,7 +14,6 @@ import {
 	Tooltip,
 	Row,
 } from 'antd';
-import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 
 import { ListSubjectStyle } from '../styled';
@@ -38,19 +37,16 @@ const handleCheckData = subjectData => {
 	}
 	return result;
 };
-
-function ListSubjectItem(props) {
+function TableSubject(props) {
 	const {
 		subjectList: { data, pagination },
 		loading,
-		classID,
 		loadingGetProgressByStudent,
 		handleChangePage,
 		progressOfStudent,
 	} = props;
-	const history = useHistory();
 	return (
-		<Row gutter={16} justify='center'>
+		<Row gutter={16} justify="center">
 			<Col span={24}>
 				<Row gutter={16}>
 					<ConfigProvider
@@ -76,7 +72,7 @@ function ListSubjectItem(props) {
 									const existItem = progressOfStudent.find(ele => ele.subjectID === item.subjectID._id);
 									if (existItem)
 										return (
-											<Col xs={24} md={24} className="mb-15">
+											<Col xs={24} md={12} className="mb-15">
 												<List.Item
 													key="item._id"
 													className="subject-item"
@@ -84,9 +80,8 @@ function ListSubjectItem(props) {
 														<Button
 															className="btn"
 															key="item._id"
-															onClick={() => history.push(`/learn/${classID}/${item.subjectID && item.subjectID._id}`)}
 														>
-															Học ngay
+															Chọn
 														</Button>,
 													]}
 												>
@@ -115,7 +110,7 @@ function ListSubjectItem(props) {
 										);
 								}
 								return (
-									<Col xs={24} md={24} className="mb-15">
+									<Col xs={24} md={12} className="mb-15">
 										<List.Item
 											key="item._id"
 											className="subject-item"
@@ -123,9 +118,8 @@ function ListSubjectItem(props) {
 												<Button
 													className="btn"
 													key="item._id"
-													onClick={() => history.push(`/learn/${classID}/${item.subjectID && item.subjectID._id}`)}
 												>
-													Học ngay
+													Chọn
 												</Button>,
 											]}
 										>
@@ -171,13 +165,12 @@ function ListSubjectItem(props) {
 	);
 }
 
-ListSubjectItem.propTypes = {
+TableSubject.propTypes = {
 	subjectList: PropTypes.objectOf(PropTypes.any).isRequired,
 	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
 	loadingGetProgressByStudent: PropTypes.bool.isRequired,
-	classID: PropTypes.string.isRequired,
 	handleChangePage: PropTypes.func.isRequired,
 };
 
-export default ListSubjectItem;
+export default TableSubject;

@@ -24,7 +24,11 @@ const handleCheckData = studentData => {
 };
 
 function TableStudentData(props) {
-	const { data } = props;
+	const {
+		studentList: { data, pagination },
+		onChangePage,
+		loading,
+	} = props;
 	const column = [
 		{
 			title: '#',
@@ -68,7 +72,6 @@ function TableStudentData(props) {
 				return 'Không xác định';
 			},
 		},
-		
 	];
 
 	return (
@@ -87,17 +90,24 @@ function TableStudentData(props) {
 				rowKey={ele => ele._id}
 				scroll={{ x: true }}
 				loading={{
-					spinning: false,
+					spinning: loading,
 					indicator: <LoadingCustom margin={0} />,
 				}}
-				pagination={{}}
+				pagination={{
+					current: pagination.page && Number(pagination.page),
+					total: pagination.total,
+					pageSize: pagination.limit && Number(pagination.limit),
+					defaultCurrent: pagination.page && Number(pagination.page),
+				}}
 			/>
 		</ConfigProvider>
 	);
 }
 
 TableStudentData.propTypes = {
-	data: PropTypes.instanceOf(Array).isRequired,
+	studentList: PropTypes.objectOf(PropTypes.any).isRequired,
+	loading: PropTypes.bool.isRequired,
+	onChangePage: PropTypes.func.isRequired,
 };
 
 export default TableStudentData;

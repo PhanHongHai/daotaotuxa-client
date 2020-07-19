@@ -171,6 +171,9 @@ function InfoClass(props) {
 						<Col xs={24} md={8} className="mb-15">
 							<FeatureBox icon="carry-out" title="Thi Thử" onSelect={() => {}} />
 						</Col>
+						<Col xs={24} md={8} className="mb-15">
+							<FeatureBox icon="carry-out" title="Điểm Thi" onSelect={() => {}} />
+						</Col>
 					</Row>
 				</Col>
 			</Row>
