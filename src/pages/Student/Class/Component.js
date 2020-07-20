@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Card, Input, Button, Breadcrumb, Typography, Spin } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Breadcrumb, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
 
-import TableStudentData from './Component/TableStudentData';
-import TablePoint from './Component/TablePoint';
-// import TablePointAll from './Component/TablePointAll';
-import ListSubject from './Component/ListSubjectItem';
 import InfoClass from './Component/InfoClass';
-import LoadingCustom from '../../../components/LoadingCustom';
 
 import ModalStudent from './Component/ModalStudentList';
 import ModalSubject from './Component/ModalSubjectList';
+import ModalQuickTest from './Component/ModalQuickTest';
+import ModalPoint from './Component/ModalPoint';
 
 const { Title } = Typography;
 const dataPoint = [
@@ -73,9 +70,10 @@ function ClassStudent(props) {
 		getProgressByStudentStatus,
 	} = props;
 	const { ID } = useParams();
-	const [tabKey, setTabKey] = useState('student');
 	const [visibleModalStudent, setVisibleModalStudent] = useState(false);
 	const [visibleModalSubject, setVisibleModalSubject] = useState(false);
+	const [visibleModalQuickTest, setVisibleModalQuickTest] = useState(false);
+	const [visibleModalPoint, setVisibleModalPoint] = useState(false);
 
 	useEffect(() => {
 		getDetailOfClassReq({});
@@ -90,13 +88,10 @@ function ClassStudent(props) {
 		getProgressReq({});
 	}, [ID]);
 
-	const refInput = useRef(null);
-	const [keyword, setKeyword] = useState('');
 	const loadingGetSubjects = getSubjectOfClassStatus === 'FETCHING';
 	const loadingGetStudents = getStudentsOfClassStatus === 'FETCHING';
 	const loadingGetProgressByStudent = getProgressByStudentStatus === 'FETCHING';
 	const loadingGetDetailOfClassByStudent = getDetailOfClassByStudentIDStatus === 'FETCHING';
-
 
 	return (
 		<div className="container mb-15">
@@ -111,7 +106,15 @@ function ClassStudent(props) {
 					</Breadcrumb>
 				</Col>
 				<Col xs={24} md={24} className="mb-5">
-					<InfoClass loading={loadingGetDetailOfClassByStudent} info={{ countStudent, infoTeacher, infoClass }} />
+					<InfoClass
+						loading={loadingGetDetailOfClassByStudent}
+						info={{ countStudent, infoTeacher, infoClass }}
+						getSubjectsOfClassReq={getSubjectsOfClassReq}
+						openStudentList={setVisibleModalStudent}
+						openSubjectList={setVisibleModalSubject}
+						openQuickTest={setVisibleModalQuickTest}
+						openPoint={setVisibleModalPoint}
+					/>
 				</Col>
 				{/* <Col xs={24} md={24} className="mt-5">
 					{contentList[tabKey]}
@@ -128,14 +131,24 @@ function ClassStudent(props) {
 			<ModalSubject
 				visible={visibleModalSubject}
 				setVisible={setVisibleModalSubject}
-				data={subjectsClass}
-				getReq={getSubjectsOfClassReq}
+				subjectList={subjectsClass}
 				loading={loadingGetSubjects}
 				loadingGetProgressByStudent={loadingGetProgressByStudent}
 				classID={ID}
 				progressOfStudent={progressOfStudent}
-				sectorID={infoClass && infoClass.trainingSectorID._id}
+				getReq={getSubjectsOfClassReq}
 			/>
+			<ModalQuickTest
+				visible={visibleModalQuickTest}
+				setVisible={setVisibleModalQuickTest}
+				subjectList={subjectsClass}
+				loading={loadingGetSubjects}
+				loadingGetProgressByStudent={loadingGetProgressByStudent}
+				progressOfStudent={progressOfStudent}
+				getSubjectsReq={getSubjectsOfClassReq}
+				classID={ID}
+			/>
+			<ModalPoint visible={visibleModalPoint} setVisible={setVisibleModalPoint} data={dataPoint} />
 		</div>
 	);
 }

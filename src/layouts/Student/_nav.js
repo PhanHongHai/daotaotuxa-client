@@ -53,7 +53,7 @@ export default [
 		title: 'Lịch Thi',
 		component: Schedule,
 		exact: true,
-		isMenu: true,
+		isMenu: false,
 		isMobile: false,
 		isFirst:false,
 	},

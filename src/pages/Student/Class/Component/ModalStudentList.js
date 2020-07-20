@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Input, Button } from 'antd';
 
 import TableStudent from './TableStudentData';
 
 function ModalStudentList(props) {
-	const { visible, setvisible, data, loading, getReq,classID } = props;
+	const { visible, setVisible, data, loading, getReq, classID } = props;
 	const [keyword, setKeyword] = React.useState('');
+	const refSearch = React.useRef(null);
+
 	const handleSearch = value => {
 		setKeyword(value);
 		getReq({
@@ -19,7 +21,7 @@ function ModalStudentList(props) {
 		});
 	};
 	const handleReload = () => {
-		refInput.current.input.state.value = '';
+		refSearch.current.input.state.value = '';
 		setKeyword('');
 		getReq({
 			req: {
@@ -46,10 +48,10 @@ function ModalStudentList(props) {
 			className="phh-modal"
 			title="Danh sách học viên"
 			visible={visible}
-			width='700px'
+			width="700px"
 			onCancel={() => {
 				setKeyword('');
-				setvisible(false);
+				setVisible(false);
 			}}
 			footer={null}
 		>

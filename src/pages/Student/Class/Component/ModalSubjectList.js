@@ -1,24 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Input, Button } from 'antd';
 
 import ListSubjectItem from './ListSubjectItem';
 
 function ModalSubjectList(props) {
-	const { visible, setVisible, loading, sectorID, getReq ,loadingGetProgressByStudent} = props;
-	const [keyword, setKeyword] = useState('');
-
-	const handleChangePage = page => {
-		getSubjectsOfClassReq({
-			req: {
-				page: Number(page.current),
-				limit: 10,
-				keyword,
-				classID: ID,
-			},
-		});
-	};
-
+	const {
+		visible,
+		setVisible,
+		loading,
+		sectorID,
+		classID,
+		getReq,
+		loadingGetProgressByStudent,
+		subjectList,
+		progressOfStudent
+	} = props;
+	const [keyword, setKeyword] = React.useState('');
+	const refSearch = React.useRef(null);
 	const handleSearch = value => {
 		setKeyword(value);
 		getReq({
@@ -27,11 +26,12 @@ function ModalSubjectList(props) {
 				page: 1,
 				keyword: value,
 				sectorID,
+				classID
 			},
 		});
 	};
 	const handleReload = () => {
-		refInput.current.input.state.value = '';
+		refSearch.current.input.state.value = '';
 		setKeyword('');
 		getReq({
 			req: {
@@ -39,6 +39,7 @@ function ModalSubjectList(props) {
 				page: 1,
 				keyword: '',
 				sectorID,
+				classID
 			},
 		});
 	};
@@ -49,6 +50,7 @@ function ModalSubjectList(props) {
 				limit: 10,
 				keyword,
 				sectorID,
+				classID
 			},
 		});
 	};
@@ -57,10 +59,10 @@ function ModalSubjectList(props) {
 			className="phh-modal"
 			title="Danh sách môn học"
 			visible={visible}
-      footer={null}
-      width='700px'
+			footer={null}
+			width="750px"
 			onCancel={() => {
-        setKeyword('');
+				setKeyword('');
 				setVisible(false);
 			}}
 		>
@@ -86,10 +88,10 @@ function ModalSubjectList(props) {
 				<ListSubjectItem
 					classID={classID}
 					loading={loading}
-					subjectList={data}
+					subjectList={subjectList}
 					progressOfStudent={progressOfStudent}
-          onChangePage={handleChangePage}
-          loadingGetProgressByStudent={loadingGetProgressByStudent}
+					onChangePage={handleChangePage}
+					loadingGetProgressByStudent={loadingGetProgressByStudent}
 				/>
 			</div>
 		</Modal>
@@ -102,7 +104,7 @@ ModalSubjectList.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	setVisible: PropTypes.func.isRequired,
 	getReq: PropTypes.func.isRequired,
-	data: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjectList: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
 	loadingGetProgressByStudent: PropTypes.bool.isRequired,
 	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,

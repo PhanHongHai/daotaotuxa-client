@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, DatePicker, Radio, ConfigProvider, Typography } from 'antd';
+import { Row, Col, Card, DatePicker, Radio, ConfigProvider, Typography, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import numeral from 'numeral';
@@ -11,6 +11,7 @@ import 'moment/locale/vi';
 // ultil
 import countries from '../../../../utils/country.json';
 
+import LoadingCustom from  '../../../../components/LoadingCustom';
 import AccountAction from '../Action';
 import BreadCrumb from '../../../../components/BreadCrumb';
 import SummaryBox from '../../../../components/SummaryBox';
@@ -433,11 +434,14 @@ function AnalyAccount(props) {
 							<Col xs={24} sm={12} md={12} className="mb-15">
 								<Card
 									className="card-action"
-									loading={loadingGetUserSex || loadingGetUserArea}
 									tabList={tabList}
 									onTabChange={handleChangeTabChartPie}
 								>
+									<Spin spinning={loadingGetUserSex || loadingGetUserArea} indicator={<LoadingCustom margin={50} />}>
+
+									
 									{contentList[tabPieKey]}
+									</Spin>
 								</Card>
 							</Col>
 						</Row>

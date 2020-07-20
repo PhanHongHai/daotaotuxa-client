@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Form, Button, Input, Select, DatePicker, Radio, ConfigProvider, Modal } from 'antd';
+import { Row, Col, Card, Form, Button, Input, Select, DatePicker, Radio, ConfigProvider, Modal, Spin } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
 import moment from 'moment';
 import 'moment/locale/vi';
@@ -15,6 +15,8 @@ import customMess from '../../../../utils/customMessage';
 import ListProfileStudent from '../Component/ListProfileStudent';
 import ModalCreateProfile from '../Component/ModalCreateProfile';
 import ModalEditProfile from '../Component/ModalEditProfile';
+import LoadingCustom from '../../../../components/LoadingCustom';
+
 
 const { confirm } = Modal;
 
@@ -76,7 +78,7 @@ function EditStudent(props) {
 		getProfileReq({
 			ID,
 		});
-	}, [ID,getDetailReq,getProfileReq]);
+	}, [ID, getDetailReq, getProfileReq]);
 
 	const [formData, setFormData] = useState({});
 	const [visibleCreateProfile, setVisibleCreateProfile] = useState(false);
@@ -153,7 +155,7 @@ function EditStudent(props) {
 			</div>
 			<div className="pd-1">
 				<Row gutter={16}>
-					<Col xs={24} md={10} className='mb-10'>
+					<Col xs={24} md={10} className="mb-10">
 						<Card
 							title="Hồ sơ"
 							className="phh-card"
@@ -176,163 +178,165 @@ function EditStudent(props) {
 						</Card>
 					</Col>
 					<Col xs={24} md={14}>
-						<Card className="phh-card" title="Thông tin tài khoản" loading={loadingGetDetail}>
-							<Form className="create-account form-custom" onSubmit={handleSubmit} {...formItemLayout}>
-								<Row gutter={16}>
-									<Col xs={24} sm={24} md={24}>
-										<Form.Item label="Email" labelAlign="left">
-											{getFieldDecorator('email', {
-												initialValue: detailAccount && detailAccount.email,
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống email',
-													},
-													{
-														type: 'email',
-														message: 'Email không hợp lệ',
-													},
-													{
-														whitespace: true,
-														message: 'Chứa ký tự không hợp lệ',
-													},
-												],
-											})(<Input onChange={onChangeInput} name="email" placeholder="Nhập email" />)}
-										</Form.Item>
-									</Col>
-									<Col xs={24} sm={24} md={24}>
-										<Form.Item label="Họ tên" labelAlign="left">
-											{getFieldDecorator('name', {
-												initialValue: detailAccount && detailAccount.name,
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống họ tên',
-													},
-												],
-											})(<Input onChange={onChangeInput} name="name" placeholder="Nhập họ tên" />)}
-										</Form.Item>
-									</Col>
-
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="Số điện thoại" labelAlign="left">
-											{getFieldDecorator('phoneNumber', {
-												initialValue: detailAccount && detailAccount.phoneNumber,
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống điện thoại',
-													},
-													{
-														pattern: /^[0-9]*$/,
-														message: 'Không phải là số !',
-													},
-												],
-											})(<Input onChange={onChangeInput} name="phoneNumber" placeholder="Nhập số điện thoại" />)}
-										</Form.Item>
-									</Col>
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="CMND" labelAlign="left">
-											{getFieldDecorator('idCard', {
-												initialValue: detailAccount && detailAccount.idCard,
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống CMND',
-													},
-													{
-														pattern: /^[0-9]*$/,
-														message: 'Không phải là số !',
-													},
-												],
-											})(<Input onChange={onChangeInput} name="idCard" placeholder="Nhập CMND" />)}
-										</Form.Item>
-									</Col>
-
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="Ngày sinh" labelAlign="left">
-											<ConfigProvider locale={viVN}>
-												{getFieldDecorator('birthDay', {
-													initialValue: detailAccount && moment(detailAccount.birthDay),
+						<Card className="phh-card" title="Thông tin tài khoản">
+							<Spin spinning={loadingGetDetail} indicator={<LoadingCustom margin={10} />}>
+								<Form className="create-account form-custom" onSubmit={handleSubmit} {...formItemLayout}>
+									<Row gutter={16}>
+										<Col xs={24} sm={24} md={24}>
+											<Form.Item label="Email" labelAlign="left">
+												{getFieldDecorator('email', {
+													initialValue: detailAccount && detailAccount.email,
 													rules: [
 														{
 															required: true,
-															message: 'Không được để trống ngày sinh',
+															message: 'Không được để trống email',
+														},
+														{
+															type: 'email',
+															message: 'Email không hợp lệ',
+														},
+														{
+															whitespace: true,
+															message: 'Chứa ký tự không hợp lệ',
+														},
+													],
+												})(<Input onChange={onChangeInput} name="email" placeholder="Nhập email" />)}
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={24} md={24}>
+											<Form.Item label="Họ tên" labelAlign="left">
+												{getFieldDecorator('name', {
+													initialValue: detailAccount && detailAccount.name,
+													rules: [
+														{
+															required: true,
+															message: 'Không được để trống họ tên',
+														},
+													],
+												})(<Input onChange={onChangeInput} name="name" placeholder="Nhập họ tên" />)}
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="Số điện thoại" labelAlign="left">
+												{getFieldDecorator('phoneNumber', {
+													initialValue: detailAccount && detailAccount.phoneNumber,
+													rules: [
+														{
+															required: true,
+															message: 'Không được để trống điện thoại',
+														},
+														{
+															pattern: /^[0-9]*$/,
+															message: 'Không phải là số !',
+														},
+													],
+												})(<Input onChange={onChangeInput} name="phoneNumber" placeholder="Nhập số điện thoại" />)}
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="CMND" labelAlign="left">
+												{getFieldDecorator('idCard', {
+													initialValue: detailAccount && detailAccount.idCard,
+													rules: [
+														{
+															required: true,
+															message: 'Không được để trống CMND',
+														},
+														{
+															pattern: /^[0-9]*$/,
+															message: 'Không phải là số !',
+														},
+													],
+												})(<Input onChange={onChangeInput} name="idCard" placeholder="Nhập CMND" />)}
+											</Form.Item>
+										</Col>
+
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="Ngày sinh" labelAlign="left">
+												<ConfigProvider locale={viVN}>
+													{getFieldDecorator('birthDay', {
+														initialValue: detailAccount && moment(detailAccount.birthDay),
+														rules: [
+															{
+																required: true,
+																message: 'Không được để trống ngày sinh',
+															},
+														],
+													})(
+														<DatePicker
+															onChange={onChangeDate}
+															disabledDate={disabledDate}
+															placeholder="Ngày sinh"
+															format="DD-MM-YYYY"
+														/>,
+													)}
+												</ConfigProvider>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="Giới Tính" labelAlign="left">
+												{getFieldDecorator('sex', {
+													initialValue: detailAccount && Number(detailAccount.sex),
+													rules: [
+														{
+															required: true,
+															message: 'Không được để trống giới tính',
 														},
 													],
 												})(
-													<DatePicker
-														onChange={onChangeDate}
-														disabledDate={disabledDate}
-														placeholder="Ngày sinh"
-														format="DD-MM-YYYY"
-													/>,
+													<Radio.Group className="radio-custom" onChange={onChangeInput} name="sex">
+														<Radio value={1}>Nam</Radio>
+														<Radio value={2}>Nữ</Radio>
+													</Radio.Group>,
 												)}
-											</ConfigProvider>
-										</Form.Item>
-									</Col>
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="Giới Tính" labelAlign="left">
-											{getFieldDecorator('sex', {
-												initialValue: detailAccount && Number(detailAccount.sex),
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống giới tính',
-													},
-												],
-											})(
-												<Radio.Group className="radio-custom" onChange={onChangeInput} name="sex">
-													<Radio value={1}>Nam</Radio>
-													<Radio value={2}>Nữ</Radio>
-												</Radio.Group>,
-											)}
-										</Form.Item>
-									</Col>
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="Quê Quán" labelAlign="left">
-											{getFieldDecorator('country', {
-												initialValue: detailAccount && detailAccount.country,
-												rules: [
-													{
-														required: true,
-														message: 'Không được để trống quê quán',
-													},
-												],
-											})(
-												<Select onChange={onChangeSelect} placeholder="Chọn quê quán">
-													{countries.map(ele => (
-														<Select.Option value={ele.key} key={ele.key}>
-															{ele.name}
-														</Select.Option>
-													))}
-												</Select>,
-											)}
-										</Form.Item>
-									</Col>
-									<Col xs={24} sm={12} md={24}>
-										<Form.Item label="Địa chỉ" labelAlign="left">
-											{getFieldDecorator('address', { initialValue: detailAccount && detailAccount.address })(
-												<Input onChange={onChangeInput} name="address" placeholder="Nhập địa chỉ" />,
-											)}
-										</Form.Item>
-									</Col>
-								</Row>
-								<span style={{ float: 'right', display: 'flex', alignItems: 'center' }}>
-									<Button
-										icon="edit"
-										disabled={_.isEmpty(formData)}
-										className="btn-submit	mr-5"
-										htmlType="submit"
-										loading={loadingEdit}
-									>
-										Cập nhật
-									</Button>
-									<Button className="btn-cancel" onClick={() => history.goBack()}>
-										Quay về
-									</Button>
-								</span>
-							</Form>
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="Quê Quán" labelAlign="left">
+												{getFieldDecorator('country', {
+													initialValue: detailAccount && detailAccount.country,
+													rules: [
+														{
+															required: true,
+															message: 'Không được để trống quê quán',
+														},
+													],
+												})(
+													<Select showSearch onChange={onChangeSelect} placeholder="Chọn quê quán">
+														{countries.map(ele => (
+															<Select.Option value={ele.key} key={ele.key}>
+																{ele.name}
+															</Select.Option>
+														))}
+													</Select>,
+												)}
+											</Form.Item>
+										</Col>
+										<Col xs={24} sm={12} md={24}>
+											<Form.Item label="Địa chỉ" labelAlign="left">
+												{getFieldDecorator('address', { initialValue: detailAccount && detailAccount.address })(
+													<Input onChange={onChangeInput} name="address" placeholder="Nhập địa chỉ" />,
+												)}
+											</Form.Item>
+										</Col>
+									</Row>
+									<span style={{ float: 'right', display: 'flex', alignItems: 'center' }}>
+										<Button
+											icon="edit"
+											disabled={_.isEmpty(formData)}
+											className="btn-submit	mr-5"
+											htmlType="submit"
+											loading={loadingEdit}
+										>
+											Cập nhật
+										</Button>
+										<Button className="btn-cancel" onClick={() => history.goBack()}>
+											Quay về
+										</Button>
+									</span>
+								</Form>
+							</Spin>
 						</Card>
 					</Col>
 				</Row>

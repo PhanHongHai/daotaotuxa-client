@@ -17,32 +17,37 @@ function StepCustomTest(props) {
 	const {
 		form: { getFieldDecorator, validateFields, resetFields },
 	} = props;
+	const [level, setLevel] = React.useState(1);
 	const handleSubmit = e => {
 		e.preventDefault();
-		validateFields((err, values) => {});
+		validateFields((err, values) => {
+			resetFields();
+		});
 	};
 	return (
 		<div>
 			<Form className="form-custom" {...formItemLayout} onSubmit={handleSubmit}>
 				<Form.Item label="Mức độ đề thi" labelAlign="left">
-					{getFieldDecorator('title', {
+					{getFieldDecorator('level', {
+						initialValue: 1,
 						rules: [
 							{
 								required: true,
 								message: 'Không được để trống tiêu đề',
 							},
 						],
-					})(<Select placeholder="Nhập tiêu đề"></Select>)}
+					})(
+						<Select onChange={value => setLevel(value)} placeholder="-- Mức độ --">
+							<Select.Option value={1}>Dễ</Select.Option>
+							<Select.Option value={2}>Trung bình</Select.Option>
+							<Select.Option value={3}>Khó</Select.Option>
+							<Select.Option value={4}>Rất Khó</Select.Option>
+						</Select>,
+					)}
 				</Form.Item>
-				<Form.Item label="Thời gian làm bài" labelAlign="left">
-					{getFieldDecorator('title', {
-						rules: [
-							{
-								required: true,
-								message: 'Không được để trống tiêu đề',
-							},
-						],
-					})(<Select placeholder="Nhập tiêu đề"></Select>)}
+				<Form.Item label="Thời gian làm bài" labelAlign="left"></Form.Item>
+				<Form.Item>
+					<Button>Bắt đầu</Button>
 				</Form.Item>
 			</Form>
 		</div>

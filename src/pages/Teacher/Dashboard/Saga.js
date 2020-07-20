@@ -21,9 +21,30 @@ function* handleGetInfoClass() {
 		message.error('Lấy thông tin lớp không thành công ! Xin thử lại');
 	}
 }
+function* handleUpdateStatusClass(action) {
+	try {
+		const { req, ID, cb } = action.payload;
+		const res = yield call(ClassApi.updateClass, { req, ID });
+		if (!res.errors) {
+			yield put(Action.updateStatusClassByTeacherSuccess(res));
+			yield put(Action.getInfoClassByTeacherRequest, { ID });
+			if (cb && typeof cb === 'function') yield cb({ isUpdated: true, msg: 'Cập nhật trạng thái lớp thành công' });
+		} else {
+			yield put(Action.updateStatusClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.updateStatusClassByTeacherFailure());
+		message.error('Cập nhật trạng thái lớp không thành công ! Xin thử lại');
+	}
+}
 
 const getDetailClassSaga = {
 	on: Action.getInfoClassByTeacherRequest,
 	worker: handleGetInfoClass,
 };
-export default createSagas([getDetailClassSaga]);
+const updateStatusClassSaga = {
+	on: Action.updateStatusClassByTeacherRequest,
+	worker: handleUpdateStatusClass,
+};
+export default createSagas([getDetailClassSaga, updateStatusClassSaga]);

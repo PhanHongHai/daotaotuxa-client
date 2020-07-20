@@ -205,7 +205,7 @@ function CreateStudent(props) {
 											},
 										],
 									})(
-										<Select placeholder="Chọn quê quán">
+										<Select showSearch placeholder="Chọn quê quán">
 											{countries.map(ele => (
 												<Select.Option value={ele.key} key={ele.key}>
 													{ele.name}

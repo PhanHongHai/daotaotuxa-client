@@ -235,7 +235,7 @@ function ModalStudent(props) {
 	const handleChangeTableStudentClass = page => {
 		setPageStudentClassCurrent({
 			page: Number(page.current),
-			limit: Number(page.limit),
+			limit: 3,
 		});
 		getStudentOfClassReq({
 			req: {
@@ -248,7 +248,7 @@ function ModalStudent(props) {
 	const handleChangeTableStudents = page => {
 		setPageStudentsCurrent({
 			page: Number(page.current),
-			limit: Number(page.limit),
+			limit:3,
 		});
 		getStudentsReq({
 			req: {

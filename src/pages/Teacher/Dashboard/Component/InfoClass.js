@@ -8,11 +8,11 @@ import _ from 'lodash';
 import { trainingType } from '../../../../constands/Other';
 import customMess from '../../../../utils/customMessage';
 
-
 function InfoClass(props) {
 	const {
 		info: { infoClass, countStudent },
-		updateReq
+		updateReq,
+		loadingUpdate,
 	} = props;
 	const history = useHistory();
 	const renderTypeClass = value => {
@@ -34,6 +34,7 @@ function InfoClass(props) {
 			case 'OP':
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'HP' },
@@ -50,6 +51,7 @@ function InfoClass(props) {
 			case 'HP':
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'END' },
@@ -66,6 +68,7 @@ function InfoClass(props) {
 			default:
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'HP' },
@@ -113,7 +116,8 @@ function InfoClass(props) {
 
 InfoClass.propTypes = {
 	info: PropTypes.objectOf(PropTypes.object).isRequired,
-	updateReq:PropTypes.func.isRequired,
+	updateReq: PropTypes.func.isRequired,
+	loadingUpdate: PropTypes.bool.isRequired,
 };
 
 export default InfoClass;

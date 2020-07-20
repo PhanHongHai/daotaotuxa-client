@@ -9,6 +9,7 @@ const initialState = {
 	getStudentOfClassStatus: STATUS.DEFAULT,
 	getSubjectOfClassStatus: STATUS.DEFAULT,
 	createSubjectOfClassStatus: STATUS.DEFAULT,
+	updateOfClassStatus: STATUS.DEFAULT,
 	detailClass: {},
 	studentsClass: {
 		data: [],
@@ -123,6 +124,30 @@ const reducer = [
 			return {
 				...state,
 				createSubjectOfClassStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action update class by teacher
+	{
+		on: Action.updateClassByTeacherRequest,
+		reducer: state => ({
+			...state,
+			updateOfClassStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.updateClassByTeacherSuccess,
+		reducer: state => ({
+			...state,
+			updateOfClassStatus: STATUS.SUCCESS,
+		}),
+	},
+	{
+		on: Action.updateClassByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				updateOfClassStatus: STATUS.FAILURE,
 			};
 		},
 	},

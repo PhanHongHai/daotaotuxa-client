@@ -24,6 +24,7 @@ function Component(props) {
 		getStudentOfClassStatus,
 		getSubjectOfClassStatus,
 		createSubjectOfClassStatus,
+		updateOfClassStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
@@ -31,6 +32,7 @@ function Component(props) {
 		getStudentClassReq,
 		getSubjectClassReq,
 		createSubjectReq,
+		updateClassReq
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -53,6 +55,7 @@ function Component(props) {
 	const loadingGetStudentClass = getStudentOfClassStatus === 'FETCHING';
 	const loadingGetSubjectClass = getSubjectOfClassStatus === 'FETCHING';
 	const loadingCreateSubject = createSubjectOfClassStatus === 'FECTHING';
+	const loadingUpdateClass = updateOfClassStatus === 'FECTHING';
 
 	const tabList = [
 		{
@@ -278,7 +281,7 @@ function Component(props) {
 				<Row>
 					<Col xs={24} sm={24} md={24} className="mb-10">
 						<Card title="Thông Tin Lớp Học" className="phh-card" loading={loadingGetDetailClass}>
-							<InfoClass info={{ countStudent, infoClass }} />
+							<InfoClass info={{ countStudent, infoClass }} updateReq={updateClassReq} loadingUpdate={loadingUpdateClass} />
 						</Card>
 					</Col>
 					<Col xs={24} sm={24} md={24} className="mb-10">
@@ -310,11 +313,13 @@ Component.propTypes = {
 	getStudentOfClassStatus: PropTypes.string.isRequired,
 	getSubjectOfClassStatus: PropTypes.string.isRequired,
 	createSubjectOfClassStatus: PropTypes.string.isRequired,
+	updateOfClassStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
 	getSubjectClassReq: PropTypes.func.isRequired,
 	createSubjectReq: PropTypes.func.isRequired,
+	updateClassReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 };

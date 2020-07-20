@@ -11,6 +11,7 @@ function InfoClass(props) {
 	const {
 		info: { infoClass, countStudent },
 		updateReq,
+		loadingUpdate,
 	} = props;
 	const renderTypeClass = value => {
 		if (value) return trainingType.find(ele => ele.key === value).value;
@@ -31,6 +32,7 @@ function InfoClass(props) {
 			case 'OP':
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'HP' },
@@ -47,6 +49,7 @@ function InfoClass(props) {
 			case 'HP':
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'END' },
@@ -63,6 +66,7 @@ function InfoClass(props) {
 			default:
 				return (
 					<Button
+						loading={loadingUpdate}
 						onClick={() =>
 							updateReq({
 								req: { status: 'HP' },
@@ -102,6 +106,7 @@ function InfoClass(props) {
 InfoClass.propTypes = {
 	info: PropTypes.objectOf(PropTypes.any).isRequired,
 	updateReq: PropTypes.func.isRequired,
+	loadingUpdate: PropTypes.bool.isRequired,
 };
 
 export default InfoClass;

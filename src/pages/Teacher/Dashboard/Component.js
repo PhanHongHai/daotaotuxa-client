@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Card, Button, Spin } from 'antd';
+import { Col, Row, Card, Spin } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import { DashboardTeacherStyle } from './styled';
@@ -8,8 +8,7 @@ import { DashboardTeacherStyle } from './styled';
 import BreadCrumb from '../../../components/BreadCrumb';
 import InfoClass from './Component/InfoClass';
 import BoxFeature from './Component/BoxFeature';
-import TimeLine from './Component/TimeLine';
-import CalendarTeacher from './Component/Calendar';
+
 import LoadingCustom from '../../../components/LoadingCustom';
 
 const breadcrumb = [
@@ -21,12 +20,13 @@ const breadcrumb = [
 ];
 
 function DashboadTeacher(props) {
-	const { getInfoClassStatus, infoClass, getInfoClassReq } = props;
+	const { getInfoClassStatus, infoClass, getInfoClassReq, updateStatusClassStatus, updateClassReq } = props;
 	useEffect(() => {
 		getInfoClassReq({});
 	}, []);
 	const history = useHistory();
 	const loadingGetInfoClass = getInfoClassStatus === 'FETCHING';
+	const loadingUpdateClass = updateStatusClassStatus === 'FETCHING';
 	return (
 		<DashboardTeacherStyle>
 			<div className="phh-page-header">
@@ -41,7 +41,7 @@ function DashboadTeacher(props) {
 					<Col xs={24} sm={24} md={24} className="mb-10">
 						<Card title="Thông Tin Lớp Học" className="phh-card">
 							<Spin spinning={loadingGetInfoClass} indicator={<LoadingCustom margin={0} />}>
-								<InfoClass info={infoClass} />
+								<InfoClass info={infoClass} updateReq={updateClassReq} loadingUpdate={loadingUpdateClass} />
 							</Spin>
 						</Card>
 					</Col>
@@ -62,7 +62,7 @@ function DashboadTeacher(props) {
 							</div>
 						</Card>
 					</Col> */}
-					<Col xs={24} sm={24} md={10}>
+					<Col xs={24} sm={24} md={16}>
 						<Row gutter={16}>
 							<Col xs={24} md={12} className="mb-10">
 								<BoxFeature
@@ -90,8 +90,10 @@ function DashboadTeacher(props) {
 }
 DashboadTeacher.propTypes = {
 	getInfoClassStatus: PropTypes.string.isRequired,
+	updateStatusClassStatus: PropTypes.string.isRequired,
 	infoClass: PropTypes.objectOf(PropTypes.object).isRequired,
 	getInfoClassReq: PropTypes.func.isRequired,
+	updateClassReq: PropTypes.func.isRequired,
 };
 
 export default DashboadTeacher;

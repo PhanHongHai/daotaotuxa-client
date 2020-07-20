@@ -57,11 +57,11 @@ function* handleGetSubjectOfClass(action) {
 
 function* handleCreateSubjectOfClass(action) {
 	try {
-		const { req, pageCurrent, keyword, sectorID,cb } = action.payload;
+		const { req, pageCurrent, keyword, sectorID, cb } = action.payload;
 		const res = yield call(SubjectApi.createSubject, req);
 		if (!res.errors) {
 			yield put(Action.createSubjectByTeacherSuccess());
-			yield put(Action.getSubjectOfClassByTeacherSuccess({ req: { ...pageCurrent, keyword ,sectorID} }));
+			yield put(Action.getSubjectOfClassByTeacherSuccess({ req: { ...pageCurrent, keyword, sectorID } }));
 			if (cb && typeof cb === 'function') yield cb({ isCreated: true, msg: 'Thêm mới môn học thành công' });
 		} else {
 			yield put(Action.createSubjectByTeacherFailure());
@@ -70,6 +70,24 @@ function* handleCreateSubjectOfClass(action) {
 	} catch (error) {
 		yield put(Action.createSubjectByTeacherFailure());
 		message.error('Tạo môn học không thành công ! Xin thử lại');
+	}
+}
+
+function* handleUpdateClass(action) {
+	try {
+		const { req, ID, cb } = action.payload;
+		const res = yield call(ClassApi.updateClass, { req, ID });
+		if (!res.errors) {
+			yield put(Action.updateClassByTeacherSuccess());
+			yield put(Action.getDetailClassByTeacherRequest({ ID }));
+			if (cb && typeof cb === 'function') yield cb({ isCreated: true, msg: 'Cập nhật trạng thái lớp học thành công' });
+		} else {
+			yield put(Action.updateClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.updateClassByTeacherFailure());
+		message.error('Cập nhật trạng thái lớp học không thành công ! Xin thử lại');
 	}
 }
 
@@ -91,9 +109,15 @@ const createSubjectOfClassSaga = {
 	worker: handleCreateSubjectOfClass,
 };
 
+const updateClasByTeacherSaga = {
+	on: Action.updateClassByTeacherRequest,
+	worker: handleUpdateClass,
+};
+
 export default createSagas([
 	getDetailClassSaga,
 	getStudentOfClassSaga,
 	getSubjectOfClassSaga,
 	createSubjectOfClassSaga,
+	updateClasByTeacherSaga
 ]);

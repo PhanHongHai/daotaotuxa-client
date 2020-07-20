@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { BASE_COLOR } from '../../../constands/Other';
+
 export const DashboardTeacherStyle = styled.div`
 	.frame {
 		overflow: scroll;
@@ -16,8 +18,12 @@ export const BoxFeatureStyle = styled.div`
 	padding: 2em;
 	flex-direction: column;
 	align-items: center;
-	i{
+	i {
 		font-size: 20px;
 		margin-bottom: 10px;
+		color: ${BASE_COLOR} !important;
+	}
+	h3 {
+		color: ${BASE_COLOR} !important;
 	}
 `;

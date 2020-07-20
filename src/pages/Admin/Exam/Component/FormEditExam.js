@@ -39,6 +39,7 @@ function FormEditExam(props) {
 						})(<Input placeholder="Nhập tiêu đề" />)}
 					</Form.Item>
 				</Col>
+				
 				<Col xs={24} md={24} className="mt-10">
 					<span style={{ float: 'right', display: 'flex', alignItems: 'center' }}>
 						<Button icon="plus" loading={loadingUpdate} className="btn-submit" htmlType="submit">

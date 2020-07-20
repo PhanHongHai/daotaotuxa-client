@@ -7,12 +7,20 @@ const { getInfoClassByTeacherRequest, getInfoClassByTeacherSuccess, getInfoClass
 	'GET_INFO_CLASS_BY_TEACHER',
 );
 
+const {
+	updateStatusClassByTeacherRequest,
+	updateStatusClassByTeacherSuccess,
+	updateStatusClassByTeacherFailure,
+} = createAsyncAction('updateStatusClassByTeacher', 'UPDATE_STATUS_CLASS_BY_TEACHER');
+
 const Actions = {
 	getInfoClassByTeacherRequest,
 	getInfoClassByTeacherSuccess,
-  getInfoClassByTeacherFailure,
-  
-  
+	getInfoClassByTeacherFailure,
+
+	updateStatusClassByTeacherRequest,
+	updateStatusClassByTeacherSuccess,
+	updateStatusClassByTeacherFailure,
 };
 
 export default Actions;

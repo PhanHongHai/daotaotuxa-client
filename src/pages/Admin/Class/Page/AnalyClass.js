@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Card, Radio, DatePicker, ConfigProvider, Typography, Select } from 'antd';
+import { Row, Col, Card, Radio, DatePicker, ConfigProvider, Typography, Select, Spin } from 'antd';
 import moment from 'moment';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -14,6 +14,7 @@ import BreadCrumb from '../../../../components/BreadCrumb';
 import SummaryBox from '../../../../components/SummaryBox';
 import ChartPieTypeClass from '../Component/ChartPieTypeClass';
 import ChartBarClass from '../Component/ChartBarClass';
+import LoadingCustom from '../../../../components/LoadingCustom';
 // other
 import { trainingType } from '../../../../constands/Other';
 import { SelectYearStyle } from '../styled';
@@ -786,30 +787,29 @@ function AnalyClass(props) {
 					<Col xs={24} sm={24} md={24} className="mb-10">
 						<Row gutter={16}>
 							<Col xs={24} sm={12} md={24} className="mb-10">
-								<Card
-									className="card-action"
-									loading={loadingGetReportClassByTrainingType || loadingGetReportClassByTrainingSector}
-									tabList={tabList}
-									onTabChange={handleChangeTabReportClass}
-								>
-									{contentList[tabKeyByClass]}
+								<Card className="card-action" tabList={tabList} onTabChange={handleChangeTabReportClass}>
+									<Spin
+										spinning={loadingGetReportClassByTrainingType || loadingGetReportClassByTrainingSector}
+										indicator={<LoadingCustom margin={20} />}
+									>
+										{contentList[tabKeyByClass]}
+									</Spin>
 								</Card>
 							</Col>
 							<Col xs={24} sm={24} md={24} className="mb-10">
-								<Card
-									className="card-action"
-									loading={loadingGetReportStudentByTrainingType || loadingGetReportStudentByTrainingSector}
-									tabList={tabList}
-									onTabChange={handleChangeTabReportStudent}
-								>
-									{contentTabStudentList[tabKeyByStudent]}
+								<Card className="card-action" tabList={tabList} onTabChange={handleChangeTabReportStudent}>
+									<Spin
+										spinning={loadingGetReportStudentByTrainingType || loadingGetReportStudentByTrainingSector}
+										indicator={<LoadingCustom margin={20} />}
+									>
+										{contentTabStudentList[tabKeyByStudent]}
+									</Spin>
 								</Card>
 							</Col>
 							<Col xs={24} sm={24} md={24} className="mb-10">
 								<Card
 									className="card-action"
 									title="Biểu đồ"
-									loading={loadingGetReportTotalClassByYear}
 									extra={
 										<SelectYearStyle onChange={handleSelectYear} defaultValue={moment().year()}>
 											{renderOptionYear()}
@@ -823,7 +823,9 @@ function AnalyClass(props) {
 											</Col>
 										</Row>
 									</div>
-									<ChartBarClass dataChart={dataChartTotalClassByYear} />
+									<Spin spinning={loadingGetReportTotalClassByYear} indicator={<LoadingCustom margin={20} />}>
+										<ChartBarClass dataChart={dataChartTotalClassByYear} />
+									</Spin>
 								</Card>
 							</Col>
 						</Row>

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Card, Typography, Badge, Spin } from 'antd';
+import { Row, Col, Card, Typography, Badge, Spin, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import _ from 'lodash';
 
 import { DashboardStyle } from './styled';
 // import TimeLineStudent from './Component/TimeLine';
@@ -79,12 +80,19 @@ function DashboardStudent(props) {
 									<Col xs={24} md={12} className="mb-5">
 										<Card title="Chuyên cần" className="phh-card-v2">
 											<Spin spinning={loadingGetTimeKeeping} indicator={<LoadingCustom margin={0} />}>
-												<ProgressOnline
-													timeKeeping={timeKeeping}
-													hanldeAttendance={hanldeAttendance}
-													loadingAttendance={loadingAttendance}
-													range={infoClass}
-												/>
+												{infoClass && !_.isEmpty(infoClass) ? (
+													<ProgressOnline
+														timeKeeping={timeKeeping}
+														hanldeAttendance={hanldeAttendance}
+														loadingAttendance={loadingAttendance}
+														range={infoClass}
+													/>
+												) : (
+													<div style={{ textAlign: 'center' }}>
+														<Icon type="frown" style={{ fontSize: 30 }} />
+														<h1 style={{ color: 'silver' }}>Chưa có thông tin lớp học</h1>
+													</div>
+												)}
 											</Spin>
 										</Card>
 									</Col>

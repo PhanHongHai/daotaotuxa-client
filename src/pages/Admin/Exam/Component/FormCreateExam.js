@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button, Form, Input, Select } from 'antd';
+import { Row, Col, Button, Form, Input, Select, InputNumber } from 'antd';
 
 import customMess from '../../../../utils/customMessage';
 import { FormCreateQuestionStyle } from '../styled';
@@ -148,6 +148,18 @@ function FormCreateExam(props) {
 								},
 							],
 						})(<Input placeholder="Nhập tiêu đề" />)}
+					</Form.Item>
+				</Col>
+				<Col xs={24} md={24}>
+					<Form.Item label="Điểm mỗi câu hỏi" labelAlign="left">
+						{getFieldDecorator('point', {
+							rules: [
+								{
+									required: true,
+									message: 'Hãy nhập điểm cho mỗi câu hỏi',
+								},
+							],
+						})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{width:'100%'}} />)}
 					</Form.Item>
 				</Col>
 				{/* <Col xs={24} md={24}>

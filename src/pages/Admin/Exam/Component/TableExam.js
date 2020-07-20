@@ -20,6 +20,12 @@ function TableExam(props) {
 			key: 'title',
 		},
 		{
+			title: 'Điểm mỗi câu hỏi',
+			dataIndex: 'point',
+			key: 'point',
+			render: value => `${value} điểm`,
+		},
+		{
 			title: 'Số lượng câu hỏi',
 			dataIndex: 'questions',
 			key: 'number',

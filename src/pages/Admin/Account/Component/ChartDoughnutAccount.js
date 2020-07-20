@@ -13,7 +13,7 @@ const legend = {
 function ChartDoughnutAccount(props) {
 	const { data } = props;
 	const dataChart = {
-		labels: ['Đã tạo', 'Kích hoạt'],
+		labels: ['Đã Tạo', 'Chưa Kích hoạt'],
 		datasets: [
 			{
 				data,

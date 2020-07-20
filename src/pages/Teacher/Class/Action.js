@@ -26,6 +26,11 @@ const {
 	createSubjectByTeacherFailure,
 } = createAsyncAction('createSubjectByTeacher', 'CREATE_SUBJECT_BY_TEACHER');
 
+const { updateClassByTeacherRequest, updateClassByTeacherSuccess, updateClassByTeacherFailure } = createAsyncAction(
+	'updateClassByTeacher',
+	'UPDATE_CLASS_BY_TEACHER',
+);
+
 const Actions = {
 	getDetailClassByTeacherRequest,
 	getDetailClassByTeacherSuccess,
@@ -42,6 +47,10 @@ const Actions = {
 	createSubjectByTeacherRequest,
 	createSubjectByTeacherSuccess,
 	createSubjectByTeacherFailure,
+
+	updateClassByTeacherRequest,
+	updateClassByTeacherSuccess,
+	updateClassByTeacherFailure,
 };
 
 export default Actions;

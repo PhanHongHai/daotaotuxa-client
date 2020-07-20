@@ -102,7 +102,7 @@ function FormEditTeacher(props) {
 								},
 							],
 						})(
-							<Select placeholder="Chọn quê quán" onChange={onChangeSelect}>
+							<Select showSearch placeholder="Chọn quê quán" onChange={onChangeSelect}>
 								{countries.map(ele => (
 									<Select.Option value={ele.key} key={ele.key}>
 										{ele.name}

@@ -6,7 +6,8 @@ const { createReducers } = Redux;
 
 const initialState = {
 	getInfoClassStatus: STATUS.DEFAULT,
-  infoClass:{}
+	updateStatusClassStatus: STATUS.DEFAULT,
+	infoClass: {},
 };
 
 const reducer = [
@@ -35,7 +36,30 @@ const reducer = [
 			};
 		},
 	},
-
+	// active when call action update status class by teacher
+	{
+		on: Action.updateStatusClassByTeacherRequest,
+		reducer: state => ({
+			...state,
+			updateStatusClassStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.updateStatusClassByTeacherSuccess,
+		reducer: state => ({
+			...state,
+			updateStatusClassStatus: STATUS.SUCCESS,
+		}),
+	},
+	{
+		on: Action.updateStatusClassByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				updateStatusClassStatus: STATUS.FAILURE,
+			};
+		},
+	},
 ];
 
 export default createReducers('dashboadTeacherPage', reducer, initialState);

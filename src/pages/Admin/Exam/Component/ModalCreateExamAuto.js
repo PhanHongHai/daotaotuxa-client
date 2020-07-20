@@ -98,6 +98,18 @@ function ModalCreateExamAuto(props) {
 							})(<Input placeholder="Nhập tiêu đề" />)}
 						</Form.Item>
 					</Col>
+					<Col xs={24} md={24}>
+						<Form.Item label="Điểm mỗi câu hỏi" labelAlign="left">
+							{getFieldDecorator('point', {
+								rules: [
+									{
+										required: true,
+										message: 'Hãy nhập điểm cho mỗi câu hỏi',
+									},
+								],
+							})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{ width: '100%' }} />)}
+						</Form.Item>
+					</Col>
 					<Col xs={14} md={14}>
 						<Form.Item label="Câu hỏi dễ" labelAlign="left" {...formItemLayout}>
 							{getFieldDecorator('level1', {

@@ -13,6 +13,7 @@ import {
 	Progress,
 	Tooltip,
 	Row,
+	Input,
 } from 'antd';
 import _ from 'lodash';
 
@@ -37,17 +38,81 @@ const handleCheckData = subjectData => {
 	}
 	return result;
 };
-function TableSubject(props) {
+function StepSubject(props) {
 	const {
 		subjectList: { data, pagination },
 		loading,
 		loadingGetProgressByStudent,
-		handleChangePage,
 		progressOfStudent,
+		getReq,
+		sectorID,
+		classID,
+		setSubjectData,
+		setVisibleStepCustom
 	} = props;
+	const [keyword, setKeyword] = React.useState('');
+	const refSearch = React.useRef(null);
+	const handleSearch = value => {
+		setKeyword(value);
+		getReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword: value,
+				sectorID,
+				classID,
+			},
+		});
+	};
+	const handleReload = () => {
+		refSearch.current.input.state.value = '';
+		setKeyword('');
+		getReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword: '',
+				sectorID,
+				classID,
+			},
+		});
+	};
+	const handleChangePage = page => {
+		getReq({
+			req: {
+				page: Number(page.current),
+				limit: 10,
+				keyword,
+				sectorID,
+				classID,
+			},
+		});
+	};
+	const handleChoseSubject= subject =>{
+		setSubjectData(subject);
+		setVisibleStepCustom(true);
+	};
 	return (
 		<Row gutter={16} justify="center">
 			<Col span={24}>
+				<div className="phh-group-search mb-10 mt-10 flex" style={{ alignItems: 'center' }}>
+					<Input.Search
+						addonBefore={
+							<Button
+								className="btn-reload"
+								style={{ backgroundColor: 'red !important', height: '35px', color: 'black' }}
+								icon="sync"
+								onClick={() => handleReload()}
+							>
+								Làm mới
+							</Button>
+						}
+						ref={refSearch}
+						placeholder="Nhập từ khóa.."
+						enterButton
+						onSearch={handleSearch}
+					/>
+				</div>
 				<Row gutter={16}>
 					<ConfigProvider
 						renderEmpty={() => (
@@ -72,15 +137,12 @@ function TableSubject(props) {
 									const existItem = progressOfStudent.find(ele => ele.subjectID === item.subjectID._id);
 									if (existItem)
 										return (
-											<Col xs={24} md={12} className="mb-15">
+											<Col xs={24} md={24} className="mb-15">
 												<List.Item
 													key="item._id"
 													className="subject-item"
 													actions={[
-														<Button
-															className="btn"
-															key="item._id"
-														>
+														<Button className="btn" key="item._id" onClick={() => handleChoseSubject(item)}>
 															Chọn
 														</Button>,
 													]}
@@ -110,15 +172,12 @@ function TableSubject(props) {
 										);
 								}
 								return (
-									<Col xs={24} md={12} className="mb-15">
+									<Col xs={24} md={24} className="mb-15">
 										<List.Item
 											key="item._id"
 											className="subject-item"
 											actions={[
-												<Button
-													className="btn"
-													key="item._id"
-												>
+												<Button className="btn" key="item._id" onClick={() => handleChoseSubject(item)}>
 													Chọn
 												</Button>,
 											]}
@@ -165,12 +224,16 @@ function TableSubject(props) {
 	);
 }
 
-TableSubject.propTypes = {
+StepSubject.propTypes = {
 	subjectList: PropTypes.objectOf(PropTypes.any).isRequired,
 	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
 	loadingGetProgressByStudent: PropTypes.bool.isRequired,
-	handleChangePage: PropTypes.func.isRequired,
+	getReq: PropTypes.func.isRequired,
+	setSubjectData: PropTypes.func.isRequired,
+	setVisibleStepCustom: PropTypes.func.isRequired,
+	sectorID: PropTypes.string.isRequired,
+	classID: PropTypes.string.isRequired,
 };
 
-export default TableSubject;
+export default StepSubject;

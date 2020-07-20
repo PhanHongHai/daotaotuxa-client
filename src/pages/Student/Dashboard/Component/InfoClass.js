@@ -22,8 +22,10 @@ function InfoClass(props) {
 				return <Tag color="#1bb394">Chờ Khai giảng</Tag>;
 			case 'HP':
 				return <Tag color="blue">Đang diễn ra</Tag>;
+			case 'END':
+				return <Tag color="blue">Kết thúc</Tag>;
 			default:
-				return <Tag color="gray">Kết thúc</Tag>;
+				return <Tag>Chưa tham gia vào lớp học</Tag>;
 		}
 	};
 	return (
