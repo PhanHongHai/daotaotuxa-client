@@ -44,7 +44,7 @@ function ModalSubject(props) {
 			title: 'Mô tả',
 			dataIndex: 'introduce',
 			key: 'introduce',
-			render: value => (value.length > 20 ? <Tooltip title={value}>{value.slice(0, 20)}...</Tooltip> : value),
+			render: value => (value && value.length > 20 ? <Tooltip title={value}>{value.slice(0, 20)}...</Tooltip> : value),
 		},
 		{
 			title: 'Thao tác',

@@ -42,6 +42,9 @@ export const InfoTeacherStyle = styled.div`
 				p {
 					display: inline-block;
 					margin: 0 0 0 10px !important;
+					a {
+						word-break: break-all;
+					}
 				}
 			}
 		}
@@ -298,11 +301,11 @@ export const BoxFeatureStyle = styled.div`
 	i {
 		font-size: 20px;
 		margin-bottom: 10px;
-		color:${BASE_COLOR} !important;
+		color: ${BASE_COLOR} !important;
 	}
 	h3 {
 		font-size: 13px;
-		color:${BASE_COLOR} !important;
+		color: ${BASE_COLOR} !important;
 	}
 `;
 

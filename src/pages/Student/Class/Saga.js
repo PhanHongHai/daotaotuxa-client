@@ -5,6 +5,7 @@ import Action from './Action';
 import ClassApi from '../../../apis/Class';
 import SubjectApi from '../../../apis/Subject';
 import DocumentApi from '../../../apis/Document';
+import ScheduleApi from '../../../apis/Schedule';
 import SubjectProgressApi from '../../../apis/SubjectProgress';
 import filterError from '../../../utils/filterError';
 
@@ -168,6 +169,21 @@ function* handleCreateSubjectProgress(action) {
 		message.error('Cập nhật tiến độ môn học không thành công ! Xin thử lại');
 	}
 }
+function* handleGetScheduleOfClassByID(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(ScheduleApi.getScheduleByClassID, req);
+		if (!res.errors) {
+			yield put(Action.getScheduleOfClassByIDSuccess(res));
+		} else {
+			yield put(Action.getScheduleOfClassByIDFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getScheduleOfClassByIDFailure());
+		message.error('Lấy danh sách lịch thi không thành công ! Xin thử lại');
+	}
+}
 
 const getDetailOfClassByStudentIDSaga = {
 	on: Action.getDetailOfClassByStudentIDRequest,
@@ -217,6 +233,10 @@ const createSubjectProgressSaga = {
 	on: Action.createSubjectProgressRequest,
 	worker: handleCreateSubjectProgress,
 };
+const getScheduleOfClassByIDSaga = {
+	on: Action.getScheduleOfClassByIDRequest,
+	worker: handleGetScheduleOfClassByID,
+};
 
 export default createSagas([
 	getDetailOfClassByStudentIDSaga,
@@ -229,4 +249,5 @@ export default createSagas([
 	getDetailSubjectProgressSaga,
 	createSubjectProgressSaga,
 	getProgressByStudentSaga,
+	getScheduleOfClassByIDSaga,
 ]);

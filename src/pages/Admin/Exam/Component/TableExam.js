@@ -23,7 +23,7 @@ function TableExam(props) {
 			title: 'Điểm mỗi câu hỏi',
 			dataIndex: 'point',
 			key: 'point',
-			render: value => `${value} điểm`,
+			render: value => (value ? `${value} điểm` : 'không xác định'),
 		},
 		{
 			title: 'Số lượng câu hỏi',

@@ -9,6 +9,7 @@ import ModalStudent from './Component/ModalStudentList';
 import ModalSubject from './Component/ModalSubjectList';
 import ModalQuickTest from './Component/ModalQuickTest';
 import ModalPoint from './Component/ModalPoint';
+import ModalSchedule from './Component/ModalSchedule';
 
 const { Title } = Typography;
 const dataPoint = [
@@ -60,20 +61,25 @@ function ClassStudent(props) {
 		getSubjectsOfClassReq,
 		getDetailOfClassReq,
 		getProgressReq,
+		getScheduleReq,
 		studentsClass,
 		subjectsClass,
 		progressOfStudent,
 		detailOfClass: { countStudent, infoTeacher, infoClass },
+		scheduleOfClass,
 		getSubjectOfClassStatus,
 		getStudentsOfClassStatus,
 		getDetailOfClassByStudentIDStatus,
 		getProgressByStudentStatus,
+		getScheduleOfClassStatus,
 	} = props;
 	const { ID } = useParams();
 	const [visibleModalStudent, setVisibleModalStudent] = useState(false);
 	const [visibleModalSubject, setVisibleModalSubject] = useState(false);
 	const [visibleModalQuickTest, setVisibleModalQuickTest] = useState(false);
 	const [visibleModalPoint, setVisibleModalPoint] = useState(false);
+	const [visibleModalSchedule, setVisibleModalSchedule] = useState(false);
+
 
 	useEffect(() => {
 		getDetailOfClassReq({});
@@ -91,6 +97,7 @@ function ClassStudent(props) {
 	const loadingGetSubjects = getSubjectOfClassStatus === 'FETCHING';
 	const loadingGetStudents = getStudentsOfClassStatus === 'FETCHING';
 	const loadingGetProgressByStudent = getProgressByStudentStatus === 'FETCHING';
+	const loadingGetScheduleOfClass = getScheduleOfClassStatus === 'FETCHING';
 	const loadingGetDetailOfClassByStudent = getDetailOfClassByStudentIDStatus === 'FETCHING';
 
 	return (
@@ -110,10 +117,12 @@ function ClassStudent(props) {
 						loading={loadingGetDetailOfClassByStudent}
 						info={{ countStudent, infoTeacher, infoClass }}
 						getSubjectsOfClassReq={getSubjectsOfClassReq}
+						getScheduleReq={getScheduleReq}
 						openStudentList={setVisibleModalStudent}
 						openSubjectList={setVisibleModalSubject}
 						openQuickTest={setVisibleModalQuickTest}
 						openPoint={setVisibleModalPoint}
+						openSchedule={setVisibleModalSchedule}
 					/>
 				</Col>
 				{/* <Col xs={24} md={24} className="mt-5">
@@ -149,6 +158,15 @@ function ClassStudent(props) {
 				classID={ID}
 			/>
 			<ModalPoint visible={visibleModalPoint} setVisible={setVisibleModalPoint} data={dataPoint} />
+			<ModalSchedule
+				scheduleData={scheduleOfClass}
+				loadingGet={loadingGetScheduleOfClass}
+				getSchedulesReq={getScheduleReq}
+				visible={visibleModalSchedule}
+				setVisible={setVisibleModalSchedule}
+				classID={ID}
+
+			/>
 		</div>
 	);
 }
@@ -158,14 +176,17 @@ ClassStudent.propTypes = {
 	getSubjectsOfClassReq: PropTypes.func.isRequired,
 	getDetailOfClassReq: PropTypes.func.isRequired,
 	getProgressReq: PropTypes.func.isRequired,
+	getScheduleReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
+	scheduleOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getSubjectOfClassStatus: PropTypes.string.isRequired,
 	getStudentsOfClassStatus: PropTypes.string.isRequired,
 	getDetailOfClassByStudentIDStatus: PropTypes.string.isRequired,
 	getProgressByStudentStatus: PropTypes.string.isRequired,
+	getScheduleOfClassStatus: PropTypes.string.isRequired,
 };
 
 export default ClassStudent;

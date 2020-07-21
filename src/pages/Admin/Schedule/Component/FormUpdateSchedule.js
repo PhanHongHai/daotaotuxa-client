@@ -87,7 +87,16 @@ function FormUpdateSchedule(props) {
 		if (!result) return 'Không xác định';
 		return result.value;
 	};
-
+	const renderStatusSchedule = dateValue => {
+		if (moment.utc(dateValue.dayAt) < moment().utc()) return <Tag color="silver">Kết thúc</Tag>;
+		if (moment.utc(dateValue.dayAt) === moment().utc()) {
+			if (moment.utc(dateValue.timeAt).format('HH:MM') < moment.utc().format('HH:MM'))
+				return <Tag color="green">Chuẩn bị</Tag>;
+			if (moment.utc(dateValue.timeAt).format('HH:MM') >= moment.utc().format('HH:MM'))
+				return <Tag color="silver">Kết thúc</Tag>;
+		}
+		return <Tag color="cyan">Chưa diễn ra</Tag>;
+	};
 	return (
 		<React.Fragment>
 			<Form className="form-custom mt-15" {...formItemLayout} onSubmit={handleSubmit}>
@@ -210,6 +219,11 @@ function FormUpdateSchedule(props) {
 									icon="setting"
 								/>
 							</Tooltip>
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item label="Trạng thái lịch thi" labelAlign="left">
+							{renderStatusSchedule(info)}
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24} className="mt-10">

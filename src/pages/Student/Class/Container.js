@@ -7,10 +7,12 @@ const mapStateToProps = state => ({
 	getStudentsOfClassStatus: state.classOfStudentPage.getStudentsOfClassStatus,
 	getDetailOfClassByStudentIDStatus: state.classOfStudentPage.getDetailOfClassByStudentIDStatus,
 	getProgressByStudentStatus: state.classOfStudentPage.getProgressByStudentStatus,
+	getScheduleOfClassStatus: state.classOfStudentPage.getScheduleOfClassStatus,
 	studentsClass: state.classOfStudentPage.studentsClass,
 	subjectsClass: state.classOfStudentPage.subjectsClass,
 	detailOfClass: state.classOfStudentPage.detailOfClass,
 	progressOfStudent: state.classOfStudentPage.progressOfStudent,
+	scheduleOfClass: state.classOfStudentPage.scheduleOfClass,
 });
 
 const mapDispatchToProps = {
@@ -18,6 +20,7 @@ const mapDispatchToProps = {
 	getSubjectsOfClassReq: Action.getSubjectsOfClassByStudentRequest,
 	getDetailOfClassReq: Action.getDetailOfClassByStudentIDRequest,
 	getProgressReq: Action.getProgressByStudentRequest,
+	getScheduleReq: Action.getScheduleOfClassByIDRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

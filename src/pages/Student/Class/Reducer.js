@@ -15,6 +15,7 @@ const initialState = {
 	getDetaiSubjectProgressStatus: STATUS.DEFAULT,
 	getProgressByStudentStatus: STATUS.DEFAULT,
 	createSubjectProgressStatus: STATUS.DEFAULT,
+	getScheduleOfClassStatus: STATUS.DEFAULT,
 	detailOfClass: {},
 	infoSubject: {},
 	detailDocument: {},
@@ -31,6 +32,10 @@ const initialState = {
 		pagination: {},
 	},
 	documents: {
+		data: [],
+		pagination: {},
+	},
+	scheduleOfClass: {
 		data: [],
 		pagination: {},
 	},
@@ -297,6 +302,34 @@ const reducer = [
 			return {
 				...state,
 				getProgressByStudentStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get schedule of class by id
+	{
+		on: Action.getScheduleOfClassByIDRequest,
+		reducer: state => ({
+			...state,
+			getScheduleOfClassStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getScheduleOfClassByIDSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getScheduleOfClassStatus: STATUS.SUCCESS,
+			scheduleOfClass: {
+				data: action.payload.docs,
+				pagination: action.payload,
+			},
+		}),
+	},
+	{
+		on: Action.getScheduleOfClassByIDFailure,
+		reducer: state => {
+			return {
+				...state,
+				getScheduleOfClassStatus: STATUS.FAILURE,
 			};
 		},
 	},

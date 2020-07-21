@@ -68,7 +68,7 @@ function StudentTable(props) {
 			key: 'actions',
 			render: row => (
 				<span className="phh-group-btn-action">
-					<Tooltip title="Hồ sơ học viên">
+					{/* <Tooltip title="Hồ sơ học viên">
 						<Button
 							icon="idcard"
 							onClick={() => {
@@ -76,7 +76,7 @@ function StudentTable(props) {
 								openProfile(true);
 							}}
 						/>
-					</Tooltip>
+					</Tooltip> */}
 					<Tooltip title="Bảng điểm">
 						<Button icon="fund" onClick={() => openPoint(true)} />
 					</Tooltip>

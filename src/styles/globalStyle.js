@@ -740,6 +740,13 @@ i.icon-fold-custom{
 	}
 }
 
+.phh-date-pick{
+	.ant-calendar-picker-input{
+		height:35px !important;
+	}
+}
+
+
 ${_utilityClasses}
 `;
 export default GlobalStyle;

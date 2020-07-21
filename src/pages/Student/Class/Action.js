@@ -58,6 +58,12 @@ const {
 	getDetailDocumentByStudentFailure,
 } = createAsyncAction('getDetailDocumentByStudent', 'GET_DETAIL_DOCUMENT_BY_STUDENT');
 
+const {
+	getScheduleOfClassByIDRequest,
+	getScheduleOfClassByIDSuccess,
+	getScheduleOfClassByIDFailure,
+} = createAsyncAction('getScheduleOfClassByID', 'GET_SCHEDULE_OF_CLASS_BY_ID');
+
 const Actions = {
 	getDetailOfClassByStudentIDRequest,
 	getDetailOfClassByStudentIDSuccess,
@@ -98,6 +104,10 @@ const Actions = {
 	createSubjectProgressRequest,
 	createSubjectProgressSuccess,
 	createSubjectProgressFailure,
+
+	getScheduleOfClassByIDRequest,
+	getScheduleOfClassByIDSuccess,
+	getScheduleOfClassByIDFailure,
 };
 
 export default Actions;

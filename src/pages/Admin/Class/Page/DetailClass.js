@@ -16,6 +16,7 @@ import FormEditClass from '../Component/FormEditClass';
 import StudentTable from '../Component/StudentTable';
 import ModalPoint from '../Component/ModalPoint';
 import TableStudentData from '../Component/TableStudentsData';
+import countries from '../../../../utils/country.json';
 
 import { DetailClassStyle } from '../styled';
 
@@ -42,6 +43,11 @@ const tabList = [
 		tab: 'Tất cả học viên',
 	},
 ];
+
+const renderCountry = value => {
+	return countries.find(ele => ele.key === value).name;
+};
+
 function DetailClassComponent(props) {
 	const {
 		getDetailReq,
@@ -344,17 +350,22 @@ function DetailClassComponent(props) {
 								<span className="profile-info">
 									<ul>
 										<li>Tên : {infoTeacher.accountID && infoTeacher.accountID.name} </li>
+										<li>Giới thiệu : {infoTeacher.accountID && infoTeacher.accountID.introduce}</li>
 										<li>
 											Ngày sinh :
 											{!_.isEmpty(infoTeacher.accountID)
 												? moment(infoTeacher.accountID && infoTeacher.accountID.birthDay).format('DD-MM-YYYY')
 												: ''}
 										</li>
-										<li>
-											Email :
-											<a href="mailto: abc@example.com">{infoTeacher.accountID && infoTeacher.accountID.email}</a>
-										</li>
 										<li>Số điện thoại : {infoTeacher.accountID && infoTeacher.accountID.phoneNumber}</li>
+										<li>Địa chỉ : {infoTeacher.accountID && infoTeacher.accountID.address}</li>
+										<li>
+											Email :{' '}
+											<a href={`mailto: ${infoTeacher.accountID && infoTeacher.accountID.email}`}>
+												{infoTeacher.accountID && infoTeacher.accountID.email}
+											</a>
+										</li>
+										<li>Quê quán :{infoTeacher.accountID && renderCountry(infoTeacher.accountID.country)}</li>
 									</ul>
 								</span>
 							</div>

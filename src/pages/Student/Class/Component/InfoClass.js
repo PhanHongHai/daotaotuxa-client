@@ -35,6 +35,8 @@ function InfoClass(props) {
 		openSubjectList,
 		openQuickTest,
 		openPoint,
+		openSchedule,
+		getScheduleReq,
 	} = props;
 
 	return (
@@ -155,7 +157,25 @@ function InfoClass(props) {
 							/>
 						</Col>
 						<Col xs={24} md={8} className="mb-15">
-							<FeatureBox icon="schedule" title="Lịch Thi" onSelect={() => {}} />
+							<FeatureBox
+								icon="schedule"
+								title="Lịch Thi"
+								onSelect={() => {
+									getScheduleReq({
+										req: {
+											page: 1,
+											limit: 10,
+											keyword: '',
+											classID: infoClass && infoClass._id,
+											startAt: moment().toISOString(),
+											endAt: moment()
+												.add(1, 'month')
+												.toISOString(),
+										},
+									});
+									openSchedule(true);
+								}}
+							/>
 						</Col>
 						<Col xs={24} md={8} className="mb-15">
 							<FeatureBox
@@ -193,6 +213,8 @@ InfoClass.propTypes = {
 	openSubjectList: PropTypes.func.isRequired,
 	openQuickTest: PropTypes.func.isRequired,
 	openPoint: PropTypes.func.isRequired,
+	openSchedule: PropTypes.func.isRequired,
+	getScheduleReq: PropTypes.func.isRequired,
 };
 
 export default InfoClass;

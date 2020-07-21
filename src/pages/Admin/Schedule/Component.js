@@ -170,7 +170,7 @@ function ScheduleComponent(props) {
 					<Col xs={24} md={24}>
 						<Card
 							className="phh-card mh-400"
-							title="Danh sách lịch thi"
+							title="Danh sách lịch thi trong 30 ngày gần nhất"
 							extra={
 								<span className="group-btn">
 									<Button type="primary" icon="plus" onClick={() => history.push('/admin/lich-thi/them-moi')}>
@@ -179,14 +179,14 @@ function ScheduleComponent(props) {
 								</span>
 							}
 						>
-							<div className="phh-group-search mb-10">
+							<div className=" mb-10">
 								<Row gutter={16}>
 									<Col xs={24} md={24}>
 										<div style={{ display: 'flex', alignItems: 'center' }}>
-											<h3>Lọc theo thời gian :&ensp;</h3>
+											<h3>Lọc theo ngày tháng :&ensp;</h3>
 											<DatePicker.RangePicker
+												className="phh-date-pick"
 												ref={refDatePicker}
-												style={{ height: '35px !important' }}
 												format="DD-MM-YYYY"
 												placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}
 												onChange={handleChangeDatePick}
