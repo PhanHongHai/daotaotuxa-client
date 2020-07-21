@@ -13,14 +13,14 @@ function FrameQuestion(props) {
 					<Row>
 						<Col xs={24} md={14}>
 							<h3>Câu {index} :</h3>
-							<span className='question-name'>{ele.name}</span>
+							<span className="question-name">{ele.name}</span>
 						</Col>
 						<Col xs={24} md={10}>
 							<span>
-								<Radio.Group className='radio-custom' key={ele._id}>
+								<Radio.Group className="radio-custom" key={ele._id}>
 									<Row>
 										{ele.quetion.map(item => (
-											<Col key={item._id} span={24} className='mt-10 mb-10'>
+											<Col key={item._id} span={24} className="mt-10 mb-10">
 												<Radio key={item._id} value={item._id}>
 													{item.title}.{item.content}
 												</Radio>
@@ -36,7 +36,11 @@ function FrameQuestion(props) {
 		}
 		return 0;
 	};
-	return <FrameQuestionStyle>{renderQuestion(data)}</FrameQuestionStyle>;
+	return (
+		<FrameQuestionStyle>
+			{renderQuestion(data)}
+		</FrameQuestionStyle>
+	);
 }
 
 FrameQuestion.propTypes = {

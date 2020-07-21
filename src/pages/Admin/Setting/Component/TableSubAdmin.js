@@ -42,16 +42,17 @@ function TableSubAdmin(props) {
 			title: `Bạn có muốn xóa tài khoản có email ${dataAcc.email} ?`,
 			onOk() {
 				deleteReq({
-					ID: dataAcc.id,
+					ID: dataAcc._id,
 					pageCurrent: pageSubAdminData,
 					keyword,
 					cb: res => {
-						if (res !== null) customMess('notification', 'success', res);
+						if (res && res.isDeleted) customMess('notification', 'success', res.msg);
 					},
 				});
 			},
 			okText: 'Xác nhận',
 			cancelText: 'Hủy',
+			className: 'model-confirm',
 		});
 	};
 	/**
@@ -98,18 +99,6 @@ function TableSubAdmin(props) {
 			dataIndex: 'isActived',
 			key: 'actived',
 			render: value => (value ? <Tag color="green">Đã xác thực</Tag> : <Tag color="silver">Chưa xác thực</Tag>),
-		},
-		{
-			title: 'Trạng thái',
-			key: 'status',
-			render: row => (
-				<Switch
-					defaultChecked={row.status}
-					onChange={checked => handleChangeStatus(row._id, checked)}
-					checkedChildren="Bật"
-					unCheckedChildren="Tắt"
-				/>
-			),
 		},
 		{
 			title: 'Hành động',

@@ -25,7 +25,7 @@ function TableData(props) {
 			dataIndex: 'introduce',
 			key: 'introduce',
 			render: value => {
-				if (value.length > 30) return <Tooltip title={value}>{value.slice(0, 30)}...</Tooltip>;
+				if (value && value.length > 30) return <Tooltip title={value}>{value.slice(0, 30)}...</Tooltip>;
 				return value;
 			},
 		},

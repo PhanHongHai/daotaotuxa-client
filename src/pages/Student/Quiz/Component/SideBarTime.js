@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTimer } from 'react-timer-hook';
-import { Anchor, Button, Modal, Popover,  } from 'antd';
+import { Anchor, Button, Modal, Popover, Statistic, Row, Col } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import { SidebarTimeStyle } from '../styled';
 
 const { confirm } = Modal;
+const { Countdown } = Statistic;
 
 function SideBarTime(props) {
 	const { expiryTimestamp, data, setIsShowResult } = props;
@@ -17,10 +17,7 @@ function SideBarTime(props) {
 		window.addEventListener('resize', handleSize);
 		return () => window.removeEventListener('resize', handleSize);
 	}, []);
-	const { seconds, minutes, hours } = useTimer({
-		expiryTimestamp,
-		onExpire: () => console.warn('onExpire called'),
-	});
+
 	const openSubmit = () => {
 		confirm({
 			title: 'Xác nhận nộp bài ?',
@@ -49,9 +46,7 @@ function SideBarTime(props) {
 							<div className="frame-time">
 								<p>Thời gian làm bài &ensp;</p>
 								<div className="clock">
-									<span>{hours}:</span>
-									<span>{minutes}:</span>
-									<span>{seconds}</span>
+									<Countdown title="Countdown" value={expiryTimestamp} />
 								</div>
 							</div>
 							<div className="btn-info">
@@ -80,38 +75,49 @@ function SideBarTime(props) {
 			) : (
 				<Anchor>
 					<SidebarTimeStyle>
-						<h2>{data.title}</h2>
-						<span className="info-schedule">
-							<ul>
-								<li>Ngày thi : {data.startAt}</li>
-								<li>Thời gian thi : {data.timeAt}</li>
-								<li>Môn học : {data.name}</li>
-								<li>Mã môn học : {data.tag}</li>
-								<li>Tổng câu hỏi : 10</li>
-							</ul>
-						</span>
-						<div className="count-down-time">
-							<h3>Thời gian</h3>
-							<div className="clock">
-								<span>{hours}:</span>
-								<span>{minutes}:</span>
-								<span>{seconds}</span>
-							</div>
-						</div>
-						<Button className="btn-send  mt-15 mb-15" onClick={() => openSubmit()}>
-							Nộp bài
-						</Button>
-						<Button className="btn-back  mt-15 mb-15" onClick={() => history.push('/student/dashboard')}>
-							Quay về
-						</Button>
-						<div className="choice">
-							<span>Số câu hoàn thành</span>
-							<span>
-								<h2>0</h2>
-								<h1>/</h1>
-								<h2>10</h2>
-							</span>
-						</div>
+						<Row>
+							<Col span={24}>
+								<div className="count-down-time">
+									<div className="quiz-title">
+										<h1>Thông tin</h1>
+									</div>
+									<div className="clock">
+										<Countdown title="Countdown" value={expiryTimestamp} />
+									</div>
+								</div>
+							</Col>
+							<Col span={24}>
+								<div className="quiz-title">
+									<h1>Thông tin</h1>
+								</div>
+								<span className="info-schedule">
+									<ul>
+										<li>Ngày thi : {data.startAt}</li>
+										<li>Thời gian thi : {data.timeAt}</li>
+										<li>Môn học : {data.name}</li>
+										<li>Mã môn học : {data.tag}</li>
+										<li>Tổng câu hỏi : 10</li>
+									</ul>
+								</span>
+							</Col>
+
+							<Col span={24}>
+								<Button className="btn-send  mt-15 mb-15" onClick={() => openSubmit()}>
+									Nộp bài
+								</Button>
+								<Button className="btn-back  mt-15 mb-15" onClick={() => history.push('/student/dashboard')}>
+									Quay về
+								</Button>
+								<div className="choice">
+									<span>Số câu hoàn thành</span>
+									<span>
+										<h2>0</h2>
+										<h1>/</h1>
+										<h2>10</h2>
+									</span>
+								</div>
+							</Col>
+						</Row>
 					</SidebarTimeStyle>
 				</Anchor>
 			)}

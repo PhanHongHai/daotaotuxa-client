@@ -2,7 +2,23 @@ import styled from 'styled-components';
 
 import { BASE_COLOR } from '../../../constands/Other';
 
+export const QuizStyle = styled.div`
+	.quiz-exam {
+		box-shadow: 9px 0px 5px 0px #eaeaea;
+	}
+	.quiz-info {
+	}
+	.quiz-title {
+		display: flex;
+		align-items: center;
+		height: 40px;
+		background-color: silver;
+		color: black;
+	}
+`;
+
 export const FrameQuestionStyle = styled.div`
+	background-color: #fff;
 	padding: 1em;
 	.question-item {
 		border-bottom: 1px solid silver;

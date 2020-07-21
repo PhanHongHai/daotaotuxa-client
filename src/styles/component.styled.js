@@ -76,9 +76,11 @@ export const PDFview = styled.div`
 		.canvas-container {
 			background-color: #494949;
 			padding: 1.5em 0;
+			height: 650px;
 			overflow: auto;
+			user-select: none;
 			canvas {
-				display:block;
+				display: block;
 				direction: ltr;
 				position: relative;
 				overflow: visible;

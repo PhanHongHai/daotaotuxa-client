@@ -25,9 +25,9 @@ function FrameViewLesson(props) {
 				</object>
 			)} */}
 			{lesson && _.isEmpty(lesson) ? (
-				<div style={{ textAlign: 'center', padding: '2em' }}>
+				<div style={{ height: '650px', display: 'flex', alignItems: 'center' }}>
 					<Icon type="file-pdf" style={{ fontSize: 30 }} />
-					<h1 style={{ color: 'silver' }}>Xin hãy chọn nội dung muốn xem</h1>
+					<h1 style={{ color: 'silver', margin:'5px 0 0 10px' }}>Xin hãy chọn nội dung muốn xem</h1>
 				</div>
 			) : (
 				// <PDFview

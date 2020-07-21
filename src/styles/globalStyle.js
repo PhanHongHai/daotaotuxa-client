@@ -525,7 +525,7 @@ i.icon-fold-custom{
 	pointer-events: none;
 }
 .modal-preview{
-	width:700px !important;
+	width:800px !important;
 	.ant-modal-body{
 		padding:unset !important;
 	}
@@ -686,6 +686,7 @@ i.icon-fold-custom{
 .select-pick {
 	margin-left: 20px;
 	display: flex;
+	align-items:center;
 	h4 {
 		margin-right: 5px;
 	}

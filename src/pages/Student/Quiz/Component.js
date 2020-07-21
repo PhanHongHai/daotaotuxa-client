@@ -7,7 +7,7 @@ import FrameQuestion from './Component/FrameQuestion';
 import SideBarTime from './Component/SideBarTime';
 import ResuleQuizStyle from './Component/ResuleQuiz';
 
-import { NotiStyle } from './styled';
+import { NotiStyle, QuizStyle } from './styled';
 
 const data = [
 	{
@@ -270,15 +270,24 @@ export default function QuizComponent() {
 			return (
 				<div>
 					<Row>
-						<Col xs={24} md={6}>
-							<SideBarTime setIsShowResult={setIsShowResult} data={dataSchedule} expiryTimestamp={time} />
-						</Col>
 						<Col xs={24} md={18}>
-							<FrameQuestion data={data}  />
+							<div className="quiz-exam">
+								<div className="quiz-title">
+									<h1>Tiêu đề thi</h1>
+								</div>
+								<FrameQuestion data={data} />
+								<BackTop />
+							</div>
+						</Col>
+						<Col xs={24} md={6}>
+							<div className="quiz-info">
+								<div className="quiz-title">
+									<h1>Tiêu đề thi</h1>
+								</div>
+								<SideBarTime setIsShowResult={setIsShowResult} data={dataSchedule} expiryTimestamp={time} />
+							</div>
 						</Col>
 					</Row>
-
-					<BackTop />
 				</div>
 			);
 		}
@@ -323,5 +332,5 @@ export default function QuizComponent() {
 		);
 	};
 
-	return <div>{renderContent()}</div>;
+	return <QuizStyle>{renderContent()}</QuizStyle>;
 }

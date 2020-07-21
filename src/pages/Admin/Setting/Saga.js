@@ -10,11 +10,11 @@ const { createSagas } = Redux;
 
 function* hanldeGetGroupRuleSubAdmin(action) {
 	try {
-		const { ID , cb} = action.payload;
+		const { ID, cb } = action.payload;
 		const res = yield call(RuleAPI.getGroupRuleByID, ID);
 		if (!res.errors) {
 			yield put(SettingAction.getGroupRuleByAccountIDSuccess(res));
-			if(cb && typeof cb === 'function') yield cb({isOpen:true});
+			if (cb && typeof cb === 'function') yield cb({ isOpen: true });
 		} else {
 			yield put(SettingAction.getGroupRuleByAccountIDFailure());
 			filterError(res.errors, 'notification');
@@ -73,7 +73,7 @@ function* hanldeSearchtSubAdmin(action) {
 function* hanldeCreateSubAdmin(action) {
 	try {
 		const { req, cb, pageCurrent, keyword } = action.payload;
-		const res = yield call(AccountAPI.createAccount, req);
+		const res = yield call(AccountAPI.createEmployment, req);
 		if (!res.errors) {
 			yield put(SettingAction.createSubAdminSuccess());
 			if (cb && typeof cb === 'function') yield cb('Thêm nhân viên thành công');
@@ -123,7 +123,7 @@ function* hanldeDeleteSubAdmin(action) {
 					req: { limit: pageCurrent.limit, page: pageCurrent.page, keyword, type: 'employment' },
 				}),
 			);
-			if (cb && typeof cb === 'function') yield cb('Xóa nhân viên thành công');
+			if (cb && typeof cb === 'function') yield cb({ isDeleted: true, msg: 'Xóa nhân viên thành công' });
 		} else {
 			yield put(SettingAction.deleteSubAdminFailure());
 			filterError(res.errors, 'message');

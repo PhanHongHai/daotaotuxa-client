@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Zoom from 'react-img-zoom';
 // import PDFview from 'pdf-viewer-reactjs';
 
-import LoadingCustom from './LoadingCustom';
 import PDFview from './PdfView';
 import { PreviewFileStyle } from '../styles/component.styled';
 

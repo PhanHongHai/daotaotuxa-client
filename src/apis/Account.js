@@ -90,6 +90,14 @@ async function createPartner(req) {
 		return err;
 	}
 }
+async function createEmployment(req) {
+	try {
+		const res = await restful.POST('/api/v1/accounts/employment', req);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 
 async function updateAccount({ req, ID }) {
 	try {
@@ -184,6 +192,7 @@ export default {
 	createStudent,
 	createTeacher,
 	createPartner,
+	createEmployment,
 	updateAccount,
 	updateProfile,
 	removeAccount,

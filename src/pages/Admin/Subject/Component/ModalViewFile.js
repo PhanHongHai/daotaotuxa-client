@@ -60,7 +60,7 @@ function ModalViewFile(props) {
 	};
 	return (
 		<Modal
-			width="600px"
+			width="800px"
 			className="phh-modal modal-preview"
 			centered
 			visible={visible}

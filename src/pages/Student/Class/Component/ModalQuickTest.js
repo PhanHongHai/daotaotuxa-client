@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Pie } from 'react-chartjs-2';
 import { Modal, Steps, Button, Row, Col, Tag, List, Select, Form } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 import StepSubject from './StepSubject';
 
@@ -33,6 +34,9 @@ function ModalQuickTest(props) {
 	const [subjectData, setSubjectData] = useState({});
 	const [visibleStepCustom, setVisibleStepCustom] = useState(false);
 	const [level, setLevel] = useState(1);
+
+	const history = useHistory();
+
 	const next = () => {
 		const currentStep = current + 1;
 		setCurrent(currentStep);
@@ -41,6 +45,10 @@ function ModalQuickTest(props) {
 	const prev = () => {
 		const currentStep = current - 1;
 		setCurrent(currentStep);
+		if (currentStep === 0) {
+			setVisibleStepCustom(false);
+			setSubjectData({});
+		}
 	};
 	const renderContentTest = levelValue => {
 		switch (levelValue) {
@@ -177,6 +185,7 @@ function ModalQuickTest(props) {
 					getReq={getSubjectsReq}
 					setVisibleStepCustom={setVisibleStepCustom}
 					setSubjectData={setSubjectData}
+					next={next}
 				/>
 			),
 		},
@@ -296,14 +305,18 @@ function ModalQuickTest(props) {
 						Quay về
 					</Button>
 				)}
-				{current < steps.length - 1 && visibleStepCustom ? (
+				{current === 1 && visibleStepCustom ? (
 					<Button className="btn-cancel ml-5" onClick={() => next()}>
 						Tiếp theo
 					</Button>
 				) : (
 					''
 				)}
-				{current === steps.length - 1 && <Button className="btn-cancel ml-5">Bắt đầu</Button>}
+				{current === steps.length - 1 && (
+					<Button className="btn-cancel ml-5" onClick={() => history.push('/quiz/1')}>
+						Bắt đầu
+					</Button>
+				)}
 			</div>
 		</Modal>
 	);

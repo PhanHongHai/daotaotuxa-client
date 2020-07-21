@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Row, Select, Col, Card, Avatar, Icon, Breadcrumb, Typography, Menu, Tooltip } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -22,19 +22,23 @@ function DetailSubject(props) {
 		getDocumentsByTypeStatus,
 		getDetaiSubjectProgressStatus,
 		createSubjectProgressStatus,
+		getProgressByStudentStatus,
 		infoSubject,
 		documents,
 		subjectOther,
+		progressOfStudent,
 		detailSubjectProgress,
 		getInfoSubjectReq,
 		getSubjectsOtherReq,
 		getDocumentsByTypeReq,
 		getDetailSubjectProgressReq,
 		createSubjectProgressReq,
+		getProgressReq,
 	} = props;
 	const { classID, subjectID } = useParams();
 
 	useEffect(() => {
+		getProgressReq({});
 		getInfoSubjectReq({
 			ID: subjectID,
 		});
@@ -62,7 +66,7 @@ function DetailSubject(props) {
 				subjectID,
 			},
 		});
-	}, [subjectID, classID, getInfoSubjectReq, getDetailSubjectProgressReq]);
+	}, [subjectID, classID, getInfoSubjectReq, getDetailSubjectProgressReq, getProgressReq]);
 	const [lessonCurrent, setLessonCurrent] = useState({});
 	const [isShowSubject, setisShowSubject] = useState(false);
 	//	const [urlLesson, setUrlLesson] = useState(null);
@@ -72,6 +76,7 @@ function DetailSubject(props) {
 	const loadingGetDocumentByType = getDocumentsByTypeStatus === 'FETCHING';
 	const loadingGetDetailProgress = getDetaiSubjectProgressStatus === 'FETCHING';
 	const loadingCreateProgress = createSubjectProgressStatus === 'FETCHING';
+	const loadingGetSubjectProgress = getProgressByStudentStatus === 'FETCHING';
 
 	const handleSelectType = value => {
 		getDocumentsByTypeReq({
@@ -142,6 +147,17 @@ function DetailSubject(props) {
 			</li>
 		);
 	};
+	const handleChangePage = page => {
+		getSubjectsOtherReq({
+			req: {
+				limit: 10,
+				page: Number(page.current),
+				keyword: '',
+				classID,
+				subjectID,
+			},
+		});
+	};
 	return (
 		<div className="container-fluid mb-15 mt-15">
 			<Row gutter={8}>
@@ -149,10 +165,10 @@ function DetailSubject(props) {
 					<Title level={3}>Chi Tiết Môn Học</Title>
 					<Breadcrumb>
 						<Breadcrumb.Item>
-							<a href="/student/dashboard">Dashboard</a>
+							<Link to="/student/dashboard">Dashboard</Link>
 						</Breadcrumb.Item>
 						<Breadcrumb.Item>
-							<a href={`/student/dashboard/lop-hoc/${classID}`}>Lớp học</a>
+							<Link to={`/student/dashboard/lop-hoc/${classID}`}>Lớp học</Link>
 						</Breadcrumb.Item>
 						<Breadcrumb.Item>Chi tiết môn học</Breadcrumb.Item>
 					</Breadcrumb>
@@ -206,12 +222,17 @@ function DetailSubject(props) {
 				</Col>
 				<Col xs={24} md={16}>
 					{isShowSubject ? (
-						<ListSubjectItem
-							loading={loadingGetSubjectsOther}
-							classID={classID}
-							data={subjectOther && subjectOther.data}
-							pagination={subjectOther && subjectOther.pagination}
-						/>
+						<div>
+							<h2>Danh sách môn học</h2>
+							<ListSubjectItem
+								loading={loadingGetSubjectsOther}
+								classID={classID}
+								subjectList={subjectOther && subjectOther}
+								loadingGetProgressByStudent={loadingGetSubjectProgress}
+								handleChangePage={handleChangePage}
+								progressOfStudent={progressOfStudent}
+							/>
+						</div>
 					) : (
 						<Card className="phh-card-v2 card-no-pd">
 							<FrameViewLesson
@@ -235,15 +256,18 @@ DetailSubject.propTypes = {
 	getDocumentsByTypeStatus: PropTypes.string.isRequired,
 	getDetaiSubjectProgressStatus: PropTypes.string.isRequired,
 	createSubjectProgressStatus: PropTypes.string.isRequired,
+	getProgressByStudentStatus: PropTypes.string.isRequired,
 	infoSubject: PropTypes.objectOf(PropTypes.any).isRequired,
 	documents: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectOther: PropTypes.objectOf(PropTypes.any).isRequired,
+	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailSubjectProgress: PropTypes.objectOf(PropTypes.any).isRequired,
 	getInfoSubjectReq: PropTypes.func.isRequired,
 	getSubjectsOtherReq: PropTypes.func.isRequired,
 	getDocumentsByTypeReq: PropTypes.func.isRequired,
 	getDetailSubjectProgressReq: PropTypes.func.isRequired,
 	createSubjectProgressReq: PropTypes.func.isRequired,
+	getProgressReq: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -252,9 +276,11 @@ const mapStateToProps = state => ({
 	getDocumentsByTypeStatus: state.classOfStudentPage.getDocumentsByTypeStatus,
 	getDetaiSubjectProgressStatus: state.classOfStudentPage.getDetaiSubjectProgressStatus,
 	createSubjectProgressStatus: state.classOfStudentPage.createSubjectProgressStatus,
+	getProgressByStudentStatus: state.classOfStudentPage.getProgressByStudentStatus,
 	infoSubject: state.classOfStudentPage.infoSubject,
 	subjectOther: state.classOfStudentPage.subjectOther,
 	detailDocument: state.classOfStudentPage.detailDocument,
+	progressOfStudent: state.classOfStudentPage.progressOfStudent,
 	documents: state.classOfStudentPage.documents,
 	detailSubjectProgress: state.classOfStudentPage.detailSubjectProgress,
 });
@@ -264,6 +290,7 @@ const mapDispatchToProps = {
 	getSubjectsOtherReq: ClassAction.getSubjectsOtherByStudentRequest,
 	getDocumentsByTypeReq: ClassAction.getDocumentsByTypeRequest,
 	getDetailSubjectProgressReq: ClassAction.getDetailSubjectProgressRequest,
+	getProgressReq: ClassAction.getProgressByStudentRequest,
 	createSubjectProgressReq: ClassAction.createSubjectProgressRequest,
 };
 

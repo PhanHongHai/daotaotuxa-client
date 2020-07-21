@@ -48,7 +48,8 @@ function StepSubject(props) {
 		sectorID,
 		classID,
 		setSubjectData,
-		setVisibleStepCustom
+		setVisibleStepCustom,
+		next
 	} = props;
 	const [keyword, setKeyword] = React.useState('');
 	const refSearch = React.useRef(null);
@@ -91,6 +92,7 @@ function StepSubject(props) {
 	const handleChoseSubject= subject =>{
 		setSubjectData(subject);
 		setVisibleStepCustom(true);
+		next();
 	};
 	return (
 		<Row gutter={16} justify="center">
@@ -231,6 +233,7 @@ StepSubject.propTypes = {
 	loadingGetProgressByStudent: PropTypes.bool.isRequired,
 	getReq: PropTypes.func.isRequired,
 	setSubjectData: PropTypes.func.isRequired,
+	next: PropTypes.func.isRequired,
 	setVisibleStepCustom: PropTypes.func.isRequired,
 	sectorID: PropTypes.string.isRequired,
 	classID: PropTypes.string.isRequired,
