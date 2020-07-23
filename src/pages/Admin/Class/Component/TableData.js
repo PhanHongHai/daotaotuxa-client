@@ -27,8 +27,14 @@ function TableDataSector(props) {
 		},
 		{
 			title: 'Mã lớp',
-			dataIndex: 'name',
+			dataIndex: 'tag',
 			key: 'tag',
+			render: value => <Tag style={{ fontSize: 14 }}>{value} </Tag>,
+		},
+		{
+			title: 'Tên lớp',
+			dataIndex: 'name',
+			key: 'name',
 		},
 		{
 			title: 'Hệ',

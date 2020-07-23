@@ -5,7 +5,9 @@ import { BASE_COLOR } from '../constands/Other';
 const colorBase = '#1bb394';
 
 const GlobalStyle = createGlobalStyle`
-
+html {
+	scroll-behavior: smooth;
+}
 html,
 body {
   height: 100%;
@@ -351,6 +353,9 @@ span.search-small{
 			border-color: #1ab394;
 			box-shadow: 0 0 0 2px #1ab3943b;
 		}
+	}
+	#student-create_country{
+		box-shadow:none;
 	}
 	input.ant-calendar-range-picker-input{
 		&:hover,&:focus{

@@ -182,7 +182,7 @@ function EditStudent(props) {
 							<Spin spinning={loadingGetDetail} indicator={<LoadingCustom margin={10} />}>
 								<Form className="create-account form-custom" onSubmit={handleSubmit} {...formItemLayout}>
 									<Row gutter={16}>
-										<Col xs={24} sm={24} md={24}>
+										{/* <Col xs={24} sm={24} md={24}>
 											<Form.Item label="Email" labelAlign="left">
 												{getFieldDecorator('email', {
 													initialValue: detailAccount && detailAccount.email,
@@ -202,7 +202,7 @@ function EditStudent(props) {
 													],
 												})(<Input onChange={onChangeInput} name="email" placeholder="Nhập email" />)}
 											</Form.Item>
-										</Col>
+										</Col> */}
 										<Col xs={24} sm={24} md={24}>
 											<Form.Item label="Họ tên" labelAlign="left">
 												{getFieldDecorator('name', {

@@ -38,7 +38,7 @@ function StudentAcc(props) {
 		updateReq,
 		deleteReq,
 		searchReq,
-		getAccountNotApprove
+		getAccountNotApprove,
 	} = props;
 
 	useEffect(() => {
@@ -54,18 +54,18 @@ function StudentAcc(props) {
 			req: {
 				limit: 10,
 				page: 1,
-				keyword:'',
+				keyword: '',
 				type: 'student',
 			},
 		});
-	}, [getReq,getAccountNotApprove]);
+	}, [getReq, getAccountNotApprove]);
 
 	const history = useHistory();
 
 	const [keyWord, setKeyWord] = useState('');
 	const [keywordApprove, setKeywordApprove] = useState('');
 	const [paginationData, setPaginationData] = useState({ page: 1, limit: 10 });
-	const [pageCurrent, setpageCurrent] = useState({page:1,limit:10});
+	const [pageCurrent, setpageCurrent] = useState({ page: 1, limit: 10 });
 	const refSearch = useRef(null);
 	const loadingGet = getStatus === 'FETCHING';
 	const loadingUpdate = updateStatus === 'FETCHING';
@@ -142,7 +142,7 @@ function StudentAcc(props) {
 						isApproved: true,
 					},
 					pageCurrent,
-					keyword:keywordApprove,
+					keyword: keywordApprove,
 					ID: row._id,
 					cb: res => {
 						if (res && res.isApproved) customMessage('notification', 'success', res.msg);
@@ -154,7 +154,16 @@ function StudentAcc(props) {
 			cancelText: 'Hủy',
 		});
 	};
-
+	const handleChangePage = page => {
+		getAccountNotApprove({
+			req: {
+				limit: 10,
+				page: Number(page.current),
+				keyword: keywordApprove,
+				type: 'student',
+			},
+		});
+	};
 	return (
 		<StundentAccount>
 			<div className="phh-page-header">
@@ -243,6 +252,7 @@ function StudentAcc(props) {
 										loadingApprove={loadingApprove}
 										loading={loadingGetStudentApprove}
 										handleApprove={handleApprove}
+										onTableChange={handleChangePage}
 									/>
 								</Card>
 							</TabPane>

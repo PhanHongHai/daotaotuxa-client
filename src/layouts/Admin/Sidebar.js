@@ -78,7 +78,7 @@ function Sidebar(props) {
 				<span className="info-user">
 					<Dropdown
 						placement="bottomCenter"
-						trigger="click"
+						trigger={['string']}
 						overlay={
 							<Menu>
 								<Menu.Item onClick={() => history.push('/admin/thong-tin-tai-khoan')}>

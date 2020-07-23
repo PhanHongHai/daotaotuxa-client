@@ -8,11 +8,11 @@ function ModalCreate(props) {
 	const {
 		visible,
 		setVisible,
-		form: { getFieldDecorator, validateFields , resetFields},
+		form: { getFieldDecorator, validateFields, resetFields },
 		pageCurrent,
 		createReq,
 		loading,
-		keyword
+		keyword,
 	} = props;
 
 	const handleSubmit = e => {
@@ -54,7 +54,7 @@ function ModalCreate(props) {
 					})(<Input placeholder="Nhập tên ngành" />)}
 				</Form.Item>
 				<Form.Item label="Mã ngành" labelAlign="left">
-					{getFieldDecorator('code', {
+					{getFieldDecorator('tag', {
 						rules: [
 							{
 								required: true,
@@ -82,7 +82,7 @@ function ModalCreate(props) {
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button htmlType="submit" loading={loading} className="btn-submit">
+					<Button style={{ float: 'right' }} htmlType="submit" loading={loading} className="btn-submit">
 						Thêm
 					</Button>
 				</Form.Item>

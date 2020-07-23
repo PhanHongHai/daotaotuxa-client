@@ -3,25 +3,62 @@ import styled from 'styled-components';
 import { BASE_COLOR } from '../../../constands/Other';
 
 export const QuizStyle = styled.div`
-	.quiz-exam {
-		box-shadow: 9px 0px 5px 0px #eaeaea;
+	.quiz-content {
+		width: 100%;
+		height: 100%;
+		.quiz-exam {
+			width: 73%;
+			float: left;
+			box-shadow: 0px 6px 20px 0px #d0cdcd;
+			z-index: 999;
+			position: relative;
+			.ant-back-top {
+				right: 30% !important;
+			}
+			@media screen and (max-width: 480px) {
+				z-index: unset !important;
+				width: 100%;
+				margin-top: 13%;
+				.ant-back-top {
+					right: 20px !important;
+				}
+			}
+		}
+		.quiz-info {
+			width: 27%;
+			float: right;
+			.ant-anchor-wrapper {
+				padding-left: 0 !important;
+			}
+			@media screen and (max-width: 480px) {
+				width: 100%;
+				float: unset !important;
+				position: absolute;
+				top: 9%;
+				left: 0;
+			}
+		}
 	}
-	.quiz-info {
-	}
+
 	.quiz-title {
-		display: flex;
-		align-items: center;
+		display: block;
+		text-align: center;
 		height: 40px;
-		background-color: silver;
+		background-color: #e4e4e4;
 		color: black;
+		h1,
+		h2 {
+			margin-bottom: 0 !important;
+		}
 	}
 `;
 
 export const FrameQuestionStyle = styled.div`
 	background-color: #fff;
-	padding: 1em;
+	padding: 1em 2em;
 	.question-item {
-		border-bottom: 1px solid silver;
+		border-bottom: 1px solid #ece8e8;
+		margin-bottom: 10px;
 		.question-name {
 			text-align: justify;
 			color: #585858;
@@ -78,8 +115,6 @@ export const NotiStyle = styled.div`
 `;
 
 export const SidebarTimeStyle = styled.div`
-	height: 100vh;
-	border-right: 1px solid silver;
 	h2 {
 		color: black;
 		font-weight: 500;
@@ -99,9 +134,9 @@ export const SidebarTimeStyle = styled.div`
 		}
 	}
 	.count-down-time {
-		width: 150px;
-		height: 150px;
-		margin: auto;
+		width: 110px;
+		height: 110px;
+		margin: 10px auto;
 		border-radius: 100px;
 		display: flex;
 		flex-direction: column;
@@ -114,6 +149,9 @@ export const SidebarTimeStyle = styled.div`
 		span {
 			font-size: 30px;
 			color: #fff;
+		}
+		span.ant-statistic-content-value {
+			font-size: 25px !important;
 		}
 	}
 	.btn-send {
@@ -193,6 +231,7 @@ export const SidebarTimeStyle = styled.div`
 				}
 			}
 			.btn-info {
+				margin-top: 1%;
 				float: right;
 				display: flex;
 				button {

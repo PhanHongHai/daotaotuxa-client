@@ -46,10 +46,7 @@ function ScheduleComponent(props) {
 				page: 1,
 				limit: 10,
 				keyword: '',
-				startAt: moment().toISOString(),
-				endAt: moment()
-					.add(1, 'month')
-					.toISOString(),
+			
 			},
 		});
 	}, []);
@@ -59,7 +56,7 @@ function ScheduleComponent(props) {
 	const refDatePicker = useRef(null);
 	const [pageCurrent, setPageCurrent] = useState({ limit: 10, page: 1 });
 	const [keyword, setKeyword] = useState('');
-	const [datePick, setDatePick] = useState({ startAt: moment(), endAt: moment().add(1, 'month') });
+	const [datePick, setDatePick] = useState({});
 	const [visibleModalClass, setVisibleModalClass] = useState(false);
 	const [visibleModalExam, setVisibleModalExam] = useState(false);
 	const [classData, setClassData] = useState([]);
@@ -95,8 +92,7 @@ function ScheduleComponent(props) {
 				page: 1,
 				limit: 10,
 				keyword: value,
-				startAt: datePick.startAt,
-				endAt: datePick.endAt,
+				...datePick
 			},
 		});
 	};
@@ -110,14 +106,13 @@ function ScheduleComponent(props) {
 				limit: Number(page.limit),
 				page: Number(page.current),
 				keyword,
-				startAt: datePick.startAt,
-				endAt: datePick.endAt,
+				...datePick
 			},
 		});
 	};
 	const handleReload = () => {
 		setKeyword('');
-		setDatePick({ startAt: moment(), endAt: moment().add(1, 'month') });
+		setDatePick({ });
 		setPageCurrent({ limit: 10, page: 1 });
 		refInput.current.input.state.value = '';
 		refDatePicker.current.picker.state.value = [];
@@ -126,8 +121,7 @@ function ScheduleComponent(props) {
 				limit: 10,
 				page: 1,
 				keyword,
-				startAt: moment(),
-				endAt: moment().add(1, 'month'),
+			
 			},
 		});
 	};
@@ -170,7 +164,7 @@ function ScheduleComponent(props) {
 					<Col xs={24} md={24}>
 						<Card
 							className="phh-card mh-400"
-							title="Danh sách lịch thi trong 30 ngày gần nhất"
+							title="Danh sách lịch thi"
 							extra={
 								<span className="group-btn">
 									<Button type="primary" icon="plus" onClick={() => history.push('/admin/lich-thi/them-moi')}>

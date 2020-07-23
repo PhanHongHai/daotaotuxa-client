@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, ConfigProvider, Icon, Popover, } from 'antd';
+import { Table, Button, ConfigProvider, Icon, Popover , Tag} from 'antd';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 import countries from '../../../../utils/country.json';
@@ -10,14 +10,22 @@ function TableApproveStudent(props) {
 
 	const columnStudent = [
 		{
+			title: 'MSHV',
+			dataIndex: 'tag',
+			key: 'tag',
+			render: value => {
+				if (value) return <Tag style={{ fontSize: '14px' }}> {value} </Tag>;
+				return 'Không xác định';
+			},
+		},
+		{
 			title: 'Email',
 			dataIndex: 'email',
 			key: 'email',
-		},
-		{
-			title: 'Họ Tên',
-			dataIndex: 'name',
-			key: 'name',
+			render: value => {
+				if (value) return value;
+				return 'Chưa đăng ký email';
+			},
 		},
 		{
 			title: 'Giới Tính',
@@ -114,7 +122,7 @@ TableApproveStudent.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	loadingApprove: PropTypes.bool.isRequired,
 	data: PropTypes.instanceOf(Array).isRequired,
-	pagination: PropTypes.objectOf(PropTypes.object).isRequired,
+	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default TableApproveStudent;

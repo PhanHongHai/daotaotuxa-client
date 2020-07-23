@@ -10,7 +10,7 @@ function ModalSchedule(props) {
 	const refInput = useRef(null);
 	const refDatePicker = useRef(null);
 	const [keyword, setKeyword] = useState('');
-	const [datePick, setDatePick] = useState({ startAt: moment(), endAt: moment().add(1, 'month') });
+	const [datePick, setDatePick] = useState({});
 	const handleSearch = value => {
 		setKeyword(setKeyword);
 		getSchedulesReq({
@@ -19,8 +19,7 @@ function ModalSchedule(props) {
 				limit: 10,
 				classID,
 				keyword: value,
-				startAt: datePick.startAt,
-				endAt: datePick.endAt,
+				...datePick,
 			},
 		});
 	};
@@ -31,14 +30,13 @@ function ModalSchedule(props) {
 				page: Number(page.current),
 				keyword,
 				classID,
-				startAt: datePick.startAt,
-				endAt: datePick.endAt,
+				...datePick,
 			},
 		});
 	};
 	const handleReload = () => {
 		setKeyword('');
-		setDatePick({ startAt: moment(), endAt: moment().add(1, 'month') });
+		setDatePick({});
 		refInput.current.input.state.value = '';
 		refDatePicker.current.picker.state.value = [];
 		getSchedulesReq({
@@ -47,8 +45,6 @@ function ModalSchedule(props) {
 				page: 1,
 				keyword,
 				classID,
-				startAt: moment(),
-				endAt: moment().add(1, 'month'),
 			},
 		});
 	};

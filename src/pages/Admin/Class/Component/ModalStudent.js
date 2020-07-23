@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Collapse, Icon, Button, Tooltip, Table, Input, Popover, ConfigProvider } from 'antd';
+import { Collapse, Icon, Button, Tooltip, Table, Input, Popover, ConfigProvider, Tag } from 'antd';
 import { ModalListStudent } from '../styled';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 import customMess from '../../../../utils/customMessage';
+import countries from '../../../../utils/country.json';
 
 const { Panel } = Collapse;
 
@@ -46,16 +47,29 @@ function ModalStudent(props) {
 	};
 	const columnList = [
 		{
-			title: 'Họ tên',
-			dataIndex: 'accountID.name',
-			key: 'name',
+			title: 'MSHV',
+			dataIndex: 'accountID.tag',
+			key: 'tag',
+			render: value => {
+				if (value) return <Tag style={{ fontSize: '14px' }}> {value} </Tag>;
+				return 'Không xác định';
+			},
+		},
+		{
+			title: 'Email',
+			dataIndex: 'accountID.email',
+			key: 'email',
+			render: value => {
+				if (value) return value;
+				return 'Chưa đăng ký email';
+			},
 			filterDropdown: () => {
 				return (
 					<div style={{ padding: 8 }}>
 						<Input
 							ref={refInput}
 							onChange={handleChangeInputStudents}
-							name="students"
+							name="studentClass"
 							placeholder="tìm kiếm"
 							style={{ width: 188, marginBottom: 8, display: 'block', height: '30px' }}
 						/>
@@ -96,9 +110,75 @@ function ModalStudent(props) {
 			filterIcon: () => <Icon type="search" />,
 		},
 		{
-			title: 'Email',
-			dataIndex: 'accountID.email',
-			key: 'email',
+			title: 'Họ tên',
+			dataIndex: 'accountID.name',
+			key: 'name',
+			filterDropdown: () => {
+				return (
+					<div style={{ padding: 8 }}>
+						<Input
+							ref={refInput}
+							onChange={handleChangeInputStudents}
+							name="studentClass"
+							placeholder="tìm kiếm"
+							style={{ width: 188, marginBottom: 8, display: 'block', height: '30px' }}
+						/>
+						<Button
+							type="primary"
+							icon="search"
+							size="small"
+							style={{ width: 90, marginRight: 8 }}
+							onClick={() =>
+								getStudentOfClassReq({
+									req: {
+										page: 1,
+										limit: 3,
+										keyword: keyword.students,
+									},
+								})
+							}
+						/>
+						<Button
+							size="small"
+							style={{ width: 90 }}
+							icon="sync"
+							onClick={() => {
+								refInput.current.state.value = '';
+								setKeyword({ ...keyword, studentClass: '' });
+								getStudentOfClassReq({
+									req: {
+										page: 1,
+										limit: 3,
+										keyword: '',
+									},
+								});
+							}}
+						/>
+					</div>
+				);
+			},
+			filterIcon: () => <Icon type="search" />,
+		},
+		{
+			title: 'Giới Tính',
+			dataIndex: 'accountID.sex',
+			key: 'sex',
+			render: value => (Number(value) === 1 ? 'Nam' : 'Nữ'),
+		},
+		{
+			title: 'SĐT',
+			dataIndex: 'accountID.phoneNumber',
+			key: 'phone',
+		},
+		{
+			title: 'Quê Quán',
+			dataIndex: 'accountID.country',
+			key: 'country',
+			render: value => {
+				const result = countries.find(ele => ele.key === value);
+				if (typeof result !== 'undefined') return result.name;
+				return 'Không xác định';
+			},
 		},
 		{
 			title: 'Xử lý',
@@ -128,6 +208,76 @@ function ModalStudent(props) {
 	];
 	const columnListStudentPartner = [
 		{
+			title: 'MSHV',
+			dataIndex: 'tag',
+			key: 'tag',
+			render: value => {
+				if (value) return <Tag style={{ fontSize: '14px' }}> {value} </Tag>;
+				return 'Không xác định';
+			},
+		},
+		{
+			title: 'Email',
+			dataIndex: 'email',
+			key: 'email',
+			filterDropdown: () => {
+				return (
+					<div style={{ padding: 8 }}>
+						<Input
+							ref={refInput}
+							key="searchStudents"
+							onChange={handleChangeInputStudents}
+							name="students"
+							placeholder="tìm kiếm"
+							style={{ width: 188, marginBottom: 8, display: 'block', height: '30px' }}
+						/>
+						<Tooltip title="Tìm kiếm">
+							<Button
+								type="primary"
+								icon="search"
+								size="small"
+								style={{ width: 90, marginRight: 8, height: 35, backgroundColor: '#1bb394' }}
+								onClick={() => {
+									getStudentsReq({
+										req: {
+											page: 1,
+											limit: 3,
+											keyword: keyword.students,
+											type: 'student',
+										},
+									});
+								}}
+							/>
+						</Tooltip>
+						<Tooltip title="Làm mới">
+							<Button
+								size="small"
+								style={{ width: 90, height: 35 }}
+								icon="sync"
+								onClick={() => {
+									refInput.current.state.value = '';
+									setKeyword({ ...keyword, students: '' });
+									getStudentsReq({
+										req: {
+											page: 1,
+											limit: 3,
+											type: 'student',
+											keyword: '',
+										},
+									});
+								}}
+							/>
+						</Tooltip>
+					</div>
+				);
+			},
+			filterIcon: () => <Icon type="search" />,
+			render: value => {
+				if (value) return value;
+				return 'Chưa đăng ký email';
+			},
+		},
+		{
 			title: 'Họ tên',
 			dataIndex: 'name',
 			key: 'name',
@@ -142,38 +292,43 @@ function ModalStudent(props) {
 							placeholder="tìm kiếm"
 							style={{ width: 188, marginBottom: 8, display: 'block', height: '30px' }}
 						/>
-						<Button
-							type="primary"
-							icon="search"
-							size="small"
-							style={{ width: 90, marginRight: 8 }}
-							onClick={() => {
-								getStudentsReq({
-									req: {
-										page: 1,
-										limit: 3,
-										keyword: keyword.students,
-									},
-								});
-							}}
-						/>
-						<Button
-							size="small"
-							style={{ width: 90 }}
-							icon="sync"
-							onClick={() => {
-								refInput.current.state.value = '';
-								setKeyword({ ...keyword, students: '' });
-								getStudentsReq({
-									req: {
-										page: 1,
-										limit: 3,
-										type: 'student',
-										keyword: '',
-									},
-								});
-							}}
-						/>
+						<Tooltip title="Tìm kiếm">
+							<Button
+								type="primary"
+								icon="search"
+								size="small"
+								style={{ width: 90, marginRight: 8, height: 35, backgroundColor: '#1bb394' }}
+								onClick={() => {
+									getStudentsReq({
+										req: {
+											page: 1,
+											limit: 3,
+											keyword: keyword.students,
+											type: 'student',
+										},
+									});
+								}}
+							/>
+						</Tooltip>
+						<Tooltip title="Làm mới">
+							<Button
+								size="small"
+								style={{ width: 90, height: 35 }}
+								icon="sync"
+								onClick={() => {
+									refInput.current.state.value = '';
+									setKeyword({ ...keyword, students: '' });
+									getStudentsReq({
+										req: {
+											page: 1,
+											limit: 3,
+											type: 'student',
+											keyword: '',
+										},
+									});
+								}}
+							/>
+						</Tooltip>
 					</div>
 				);
 			},
@@ -200,6 +355,27 @@ function ModalStudent(props) {
 						</Popover>
 					);
 				return '';
+			},
+		},
+		{
+			title: 'Giới Tính',
+			dataIndex: 'sex',
+			key: 'sex',
+			render: value => (Number(value) === 1 ? 'Nam' : 'Nữ'),
+		},
+		{
+			title: 'SĐT',
+			dataIndex: 'phoneNumber',
+			key: 'phone',
+		},
+		{
+			title: 'Quê Quán',
+			dataIndex: 'country',
+			key: 'country',
+			render: value => {
+				const result = countries.find(ele => ele.key === value);
+				if (typeof result !== 'undefined') return result.name;
+				return 'Không xác định';
 			},
 		},
 		{
@@ -248,7 +424,7 @@ function ModalStudent(props) {
 	const handleChangeTableStudents = page => {
 		setPageStudentsCurrent({
 			page: Number(page.current),
-			limit:3,
+			limit: 3,
 		});
 		getStudentsReq({
 			req: {
@@ -266,6 +442,7 @@ function ModalStudent(props) {
 			visible={visible}
 			onCancel={() => setVisible(false)}
 			footer={null}
+			width="950px"
 		>
 			<Collapse accordion className="phh-collapse-student" defaultActiveKey={['1']}>
 				<Panel header="Học viên hiện tại" key="1">
@@ -279,7 +456,7 @@ function ModalStudent(props) {
 					>
 						<Table
 							className="phh-table"
-							rowKey={ele => ele._id}
+							rowKey={ele => ele.accountID._id}
 							dataSource={listStudent}
 							size="small"
 							columns={columnList}

@@ -261,14 +261,14 @@ const reducer = [
 		on: Action.createSubjectProgressRequest,
 		reducer: state => ({
 			...state,
-			detailSubjectProgress: STATUS.FETCHING,
+			createSubjectProgressStatus: STATUS.FETCHING,
 		}),
 	},
 	{
 		on: Action.createSubjectProgressSuccess,
 		reducer: state => ({
 			...state,
-			detailSubjectProgress: STATUS.SUCCESS,
+			createSubjectProgressStatus: STATUS.SUCCESS,
 		}),
 	},
 	{
@@ -276,7 +276,7 @@ const reducer = [
 		reducer: state => {
 			return {
 				...state,
-				detailSubjectProgress: STATUS.FAILURE,
+				createSubjectProgressStatus: STATUS.FAILURE,
 			};
 		},
 	},

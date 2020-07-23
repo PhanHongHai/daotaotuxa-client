@@ -268,26 +268,14 @@ export default function QuizComponent() {
 	const renderContent = () => {
 		if (isStart && !isShowResult) {
 			return (
-				<div>
-					<Row>
-						<Col xs={24} md={18}>
-							<div className="quiz-exam">
-								<div className="quiz-title">
-									<h1>Tiêu đề thi</h1>
-								</div>
-								<FrameQuestion data={data} />
-								<BackTop />
-							</div>
-						</Col>
-						<Col xs={24} md={6}>
-							<div className="quiz-info">
-								<div className="quiz-title">
-									<h1>Tiêu đề thi</h1>
-								</div>
-								<SideBarTime setIsShowResult={setIsShowResult} data={dataSchedule} expiryTimestamp={time} />
-							</div>
-						</Col>
-					</Row>
+				<div className="quiz-content">
+					<div className="quiz-exam">
+						<FrameQuestion data={data} />
+						<BackTop />
+					</div>
+					<div className="quiz-info">
+						<SideBarTime setIsShowResult={setIsShowResult} data={dataSchedule} expiryTimestamp={time} />
+					</div>
 				</div>
 			);
 		}

@@ -154,10 +154,11 @@ function* handleGetDetailSubjectProgress(action) {
 }
 function* handleCreateSubjectProgress(action) {
 	try {
-		const { req, cb } = action.payload;
+		const { req, subjectID, cb } = action.payload;
 		const res = yield call(SubjectProgressApi.createProgress, req);
 		if (!res.errors) {
 			yield put(Action.createSubjectProgressSuccess());
+			yield put(Action.getDetailSubjectProgressRequest({ req: { subjectID } }));
 			if (cb && typeof cb === 'function')
 				yield cb({ isProcessed: res.isProcessed, msg: 'Cập nhật môn học thành công' });
 		} else {

@@ -167,10 +167,7 @@ function InfoClass(props) {
 											limit: 10,
 											keyword: '',
 											classID: infoClass && infoClass._id,
-											startAt: moment().toISOString(),
-											endAt: moment()
-												.add(1, 'month')
-												.toISOString(),
+										
 										},
 									});
 									openSchedule(true);

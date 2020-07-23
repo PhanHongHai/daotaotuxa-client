@@ -47,12 +47,13 @@ function PdfView(props) {
 		if (currentPage < numPages) {
 			renderPage({ pdfDoc: pdf, pageNum: currentPage + 1, scaleIn: scale });
 			setCurrentPage(currentPage + 1);
-			if (currentPage === numPages) {
+			if (currentPage + 1 === numPages) {
 				if (type && type === 'lesson') {
 					if (detailProgress && !_.isEmpty(detailProgress)) {
 						const lessonExist = detailProgress.documents.find(ele => ele._id === lessonID);
 						if (!lessonExist) {
-							const arrDocumentID = detailProgress.documents.forEach(ele => ele._id);
+							const arrDocumentID = [];
+							detailProgress.documents.forEach(ele => arrDocumentID.push(ele._id));
 							arrDocumentID.push(lessonID);
 							updateReq({
 								req: {
@@ -63,8 +64,9 @@ function PdfView(props) {
 											? Math.round((arrDocumentID.length / infoSubject.countLesson) * 100)
 											: 0,
 								},
+								subjectID: detailProgress && detailProgress.subjectID,
 								cb: res => {
-									if (res && res.isProcess) customMess('message', 'success', res.msg);
+									if (res && res.isProcessed) customMess('message', 'success', res.msg);
 								},
 							});
 						}
@@ -75,8 +77,9 @@ function PdfView(props) {
 								documents: [lessonID],
 								progress: infoSubject && infoSubject.countLesson ? Math.round((1 / infoSubject.countLesson) * 100) : 0,
 							},
+							subjectID: infoSubject.subject && infoSubject.subject._id,
 							cb: res => {
-								if (res && res.isProcess) customMess('message', 'success', res.msg);
+								if (res && res.isProcessed) customMess('message', 'success', res.msg);
 							},
 						});
 					}
@@ -116,11 +119,12 @@ function PdfView(props) {
 			if (pdfDoc._pdfInfo.numPages === 1) {
 				if (type && type === 'lesson') {
 					if (detailProgress && !_.isEmpty(detailProgress)) {
-						const lessonExist = detailProgress.documents.find(ele => ele._id === lessonID);
+						const lessonExist = await detailProgress.documents.find(ele => ele._id === lessonID);
 						if (!lessonExist) {
-							const arrDocumentID = detailProgress.documents.forEach(ele => ele._id);
+							const arrDocumentID = [];
+							detailProgress.documents.forEach(ele => arrDocumentID.push(ele._id));
 							arrDocumentID.push(lessonID);
-							updateReq({
+							await updateReq({
 								req: {
 									subjectID: detailProgress && detailProgress.subjectID,
 									documents: arrDocumentID,
@@ -129,29 +133,32 @@ function PdfView(props) {
 											? Math.round((arrDocumentID.length / infoSubject.countLesson) * 100)
 											: 0,
 								},
+								subjectID: detailProgress && detailProgress.subjectID,
 								cb: res => {
-									if (res && res.isProcess) customMess('message', 'success', res.msg);
+									if (res && res.isProcessed) customMess('message', 'success', res.msg);
 								},
 							});
 						}
 					} else {
-						updateReq({
+						await updateReq({
 							req: {
 								subjectID: infoSubject.subject && infoSubject.subject._id,
 								documents: [lessonID],
 								progress: infoSubject && infoSubject.countLesson ? Math.round((1 / infoSubject.countLesson) * 100) : 0,
 							},
+							subjectID: infoSubject.subject && infoSubject.subject._id,
 							cb: res => {
-								if (res && res.isProcess) customMess('message', 'success', res.msg);
+								if (res && res.isProcessed) customMess('message', 'success', res.msg);
 							},
 						});
 					}
 				}
 			}
 		};
+
 		fetchPdf();
 		checkAndUpdateProgress();
-	}, [renderPage, src, detailProgress, updateReq, lessonID, type]);
+	}, [renderPage, src, updateReq, lessonID, type]);
 
 	return (
 		<PDFview>

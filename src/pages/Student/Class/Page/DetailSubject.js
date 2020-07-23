@@ -92,7 +92,7 @@ function DetailSubject(props) {
 
 	const renderListDocument = (dataSubject, progressList) => {
 		if (dataSubject.length > 0) {
-			if (!_.isEmpty(progressList))
+			if (progressList && !_.isEmpty(progressList))
 				return dataSubject.map(ele => {
 					const lessonExist = progressList.documents.find(doc => doc._id === ele._id);
 					if (lessonExist)
@@ -260,7 +260,7 @@ DetailSubject.propTypes = {
 	infoSubject: PropTypes.objectOf(PropTypes.any).isRequired,
 	documents: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectOther: PropTypes.objectOf(PropTypes.any).isRequired,
-	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
+	progressOfStudent: PropTypes.instanceOf(Array).isRequired,
 	detailSubjectProgress: PropTypes.objectOf(PropTypes.any).isRequired,
 	getInfoSubjectReq: PropTypes.func.isRequired,
 	getSubjectsOtherReq: PropTypes.func.isRequired,

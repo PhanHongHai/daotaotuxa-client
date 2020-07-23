@@ -46,7 +46,7 @@ function SideBarTime(props) {
 							<div className="frame-time">
 								<p>Thời gian làm bài &ensp;</p>
 								<div className="clock">
-									<Countdown title="Countdown" value={expiryTimestamp} />
+									<Countdown value={expiryTimestamp} />
 								</div>
 							</div>
 							<div className="btn-info">
@@ -77,18 +77,18 @@ function SideBarTime(props) {
 					<SidebarTimeStyle>
 						<Row>
 							<Col span={24}>
+								<div className="quiz-title">
+									<h2>Thời gian làm bài</h2>
+								</div>
 								<div className="count-down-time">
-									<div className="quiz-title">
-										<h1>Thông tin</h1>
-									</div>
 									<div className="clock">
-										<Countdown title="Countdown" value={expiryTimestamp} />
+										<Countdown value={expiryTimestamp} />
 									</div>
 								</div>
 							</Col>
 							<Col span={24}>
 								<div className="quiz-title">
-									<h1>Thông tin</h1>
+									<h2>Thông tin</h2>
 								</div>
 								<span className="info-schedule">
 									<ul>
@@ -105,9 +105,9 @@ function SideBarTime(props) {
 								<Button className="btn-send  mt-15 mb-15" onClick={() => openSubmit()}>
 									Nộp bài
 								</Button>
-								<Button className="btn-back  mt-15 mb-15" onClick={() => history.push('/student/dashboard')}>
+								{/* <Button className="btn-back  mt-15 mb-15" onClick={() => history.push('/student/dashboard')}>
 									Quay về
-								</Button>
+								</Button> */}
 								<div className="choice">
 									<span>Số câu hoàn thành</span>
 									<span>

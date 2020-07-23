@@ -86,7 +86,7 @@ function CreateStudent(props) {
 				<Card className="phh-card" title="Thông tin tài khoản">
 					<Form className="create-account form-custom" onSubmit={handleSubmit} {...formItemLayout}>
 						<Row gutter={16}>
-							<Col xs={24} sm={24} md={24}>
+							{/* <Col xs={24} sm={24} md={24}>
 								<Form.Item label="Email" labelAlign="left">
 									{getFieldDecorator('email', {
 										rules: [
@@ -105,7 +105,7 @@ function CreateStudent(props) {
 										],
 									})(<Input placeholder="Nhập email" />)}
 								</Form.Item>
-							</Col>
+							</Col> */}
 							<Col xs={24} sm={24} md={24}>
 								<Form.Item label="Họ tên" labelAlign="left">
 									{getFieldDecorator('name', {
@@ -118,7 +118,7 @@ function CreateStudent(props) {
 									})(<Input placeholder="Nhập họ tên" />)}
 								</Form.Item>
 							</Col>
-							<Col xs={24} sm={12} md={24}>
+							{/* <Col xs={24} sm={12} md={24}>
 								<Form.Item label="Mật khẩu" labelAlign="left">
 									{getFieldDecorator('password', {
 										rules: [
@@ -129,7 +129,7 @@ function CreateStudent(props) {
 										],
 									})(<Input.Password placeholder="Nhập mật khẩu" />)}
 								</Form.Item>
-							</Col>
+							</Col> */}
 
 							<Col xs={24} sm={12} md={24}>
 								<Form.Item label="Số điện thoại" labelAlign="left">

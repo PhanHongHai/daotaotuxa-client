@@ -17,6 +17,27 @@ const disabledDate = current => {
 
 moment.locale('vi');
 
+const formItemLayout = {
+	labelCol: {
+		xs: { span: 24 },
+		sm: { span: 6 },
+	},
+	wrapperCol: {
+		xs: { span: 24 },
+		sm: { span: 18 },
+	},
+};
+
+const convertString = value => {
+	let result = '';
+	for (let i = 0; i < value.length; i++) {
+		const ele = value[i];
+		// eslint-disable-next-line eqeqeq
+		if (ele == ele.toUpperCase() && ele != ' ') result += ele;
+	}
+	return result;
+};
+
 function ModalCreateClass(props) {
 	const {
 		visible,
@@ -33,6 +54,8 @@ function ModalCreateClass(props) {
 		startAt: moment(),
 		endAt: moment().add(1, 'day'),
 	});
+	const [typeSectorName, setTypeSectorName] = useState('');
+
 	useEffect(() => {
 		getSectorsReq({});
 	}, []);
@@ -41,7 +64,7 @@ function ModalCreateClass(props) {
 		e.preventDefault();
 		validateFields((err, values) => {
 			if (!err) {
-				handleCreate({ ...values, ...datePickData, trainingSectorID: sectorID,});
+				handleCreate({ name: values.name, prefixTag: typeSectorName, ...datePickData, trainingSectorID: sectorID });
 				resetFields();
 			}
 		});
@@ -73,7 +96,16 @@ function ModalCreateClass(props) {
 		return result;
 	};
 	const handleChangeSector = value => {
-		if (value.length > 0) setSectorID(value[1]);
+		if (value.length > 0) {
+			setSectorID(value[1]);
+			if (sectorData && sectorData.length > 0) {
+				const sectorPick = sectorData.find(ele => ele._id === value[1]);
+				if (sectorPick) {
+					const prefixTag = value[0] + convertString(sectorPick.name);
+					setTypeSectorName(prefixTag);
+				}
+			}
+		}
 	};
 	return (
 		<React.Fragment>
@@ -83,33 +115,53 @@ function ModalCreateClass(props) {
 				visible={visible}
 				onCancel={() => {
 					resetFields();
+					setTypeSectorName('');
+					setSectorID('');
 					setVisible(false);
 				}}
 				footer={null}
-				width="600px"
+				width="700px"
 			>
-				<Form className="create-class form-custom" onSubmit={handleSubmit}>
+				<Form className="create-class form-custom" {...formItemLayout} onSubmit={handleSubmit}>
 					<Row gutter={16}>
-						<Col xs={24} sm={12} md={12}>
-							<Form.Item label="Mã Lớp" labelAlign="left">
+						<Col xs={24} sm={24} md={24}>
+							<Form.Item label="Chọn ngành và hệ" labelAlign="left">
+								{getFieldDecorator('sectorPick', {
+									rules: [
+										{
+											required: true,
+											message: 'Không được để trống ngành và hệ đào tào',
+										},
+									],
+								})(
+									<Cascader
+										onChange={handleChangeSector}
+										placeholder="Chọn ngành hệ đào tạo"
+										options={optionSector(sectorData)}
+									/>,
+								)}
+							</Form.Item>
+						</Col>
+						<Col xs={24} sm={24} md={24}>
+							<Form.Item label="Tên Lớp học" labelAlign="left">
 								{getFieldDecorator('name', {
 									rules: [
 										{
 											required: true,
-											message: 'Không được để trống mã lớp',
+											message: 'Không được để trống têm lớp',
 										},
 									],
-								})(<Input placeholder="Nhập mã lớp" />)}
+								})(<Input addonBefore={typeSectorName} placeholder="Nhập tên lớp học" />)}
 							</Form.Item>
 						</Col>
-						<Col xs={24} sm={12} md={12}>
-							<Form.Item label="Thời gian" labelAlign="left">
+						<Col xs={24} sm={24} md={24}>
+							<Form.Item label="Thời gian học" labelAlign="left">
 								<ConfigProvider locale={viVN}>
 									{getFieldDecorator('dateTime', {
 										rules: [
 											{
 												required: true,
-												message: 'Không được để trống thời gian ',
+												message: 'Không được để trống thời gian học ',
 											},
 										],
 									})(
@@ -123,37 +175,20 @@ function ModalCreateClass(props) {
 								</ConfigProvider>
 							</Form.Item>
 						</Col>
-						<Col xs={24} sm={12} md={12}>
-							<Form.Item label="Chọn ngành" labelAlign="left">
-								{getFieldDecorator('sectorPick', {
-									rules: [
-										{
-											required: true,
-											message: 'Không được để trống ngành đào tào',
-										},
-									],
-								})(
-									<Cascader
-										onChange={handleChangeSector}
-										placeholder="Chọn ngành đào tạo"
-										options={optionSector(sectorData)}
-									/>,
-								)}
-							</Form.Item>
+
+						<Col xs={24} sm={24} md={24}>
+							<Button
+								loading={loading || loadingGetSector}
+								className="btn-submit"
+								htmlType="submit"
+								icon="plus"
+								type="primary"
+								style={{ float: 'right' }}
+							>
+								Thêm
+							</Button>
 						</Col>
 					</Row>
-					<Form.Item>
-						<Button
-							loading={loading || loadingGetSector}
-							className="btn-submit"
-							htmlType="submit"
-							icon="plus"
-							type="primary"
-							style={{ float: 'right' }}
-						>
-							Thêm
-						</Button>
-					</Form.Item>
 				</Form>
 			</Modal>
 		</React.Fragment>

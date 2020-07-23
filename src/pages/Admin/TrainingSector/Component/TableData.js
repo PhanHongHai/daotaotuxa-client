@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, ConfigProvider, Table, Icon, Tooltip } from 'antd';
+import { Button, ConfigProvider, Table, Icon, Tooltip , Tag} from 'antd';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 import { trainingType } from '../../../../constands/Other';
@@ -27,9 +27,9 @@ function TableDataSector(props) {
 		},
 		{
 			title: 'Mã ngành',
-			dataIndex: 'idSector',
-			key: 'idSector',
-			render: () => <span>67345345</span>,
+			dataIndex: 'tag',
+			key: 'tag',
+			render: value => <Tag>{value}</Tag>,
 		},
 		{
 			title: 'Tên',

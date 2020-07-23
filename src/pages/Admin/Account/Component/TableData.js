@@ -65,6 +65,7 @@ function TableData(props) {
 				page: Number(pagi.current),
 				limit: 10,
 				keyword: keyWord,
+				type,
 			},
 		});
 	};
@@ -82,9 +83,22 @@ function TableData(props) {
 	// };
 	const columnStudent = [
 		{
+			title: 'MSHV',
+			dataIndex: 'tag',
+			key: 'tag',
+			render: value => {
+				if (value) return <Tag style={{ fontSize: '14px' }}> {value} </Tag>;
+				return 'Không xác định';
+			},
+		},
+		{
 			title: 'Email',
 			dataIndex: 'email',
 			key: 'email',
+			render: value => {
+				if (value) return value;
+				return 'Chưa đăng ký email';
+			},
 		},
 		{
 			title: 'Họ Tên',
@@ -112,12 +126,12 @@ function TableData(props) {
 				return 'Không xác định';
 			},
 		},
-		{
-			title: 'Xác thực',
-			dataIndex: 'isActived',
-			key: 'actived',
-			render: value => (value ? <Tag color="green">Đã xác thực</Tag> : <Tag color="silver">Chưa xác thực</Tag>),
-		},
+		// {
+		// 	title: 'Xác thực',
+		// 	dataIndex: 'isActived',
+		// 	key: 'actived',
+		// 	render: value => (value ? <Tag color="green">Đã xác thực</Tag> : <Tag color="silver">Chưa xác thực</Tag>),
+		// },
 		{
 			title: 'Hành động',
 			key: 'action',

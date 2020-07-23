@@ -73,7 +73,7 @@ function TableStudentsData(props) {
 						<Button
 							className="btn-submit icon-white"
 							icon="plus"
-							style={{ color: '#fff',  }}
+							style={{ color: '#fff' }}
 							loading={loadingAddStudentToClass}
 							onClick={() => addStudentToClassReq(row)}
 						/>
@@ -93,7 +93,6 @@ function TableStudentsData(props) {
 			)}
 		>
 			<Table
-				rowKey="email"
 				className="phh-table"
 				scroll={{ x: true }}
 				onChange={handleChange}
@@ -103,6 +102,7 @@ function TableStudentsData(props) {
 					spinning: loading,
 					indicator: <LoadingCustom margin={0} />,
 				}}
+				rowKey={ele => ele._id}
 			/>
 		</ConfigProvider>
 	);

@@ -45,12 +45,13 @@ function InfoSubject(props) {
 									format={percent => `${percent}%`}
 									percent={progress && progress.progress}
 								/>
-								<ul style={{ float: 'right', paddingTop:'3em' }}>
-									<li className='mb-10'>
-										<Icon type="check-circle" /> Đã xem: {progress.documents && progress.documents.length}
+								<ul style={{ float: 'right', paddingTop: '3em' }}>
+									<li className="mb-10">
+										<Icon type="check-circle" /> Đã xem:&ensp;
+										{progress && progress.documents ? progress.documents.length : 0}
 									</li>
 									<li>
-										<Icon type="eye-invisible" /> Chưa xem :{' '}
+										<Icon type="eye-invisible" /> Chưa xem :&ensp;
 										{!_.isEmpty(info) && !_.isEmpty(progress) ? info.countLesson - progress.documents.length : 0}
 									</li>
 								</ul>

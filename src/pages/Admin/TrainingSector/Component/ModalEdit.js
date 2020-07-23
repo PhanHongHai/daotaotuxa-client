@@ -26,7 +26,7 @@ function ModalEdit(props) {
 			if (!err)
 				updateReq({
 					req: { ...formData },
-					ID:data._id,
+					ID: data._id,
 					pageCurrent,
 					keyword,
 					cb: res => {
@@ -97,7 +97,13 @@ function ModalEdit(props) {
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button htmlType="submit" disabled={_.isEmpty(formData)} loading={loading} className="btn-submit">
+					<Button
+						style={{ float: 'right' }}
+						htmlType="submit"
+						disabled={_.isEmpty(formData)}
+						loading={loading}
+						className="btn-submit"
+					>
 						Cập nhật
 					</Button>
 				</Form.Item>
