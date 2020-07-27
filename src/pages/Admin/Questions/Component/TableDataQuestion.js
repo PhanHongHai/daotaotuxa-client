@@ -1,15 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, ConfigProvider, Icon, Tooltip, Tag, Switch } from 'antd';
+import { Table, Button, ConfigProvider, Icon, Tooltip, Tag, Switch, Radio } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 
 function TableDataQuestion(props) {
-	const { data, pagination, loading, loadingRemove, handleRemoveQuestion, handleChangePage } = props;
+	const {
+		data,
+		pagination,
+		loading,
+		loadingRemove,
+		handleRemoveQuestion,
+		handleChangePage,
+		subjects,
+		loadingGetSubjects,
+		handleFilter,
+		handleReload,
+	} = props;
 
 	const history = useHistory();
-
+	const [tagSelect, setTagSelect] = React.useState('');
+	const refInput = React.useRef(null);
 	const columns = [
 		{
 			title: '#',
@@ -26,8 +38,44 @@ function TableDataQuestion(props) {
 			title: 'Môn học liên quan',
 			dataIndex: 'tag',
 			key: 'tag',
-			render: value => {
-				if (value && value.length > 0) return value.map(ele => <Tag key={ele}> {ele} </Tag>);
+			render: value => (
+				<Tag style={{ fontSize: 14 }} key={value._id}>
+					{value.name}
+				</Tag>
+			),
+			filterMultiple: false,
+			filterDropdown: () => {
+				return (
+					<div style={{ padding: 8 }}>
+						<div className="mb-10 mt-1">
+							<Radio.Group ref={refInput} onChange={e => setTagSelect(e.target.value)}>
+								{subjects.length > 0 &&
+									subjects.map(ele => (
+										<Radio value={ele._id}>
+											{' '}
+											#{ele.tag}&ensp;-&ensp; {ele.name}
+										</Radio>
+									))}
+							</Radio.Group>
+						</div>
+						<Button
+							type="primary"
+							icon="search"
+							size="small"
+							style={{ width: 90, marginRight: 8 }}
+							onClick={() => handleFilter(tagSelect)}
+						/>
+						<Button
+							size="small"
+							style={{ width: 90 }}
+							icon="sync"
+							onClick={() => {
+								refInput.current.state.value = '';
+								handleReload();
+							}}
+						/>
+					</div>
+				);
 			},
 		},
 		{
@@ -52,7 +100,7 @@ function TableDataQuestion(props) {
 			dataIndex: 'type',
 			key: 'type',
 			render: value => {
-				return <Switch checkedChildren="Công khai" unCheckedChildren="Riêng tư" checked={value} />;
+				return value && value === 1 ? 'Công Khai' : 'Riêng Tư';
 			},
 		},
 		{
@@ -96,7 +144,7 @@ function TableDataQuestion(props) {
 					defaultCurrent: pagination.page && Number(pagination.page),
 				}}
 				loading={{
-					spinning: loading,
+					spinning: loading || loadingGetSubjects,
 					indicator: <LoadingCustom margin={0} />,
 				}}
 			/>
@@ -107,10 +155,14 @@ function TableDataQuestion(props) {
 TableDataQuestion.propTypes = {
 	data: PropTypes.instanceOf(Array).isRequired,
 	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
 	loadingRemove: PropTypes.bool.isRequired,
+	loadingGetSubjects: PropTypes.bool.isRequired,
 	handleRemoveQuestion: PropTypes.func.isRequired,
 	handleChangePage: PropTypes.func.isRequired,
+	handleFilter: PropTypes.func.isRequired,
+	handleReload: PropTypes.func.isRequired,
 };
 
 export default TableDataQuestion;

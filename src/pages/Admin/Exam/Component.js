@@ -33,6 +33,9 @@ function ExamComponent(props) {
 		totalQuestion,
 		getTotalQuestionStatus,
 		getTotalQuestionReq,
+		getSubjectsExamStatus,
+		getSubjectsReq,
+		subjects
 	} = props;
 
 	const history = useHistory();
@@ -51,19 +54,21 @@ function ExamComponent(props) {
 				keyword: '',
 			},
 		});
-		getTotalQuestionReq({
-			req: {
-				typeLevel1: 2,
-				typeLevel2: 2,
-				typeLevel3: 2,
-				typeLevel4: 2,
-			},
-		});
+		// getTotalQuestionReq({
+		// 	req: {
+		// 		typeLevel1: 2,
+		// 		typeLevel2: 2,
+		// 		typeLevel3: 2,
+		// 		typeLevel4: 2,
+		// 	},
+		// });
+		getSubjectsReq({});
 	}, [getExamsReq]);
 
 	const loadingGetExams = getExamsStatus === 'FETCHING';
 	const loadingRemoveExam = removeExamStatus === 'FETCHING';
 	const loadingAuthPassowrd = authPasswordStatus === 'FETCHING';
+	const loadingGetSubjects = getSubjectsExamStatus === 'FETCHING';
 	const loadingCreateExamAuto = createExamAutoStatus === 'FETCHING';
 	const loadingGetTotalQuestion = getTotalQuestionStatus === 'FETCHING';
 
@@ -97,12 +102,12 @@ function ExamComponent(props) {
 	};
 	const onChangeTable = page => {
 		setPageCurrent({
-			limit: Number(page.limit),
+			limit: Number(page.pageSize),
 			page: Number(page.current),
 		});
 		getExamsReq({
 			req: {
-				limit: Number(page.limit),
+				limit: Number(page.pageSize),
 				page: Number(page.current),
 				keyword,
 			},
@@ -199,6 +204,8 @@ function ExamComponent(props) {
 				getTotalQuestionReq={getTotalQuestionReq}
 				pageCurrent={pageCurrent}
 				keyword={keyword}
+				loadingGetSubjects={loadingGetSubjects}
+				subjects={subjects}
 			/>
 		</div>
 	);
@@ -209,13 +216,16 @@ ExamComponent.propTypes = {
 	removeExamStatus: PropTypes.string.isRequired,
 	authPasswordStatus: PropTypes.string.isRequired,
 	createExamAutoStatus: PropTypes.string.isRequired,
+	getSubjectsExamStatus: PropTypes.string.isRequired,
 	getTotalQuestionStatus: PropTypes.string.isRequired,
 	getExamsReq: PropTypes.func.isRequired,
+	getSubjectsReq: PropTypes.func.isRequired,
 	removeExamReq: PropTypes.func.isRequired,
 	authAccountReq: PropTypes.func.isRequired,
 	createExamAutoReq: PropTypes.func.isRequired,
 	getTotalQuestionReq: PropTypes.func.isRequired,
 	exams: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 	totalQuestion: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

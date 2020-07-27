@@ -20,12 +20,14 @@ function ModalCreateExamAuto(props) {
 		setVisible,
 		loadingCreate,
 		loadingGetTotalQuestion,
+		loadingGetSubjects,
 		form: { getFieldDecorator, validateFields, resetFields },
 		totalQuestion,
 		createReq,
 		getTotalQuestionReq,
 		keyword,
 		pageCurrent,
+		subjects,
 	} = props;
 
 	const [typeLevel, setTypeLevel] = useState({
@@ -34,6 +36,7 @@ function ModalCreateExamAuto(props) {
 		typeLevel3: 2,
 		typeLevel4: 2,
 	});
+	const [subjectValue, setSubjectValue] = useState('');
 
 	const handleSubmit = e => {
 		e.preventDefault();
@@ -45,6 +48,8 @@ function ModalCreateExamAuto(props) {
 					createReq({
 						req: {
 							title: values.title,
+							point: values.point,
+							subjectID: values.subjectID,
 							level1: { number: values.level1, type: values.typeLevel1 },
 							level2: { number: values.level2, type: values.typeLevel2 },
 							level3: { number: values.level3, type: values.typeLevel3 },
@@ -69,6 +74,7 @@ function ModalCreateExamAuto(props) {
 			req: {
 				...typeLevel,
 				[name]: value,
+				tag: subjectValue,
 			},
 		});
 	};
@@ -81,6 +87,7 @@ function ModalCreateExamAuto(props) {
 			visible={visible}
 			onCancel={() => {
 				resetFields();
+				setSubjectValue('');
 				setVisible(false);
 			}}
 		>
@@ -107,126 +114,183 @@ function ModalCreateExamAuto(props) {
 										message: 'Hãy nhập điểm cho mỗi câu hỏi',
 									},
 								],
-							})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{ width: '100%' }} />)}
+							})(<InputNumber placeholder="Nhập điểm" min={1} max={10} style={{ width: '100%' }} />)}
 						</Form.Item>
 					</Col>
-					<Col xs={14} md={14}>
-						<Form.Item label="Câu hỏi dễ" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('level1', {
-								initialValue: 1,
+					<Col xs={24} md={24}>
+						<Form.Item label="Môn học liên quan" labelAlign="left">
+							{getFieldDecorator('subjectID', {
 								rules: [
 									{
 										required: true,
-										message: 'Không được để trống số lượng câu hỏi',
+										message: 'Hãy chọn môn học',
 									},
 								],
-							})(<InputNumber min={0} max={totalQuestion && totalQuestion.level1} />)}
-							<p className="text">
-								Tối đa : {loadingGetTotalQuestion ? <Icon type="loading" /> : totalQuestion && totalQuestion.level1}{' '}
-							</p>
-						</Form.Item>
-					</Col>
-					<Col xs={10} md={10}>
-						<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('typeLevel1', {
-								initialValue: 2,
 							})(
-								<Select onChange={value => handleSelectType(value, 'typeLevel1')}>
-									<Select.Option value={2}>Tất cả</Select.Option>
-									<Select.Option value={1}>Công khai</Select.Option>
-									<Select.Option value={0}>Riêng tư</Select.Option>
+								<Select
+									loading={loadingGetSubjects}
+									onChange={value => {
+										setSubjectValue(value);
+										getTotalQuestionReq({
+											req: {
+												typeLevel1: 2,
+												typeLevel2: 2,
+												typeLevel3: 2,
+												typeLevel4: 2,
+												tag: value,
+											},
+										});
+									}}
+									showSearch
+									placeholder="-- Môn học --"
+								>
+									{subjects.map(ele => (
+										<Select.Option key={ele._id} value={ele._id}>
+											#{ele.tag}&ensp;-&ensp; {ele.name}
+										</Select.Option>
+									))}
 								</Select>,
 							)}
 						</Form.Item>
 					</Col>
-					<Col xs={14} md={14}>
-						<Form.Item label="Câu hỏi trung bình" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('level2', {
-								initialValue: 1,
-								rules: [
-									{
-										required: true,
-										message: 'Không được để trống số lượng câu hỏi',
-									},
-								],
-							})(<InputNumber min={0} max={totalQuestion && totalQuestion.level2} />)}
-
-							<p className="text">
-								Tối đa : {loadingGetTotalQuestion ? <Icon type="loading" /> : totalQuestion && totalQuestion.level2}{' '}
-							</p>
-						</Form.Item>
-					</Col>
-					<Col xs={10} md={10}>
-						<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('typeLevel2', {
-								initialValue: 2,
-							})(
-								<Select onChange={value => handleSelectType(value, 'typeLevel2')}>
-									<Select.Option value={2}>Tất cả</Select.Option>
-									<Select.Option value={1}>Công khai</Select.Option>
-									<Select.Option value={0}>Riêng tư</Select.Option>
-								</Select>,
-							)}
-						</Form.Item>
-					</Col>
-					<Col xs={14} md={14}>
-						<Form.Item label="Câu hỏi khó" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('level3', {
-								initialValue: 1,
-								rules: [
-									{
-										required: true,
-										message: 'Không được để trống số lượng câu hỏi',
-									},
-								],
-							})(<InputNumber min={0} max={totalQuestion && totalQuestion.level3} />)}
-							<p className="text">
-								Tối đa : {loadingGetTotalQuestion ? <Icon type="loading" /> : totalQuestion && totalQuestion.level3}{' '}
-							</p>
-						</Form.Item>
-					</Col>
-					<Col xs={10} md={10}>
-						<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('typeLevel3', {
-								initialValue: 2,
-							})(
-								<Select onChange={value => handleSelectType(value, 'typeLevel3')}>
-									<Select.Option value={2}>Tất cả</Select.Option>
-									<Select.Option value={1}>Công khai</Select.Option>
-									<Select.Option value={0}>Riêng tư</Select.Option>
-								</Select>,
-							)}
-						</Form.Item>
-					</Col>
-					<Col xs={14} md={14}>
-						<Form.Item label="Câu hỏi rất khó" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('level4', {
-								initialValue: 1,
-								rules: [
-									{
-										required: true,
-										message: 'Không được để trống số lượng câu hỏi',
-									},
-								],
-							})(<InputNumber min={0} max={totalQuestion && totalQuestion.level4} />)}
-							<p className="text">
-								Tối đa : {loadingGetTotalQuestion ? <Icon type="loading" /> : totalQuestion && totalQuestion.level4}{' '}
-							</p>
-						</Form.Item>
-					</Col>
-					<Col xs={10} md={10}>
-						<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
-							{getFieldDecorator('typeLevel4', {
-								initialValue: 2,
-							})(
-								<Select onChange={value => handleSelectType(value, 'typeLevel4')}>
-									<Select.Option value={2}>Tất cả</Select.Option>
-									<Select.Option value={1}>Công khai</Select.Option>
-									<Select.Option value={0}>Riêng tư</Select.Option>
-								</Select>,
-							)}
-						</Form.Item>
-					</Col>
+					{subjectValue && subjectValue !== '' ? (
+						<>
+							<Col xs={14} md={14}>
+								<Form.Item label="Câu hỏi dễ" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('level1', {
+										initialValue: 0,
+										rules: [
+											{
+												required: true,
+												message: 'Không được để trống số lượng câu hỏi',
+											},
+										],
+									})(<InputNumber min={0} max={totalQuestion && totalQuestion.level1} />)}
+									<p className="text">
+										{loadingGetTotalQuestion ? (
+											<Icon type="loading" />
+										) : (
+											<span>Tối đa :{totalQuestion ? totalQuestion.level1 : 0}</span>
+										)}
+									</p>
+								</Form.Item>
+							</Col>
+							<Col xs={10} md={10}>
+								<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('typeLevel1', {
+										initialValue: 2,
+									})(
+										<Select onChange={value => handleSelectType(value, 'typeLevel1')}>
+											<Select.Option value={2}>Tất cả</Select.Option>
+											<Select.Option value={1}>Công khai</Select.Option>
+											<Select.Option value={0}>Riêng tư</Select.Option>
+										</Select>,
+									)}
+								</Form.Item>
+							</Col>
+							<Col xs={14} md={14}>
+								<Form.Item label="Câu hỏi trung bình" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('level2', {
+										initialValue: 0,
+										rules: [
+											{
+												required: true,
+												message: 'Không được để trống số lượng câu hỏi',
+											},
+										],
+									})(<InputNumber min={0} max={totalQuestion && totalQuestion.level2} />)}
+									<p className="text">
+										{loadingGetTotalQuestion ? (
+											<Icon type="loading" />
+										) : (
+											<span>Tối đa :{totalQuestion ? totalQuestion.level2 : 0}</span>
+										)}
+									</p>
+								</Form.Item>
+							</Col>
+							<Col xs={10} md={10}>
+								<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('typeLevel2', {
+										initialValue: 2,
+									})(
+										<Select onChange={value => handleSelectType(value, 'typeLevel2')}>
+											<Select.Option value={2}>Tất cả</Select.Option>
+											<Select.Option value={1}>Công khai</Select.Option>
+											<Select.Option value={0}>Riêng tư</Select.Option>
+										</Select>,
+									)}
+								</Form.Item>
+							</Col>
+							<Col xs={14} md={14}>
+								<Form.Item label="Câu hỏi khó" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('level3', {
+										initialValue: 0,
+										rules: [
+											{
+												required: true,
+												message: 'Không được để trống số lượng câu hỏi',
+											},
+										],
+									})(<InputNumber min={0} max={totalQuestion && totalQuestion.level3} />)}
+									<p className="text">
+										{loadingGetTotalQuestion ? (
+											<Icon type="loading" />
+										) : (
+											<span>Tối đa :{totalQuestion ? totalQuestion.level3 : 0}</span>
+										)}
+									</p>
+								</Form.Item>
+							</Col>
+							<Col xs={10} md={10}>
+								<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('typeLevel3', {
+										initialValue: 2,
+									})(
+										<Select onChange={value => handleSelectType(value, 'typeLevel3')}>
+											<Select.Option value={2}>Tất cả</Select.Option>
+											<Select.Option value={1}>Công khai</Select.Option>
+											<Select.Option value={0}>Riêng tư</Select.Option>
+										</Select>,
+									)}
+								</Form.Item>
+							</Col>
+							<Col xs={14} md={14}>
+								<Form.Item label="Câu hỏi rất khó" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('level4', {
+										initialValue: 0,
+										rules: [
+											{
+												required: true,
+												message: 'Không được để trống số lượng câu hỏi',
+											},
+										],
+									})(<InputNumber min={0} max={totalQuestion && totalQuestion.level4} />)}
+									<p className="text">
+										{loadingGetTotalQuestion ? (
+											<Icon type="loading" />
+										) : (
+											<span>Tối đa :{totalQuestion ? totalQuestion.level4 : 0}</span>
+										)}
+									</p>
+								</Form.Item>
+							</Col>
+							<Col xs={10} md={10}>
+								<Form.Item label="Trạng thái" labelAlign="left" {...formItemLayout}>
+									{getFieldDecorator('typeLevel4', {
+										initialValue: 2,
+									})(
+										<Select onChange={value => handleSelectType(value, 'typeLevel4')}>
+											<Select.Option value={2}>Tất cả</Select.Option>
+											<Select.Option value={1}>Công khai</Select.Option>
+											<Select.Option value={0}>Riêng tư</Select.Option>
+										</Select>,
+									)}
+								</Form.Item>
+							</Col>
+						</>
+					) : (
+						''
+					)}
 				</Row>
 				<span className="flex" style={{ justifyContent: 'flex-end' }}>
 					<Button icon="plus" loading={loadingCreate} className="btn-submit" htmlType="submit">
@@ -236,6 +300,7 @@ function ModalCreateExamAuto(props) {
 						className="btn-cancel ml-5"
 						onClick={() => {
 							resetFields();
+							setSubjectValue('');
 							setVisible(false);
 						}}
 					>
@@ -251,6 +316,7 @@ ModalCreateExamAuto.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	loadingCreate: PropTypes.bool.isRequired,
 	loadingGetTotalQuestion: PropTypes.bool.isRequired,
+	loadingGetSubjects: PropTypes.bool.isRequired,
 	keyword: PropTypes.string.isRequired,
 	setVisible: PropTypes.func.isRequired,
 	createReq: PropTypes.func.isRequired,
@@ -258,6 +324,7 @@ ModalCreateExamAuto.propTypes = {
 	form: PropTypes.objectOf(PropTypes.any).isRequired,
 	totalQuestion: PropTypes.objectOf(PropTypes.any).isRequired,
 	pageCurrent: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Form.create({ name: 'create-exam-auto' })(ModalCreateExamAuto);

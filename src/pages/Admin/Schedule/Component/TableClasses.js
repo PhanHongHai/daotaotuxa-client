@@ -13,7 +13,7 @@ function TableClasses(props) {
 		},
 		{
 			title: 'Mã lớp',
-			dataIndex: 'name',
+			dataIndex: 'tag',
 			key: 'tag',
 			render: value => <Tag>#{value} </Tag>,
 		},

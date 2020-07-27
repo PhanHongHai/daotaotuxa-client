@@ -4,6 +4,7 @@ import Redux from '../../../utils/redux';
 import ExamAction from './Action';
 import QuestionAPI from '../../../apis/Question';
 import ExamAPI from '../../../apis/Exam';
+import SubjectAPI from '../../../apis/Subject';
 import AccountAPI from '../../../apis/Account';
 import filterError from '../../../utils/filterError';
 
@@ -22,6 +23,21 @@ function* handleGetQuestionsForExam(action) {
 	} catch (error) {
 		yield put(ExamAction.getQuestionsForExamFailure());
 		message.error('Lấy danh sách câu hỏi không thành công ! Xin thử lại');
+	}
+}
+function* handleGetSubjectsForExam(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(SubjectAPI.getAll, req);
+		if (!res.errors) {
+			yield put(ExamAction.getSubjectsForExamSuccess(res));
+		} else {
+			yield put(ExamAction.getSubjectsForExamFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(ExamAction.getSubjectsForExamFailure());
+		message.error('Lấy danh sách môn học không thành công ! Xin thử lại');
 	}
 }
 
@@ -235,6 +251,11 @@ const getTotalQuestionSaga = {
 	worker: handleGetTotalQuestion,
 };
 
+const getSubjectsForExamSaga = {
+	on: ExamAction.getSubjectsForExamRequest,
+	worker: handleGetSubjectsForExam,
+};
+
 export default createSagas([
 	getAndSearchQuestionSaga,
 	getQuestionsForUpdateExamSaga,
@@ -247,4 +268,5 @@ export default createSagas([
 	removeDetailExamSaga,
 	authAccountExamSaga,
 	getTotalQuestionSaga,
+	getSubjectsForExamSaga
 ]);

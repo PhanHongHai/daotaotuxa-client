@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Card, Tooltip, Button, Input } from 'antd';
+import { Row, Col, Card, Tooltip, Button, Input, Spin } from 'antd';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ import TableStudentData from '../Component/TableStudentsData';
 import countries from '../../../../utils/country.json';
 
 import { DetailClassStyle } from '../styled';
+import LoadingCustom from '../../../../components/LoadingCustom';
 
 const breadcrumb = [
 	{
@@ -372,15 +373,17 @@ function DetailClassComponent(props) {
 						</Card>
 					</Col>
 					<Col xs={24} sm={16} md={16} className="mb-15">
-						<Card className="phh-card" title="Thông tin lớp học" loading={loadingGetDetail}>
-							<FormEditClass
-								updateReq={updateDetailReq}
-								deleteReq={deleteDetailReq}
-								data={detailClass}
-								sectorData={sector}
-								loadingUpdate={loadingUpdateDetail}
-								loadingDelete={loadingDeleteDetail}
-							/>
+						<Card className="phh-card" title="Thông tin lớp học">
+							<Spin spinning={loadingGetDetail} indicator={<LoadingCustom margin={10} />}>
+								<FormEditClass
+									updateReq={updateDetailReq}
+									deleteReq={deleteDetailReq}
+									data={detailClass}
+									sectorData={sector}
+									loadingUpdate={loadingUpdateDetail}
+									loadingDelete={loadingDeleteDetail}
+								/>
+							</Spin>
 						</Card>
 					</Col>
 					<Col xs={24} sm={24} md={24} className="mb-15">

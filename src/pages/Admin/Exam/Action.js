@@ -11,8 +11,13 @@ const {
 	getQuestionsForUpdateExamSuccess,
 	getQuestionsForUpdateExamFailure,
 } = createAsyncAction('getQuestionsForUpdateExam', 'GET_QUESTIONS_FOR_UPDATE_EXAM');
+const { getSubjectsForExamRequest, getSubjectsForExamSuccess, getSubjectsForExamFailure } = createAsyncAction(
+	'getSubjectsForExam',
+	'GET_SUBJECTS_FOR_EXAM',
+);
 
 const { getExamsRequest, getExamsSuccess, getExamsFailure } = createAsyncAction('getExams', 'GET_EXAMS');
+
 const { getTotalQuestionRequest, getTotalQuestionSuccess, getTotalQuestionFailure } = createAsyncAction(
 	'getTotalQuestion',
 	'GET_TOTAL_QUESTION',
@@ -48,7 +53,7 @@ const Actions = {
 	getQuestionsForUpdateExamRequest,
 	getQuestionsForUpdateExamSuccess,
 	getQuestionsForUpdateExamFailure,
-	
+
 	getQuestionsForExamRequest,
 	getQuestionsForExamSuccess,
 	getQuestionsForExamFailure,
@@ -60,6 +65,10 @@ const Actions = {
 	getExamsRequest,
 	getExamsSuccess,
 	getExamsFailure,
+
+	getSubjectsForExamRequest,
+	getSubjectsForExamSuccess,
+	getSubjectsForExamFailure,
 
 	getDetailExamRequest,
 	getDetailExamSuccess,

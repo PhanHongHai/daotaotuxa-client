@@ -47,15 +47,6 @@ function TableStudentsData(props) {
 			key: 'phoneNumber',
 		},
 		{
-			title: 'Xác thực',
-			dataIndex: 'isVerify',
-			key: 'isVerify',
-			render: value => {
-				if (value) return <Tag color="green">Đã xác thực</Tag>;
-				return <Tag color="silver">Chưa xác thực</Tag>;
-			},
-		},
-		{
 			title: 'Xử lý',
 			key: 'actions',
 			render: row => (

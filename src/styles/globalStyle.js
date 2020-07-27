@@ -354,7 +354,7 @@ span.search-small{
 			box-shadow: 0 0 0 2px #1ab3943b;
 		}
 	}
-	#student-create_country{
+	#student-create_country, .ant-select-search input{
 		box-shadow:none;
 	}
 	input.ant-calendar-range-picker-input{

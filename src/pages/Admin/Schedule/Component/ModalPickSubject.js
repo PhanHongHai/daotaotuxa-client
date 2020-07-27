@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input, Button, ConfigProvider, Icon, Table, Tooltip } from 'antd';
+import { Modal, Input, Button, ConfigProvider, Icon, Table, Tooltip ,Tag} from 'antd';
 import _ from 'lodash';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
@@ -27,7 +27,7 @@ function ModalPickSubject(props) {
 			title: 'Mã môn học',
 			dataIndex: 'subjectID.tag',
 			key: 'tag',
-			render: value => <span>#{value}</span>,
+			render: value => <Tag style={{fontSize:14}}>#{value}</Tag>,
 		},
 		{
 			title: 'Tên môn học',

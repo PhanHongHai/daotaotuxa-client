@@ -10,9 +10,8 @@ export const LoginContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-item: center;
-  background-image:url(${bgLogin});
-	background-color:rgb(0, 189, 135);
-
+	background-image: url(${bgLogin});
+	background-color: rgb(0, 189, 135);
 `;
 // ##### end loging container
 
@@ -20,20 +19,20 @@ export const Container = styled.div`
 	background-color: #fff;
 	border-radius: 3px;
 	width: 450px;
-  box-shadow: -1px 1px 10px 8px rgba(86, 86, 88, 0.29);
+	box-shadow: -1px 1px 10px 8px rgba(86, 86, 88, 0.29);
 	.logo {
 		display: flex;
 		justify-content: center;
 		width: 100%;
-    height: auto;
-    img{
-      width:40px;
-      height:40px;
-    }
+		height: auto;
+		img {
+			width: 40px;
+			height: 40px;
+		}
 		h1 {
 			color: rgb(0, 189, 135);
-      font-weight: bold;
-      margin-left: 10px;
+			font-weight: bold;
+			margin-left: 10px;
 		}
 	}
 	.phh-form-login {
@@ -52,6 +51,12 @@ export const Container = styled.div`
 			i {
 				font-size: 15px;
 			}
+		}
+	}
+	@media only screen and (max-width: 425px) {
+		width: 90% !important;
+		.phh-form-login {
+			padding: 5%;
 		}
 	}
 `;

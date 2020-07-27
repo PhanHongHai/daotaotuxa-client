@@ -169,25 +169,39 @@ function ModalPickExam(props) {
 				<div>
 					<Row gutter={16}>
 						<Col xs={24} md={12}>
-							<h4>Hệ Đào Tạo : &ensp; <Tag>{renderNameTypeTraining(sectorID && sectorID[0])}</Tag> </h4>
+							<h4>
+								Hệ Đào Tạo : &ensp; <Tag>{renderNameTypeTraining(sectorID && sectorID[0])}</Tag>{' '}
+							</h4>
 						</Col>
 						<Col xs={24} md={12}>
-							<h4>Ngành Đào Tạo : &ensp; <Tag>{renderSectorTraining(sectorID && sectorID[1])}</Tag> </h4>
+							<h4>
+								Ngành Đào Tạo : &ensp; <Tag>{renderSectorTraining(sectorID && sectorID[1])}</Tag>{' '}
+							</h4>
 						</Col>
 						<Col xs={24} md={12}>
-							<h4>Mã Môn Học :&ensp;  <Tag>{subjectData && subjectData.tag}</Tag> </h4>
+							<h4>
+								Mã Môn Học :&ensp; <Tag>{subjectData && subjectData.tag}</Tag>{' '}
+							</h4>
 						</Col>
 						<Col xs={24} md={12}>
-							<h4>Môn Học : &ensp;<Tag>{subjectData && subjectData.name}</Tag>  </h4>
+							<h4>
+								Môn Học : &ensp;<Tag >{subjectData && subjectData.name}</Tag>{' '}
+							</h4>
 						</Col>
 						<Col xs={24} md={12}>
-							<h4>Đề Thi : &ensp; <Tag>{examData && examData.title}</Tag> </h4>
+							<h4>
+								Đề Thi : &ensp; <Tag>{examData && examData.title}</Tag>{' '}
+							</h4>
 						</Col>
 						<Col xs={24} md={24}>
 							<h4>Danh Sách Lớp :</h4>
 							<ul>
 								{classNameValue.map(ele => (
-									<li> {ele.name} </li>
+									<li>
+										<Tag>
+											{ele.tag}&ensp;-&ensp;{ele.name}
+										</Tag>
+									</li>
 								))}
 							</ul>
 						</Col>

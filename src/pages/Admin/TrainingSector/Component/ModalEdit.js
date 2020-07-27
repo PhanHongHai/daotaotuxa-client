@@ -67,15 +67,15 @@ function ModalEdit(props) {
 					})(<Input onChange={onChangeInput} name="name" placeholder="Nhập tên ngành" />)}
 				</Form.Item>
 				<Form.Item label="Mã ngành" labelAlign="left">
-					{getFieldDecorator('code', {
-						initialValue: data && data.code,
+					{getFieldDecorator('tag', {
+						initialValue: data && data.tag,
 						rules: [
 							{
 								required: true,
 								message: 'Không được để trống mã ngành đào tạo',
 							},
 						],
-					})(<Input onChange={onChangeInput} name="name" placeholder="Nhập mã ngành" />)}
+					})(<Input onChange={onChangeInput} name="tag" placeholder="Nhập mã ngành" />)}
 				</Form.Item>
 				<Form.Item label="Hệ đào tạo" labelAlign="left">
 					{getFieldDecorator('type', {

@@ -27,6 +27,8 @@ function FormCreateExam(props) {
 		createExamReq,
 		questions,
 		getQuestionsReq,
+		loadingGetSubjects,
+		subjects,
 	} = props;
 
 	const history = useHistory();
@@ -37,6 +39,7 @@ function FormCreateExam(props) {
 	const [keyword, setKeyword] = useState('');
 	const [levelPick, setLevelPick] = useState(0);
 	const [typePick, setTypePick] = useState(2);
+	const [subjectValue, setSubjectValue] = useState('');
 
 	const handleSubmitCreate = e => {
 		e.preventDefault();
@@ -68,6 +71,7 @@ function FormCreateExam(props) {
 				keyword,
 				type: value,
 				level: levelPick,
+				tag: subjectValue,
 			},
 		});
 	};
@@ -80,6 +84,7 @@ function FormCreateExam(props) {
 				keyword,
 				type: typePick,
 				level: value,
+				tag: subjectValue,
 			},
 		});
 	};
@@ -93,6 +98,7 @@ function FormCreateExam(props) {
 				keyword: value,
 				type: typePick,
 				level: levelPick,
+				tag: subjectValue,
 			},
 		});
 	};
@@ -110,28 +116,43 @@ function FormCreateExam(props) {
 				keyword: '',
 				level: 0,
 				type: 2,
+				tag: subjectValue,
 			},
 		});
 	};
 	const handleChangePage = page => {
 		getQuestionsReq({
 			req: {
-				limit: Number(page.limit),
+				limit: Number(page.pageSize),
 				page: Number(page.current),
 				keyword,
 				level: levelPick,
 				type: typePick,
+				tag: subjectValue,
 			},
 		});
 	};
-
+	const handleSelectSubject = value => {
+		setSubjectValue(value);
+		setKeyword('');
+		setLevelPick(0);
+		setTypePick(2);
+		getQuestionsReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword: '',
+				level: 0,
+				type: 2,
+				tag: value,
+			},
+		});
+	};
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			if (selectedRows.length > 0) {
-				const arrAnswer = [];
-				selectedRows.forEach(ele => arrAnswer.push(ele._id));
-				setQuestionData(arrAnswer);
-			} else setQuestionData(selectedRows);
+				setQuestionData(selectedRowKeys);
+			} else setQuestionData(selectedRowKeys);
 		},
 	};
 
@@ -159,7 +180,33 @@ function FormCreateExam(props) {
 									message: 'Hãy nhập điểm cho mỗi câu hỏi',
 								},
 							],
-						})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{width:'100%'}} />)}
+						})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{ width: '100%' }} />)}
+					</Form.Item>
+				</Col>
+				<Col xs={24} md={24}>
+					<Form.Item label="Môn Học" labelAlign="left">
+						{getFieldDecorator('subjectID', {
+							rules: [
+								{
+									required: true,
+									message: 'Hãy nhập điểm cho mỗi câu hỏi',
+								},
+							],
+						})(
+							<Select
+								loading={loadingGetSubjects}
+								onChange={handleSelectSubject}
+								placeholder="-- Môn Học --"
+								style={{ width: '100%' }}
+							>
+								{subjects &&
+									subjects.map(ele => (
+										<Select.Option value={ele._id} key={ele._id}>
+											{ele.name}
+										</Select.Option>
+									))}
+							</Select>,
+						)}
 					</Form.Item>
 				</Col>
 				{/* <Col xs={24} md={24}>
@@ -202,56 +249,62 @@ function FormCreateExam(props) {
 						</h4>
 						<p>(Click chọn câu hỏi muốn cho vào đề thi )</p>
 					</div>
-					<div className="phh-group-search mb-10">
-						<Row gutter={8}>
-							<Col xs={24} md={16} className="mt-15">
-								<Input.Search
-									addonBefore={
-										<Button
-											className="btn-reload"
-											style={{ backgroundColor: 'red !important', height: '35px', color: 'black' }}
-											icon="sync"
-											onClick={handleReload}
-										>
-											Làm mới
-										</Button>
-									}
-									ref={refSearch}
-									placeholder="Nhập từ khóa.."
-									onSearch={handleSearchQuestion}
-								/>
-							</Col>
-							<Col xs={12} md={4} className="mt-15">
-								<div className="select-pick">
-									<h4>Trạng thái </h4>
-									<Select ref={refSelectType} defaultValue={2} onChange={handlePickTypeQuestion}>
-										<Select.Option value={2}>Tất cả</Select.Option>
-										<Select.Option value={1}>Công khai</Select.Option>
-										<Select.Option value={0}>Riêng tư</Select.Option>
-									</Select>
-								</div>
-							</Col>
-							<Col xs={12} md={4} className="mt-15">
-								<div className="select-pick">
-									<h4>Mức độ </h4>
-									<Select ref={refSelectLevel} defaultValue={0} onChange={handlePickLevelQuestion}>
-										<Select.Option value={0}>Tất cả</Select.Option>
-										<Select.Option value={1}>Dễ</Select.Option>
-										<Select.Option value={2}>Trung bình</Select.Option>
-										<Select.Option value={3}>Khó</Select.Option>
-										<Select.Option value={4}>Rất khó</Select.Option>
-									</Select>
-								</div>
-							</Col>
-						</Row>
-					</div>
-					<TableTransferQuestion
-						loading={loadingGetQuestions}
-						data={questions && questions.data}
-						pagination={questions && questions.pagination}
-						rowSelection={rowSelection}
-						handleChangePage={handleChangePage}
-					/>
+					{subjectValue && subjectValue !== '' ? (
+						<>
+							<div className="phh-group-search mb-10">
+								<Row gutter={8}>
+									<Col xs={24} md={16} className="mt-15">
+										<Input.Search
+											addonBefore={
+												<Button
+													className="btn-reload"
+													style={{ backgroundColor: 'red !important', height: '35px', color: 'black' }}
+													icon="sync"
+													onClick={handleReload}
+												>
+													Làm mới
+												</Button>
+											}
+											ref={refSearch}
+											placeholder="Nhập từ khóa.."
+											onSearch={handleSearchQuestion}
+										/>
+									</Col>
+									<Col xs={12} md={4} className="mt-15">
+										<div className="select-pick">
+											<h4>Trạng thái </h4>
+											<Select ref={refSelectType} defaultValue={2} onChange={handlePickTypeQuestion}>
+												<Select.Option value={2}>Tất cả</Select.Option>
+												<Select.Option value={1}>Công khai</Select.Option>
+												<Select.Option value={0}>Riêng tư</Select.Option>
+											</Select>
+										</div>
+									</Col>
+									<Col xs={12} md={4} className="mt-15">
+										<div className="select-pick">
+											<h4>Mức độ </h4>
+											<Select ref={refSelectLevel} defaultValue={0} onChange={handlePickLevelQuestion}>
+												<Select.Option value={0}>Tất cả</Select.Option>
+												<Select.Option value={1}>Dễ</Select.Option>
+												<Select.Option value={2}>Trung bình</Select.Option>
+												<Select.Option value={3}>Khó</Select.Option>
+												<Select.Option value={4}>Rất khó</Select.Option>
+											</Select>
+										</div>
+									</Col>
+								</Row>
+							</div>
+							<TableTransferQuestion
+								loading={loadingGetQuestions}
+								data={questions && questions.data}
+								pagination={questions && questions.pagination}
+								rowSelection={rowSelection}
+								handleChangePage={handleChangePage}
+							/>
+						</>
+					) : (
+						''
+					)}
 				</Col>
 				<Col xs={24} md={24} className="mt-10">
 					<span style={{ float: 'right', display: 'flex', alignItems: 'center' }}>
@@ -273,7 +326,9 @@ FormCreateExam.propTypes = {
 	loadingCreate: PropTypes.bool.isRequired,
 	loadingGetQuestions: PropTypes.bool.isRequired,
 	createExamReq: PropTypes.bool.isRequired,
-	questions: PropTypes.bool.isRequired,
+	questions: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
+	loadingGetSubjects: PropTypes.bool.isRequired,
 	getQuestionsReq: PropTypes.func.isRequired,
 };
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Table, ConfigProvider, Icon, Input, Tooltip, Button, Cascader, Row, Col } from 'antd';
+import { Table, ConfigProvider, Icon, Input, Tooltip, Button, Cascader, Row, Col, Tag } from 'antd';
 import _ from 'lodash';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
@@ -30,7 +30,7 @@ function PickSubject(props) {
 			title: 'Mã môn học',
 			dataIndex: 'subjectID.tag',
 			key: 'tag',
-			render: value => <span>#{value}</span>,
+			render: value => <Tag style={{ fontSize: 14 }}>#{value}</Tag>,
 		},
 		{
 			title: 'Tên môn học',
@@ -127,7 +127,7 @@ function PickSubject(props) {
 				limit: Number(page.limit),
 				page: Number(page.current),
 				keyword,
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 			},
 		});
 	};
@@ -136,7 +136,7 @@ function PickSubject(props) {
 		setKeyword('');
 		getSubjectReq({
 			req: {
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 				keyword: '',
 				page: 1,
 				limit: 10,
@@ -147,7 +147,7 @@ function PickSubject(props) {
 		setKeyword(value);
 		getSubjectReq({
 			req: {
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 				keyword: value,
 				page: 1,
 				limit: 10,

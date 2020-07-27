@@ -17,7 +17,6 @@ import ModalCreateProfile from '../Component/ModalCreateProfile';
 import ModalEditProfile from '../Component/ModalEditProfile';
 import LoadingCustom from '../../../../components/LoadingCustom';
 
-
 const { confirm } = Modal;
 
 const breadcrumb = [
@@ -203,6 +202,13 @@ function EditStudent(props) {
 												})(<Input onChange={onChangeInput} name="email" placeholder="Nhập email" />)}
 											</Form.Item>
 										</Col> */}
+										<Col xs={24} sm={24} md={24}>
+											<Form.Item label="Email" labelAlign="left">
+												{getFieldDecorator('email', {
+													initialValue: detailAccount && detailAccount.email,
+												})(<Input onChange={onChangeInput} name="email" placeholder="Nhập email" />)}
+											</Form.Item>
+										</Col>
 										<Col xs={24} sm={24} md={24}>
 											<Form.Item label="Họ tên" labelAlign="left">
 												{getFieldDecorator('name', {

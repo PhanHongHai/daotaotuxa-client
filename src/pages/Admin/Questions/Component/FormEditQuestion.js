@@ -67,7 +67,7 @@ function FormEditQuestion(props) {
 	};
 	const handleSubmit = e => {
 		e.preventDefault();
-		validateFields((err, values) => {
+		validateFields(err => {
 			if (!err)
 				updateQuestionReq({
 					req: {
@@ -119,18 +119,15 @@ function FormEditQuestion(props) {
 				<Col xs={24} md={24}>
 					<Form.Item label="Môn học liên quan" labelAlign="left" {...formItemLayout}>
 						{getFieldDecorator('tag', {
-							initialValue: info && info.tag,
+							initialValue: info.tag && info.tag._id,
 						})(
-							<Select
-								onChange={value => onChangeSelect(value, 'tag')}
-								loading={loadingSubjectsForQuestion}
-								mode="multiple"
-							>
-								{subjects.map(ele => (
-									<Select.Option key={ele._id} value={ele.name}>
-										{ele.name}
-									</Select.Option>
-								))}
+							<Select onChange={value => onChangeSelect(value, 'tag')} loading={loadingSubjectsForQuestion} showSearch>
+								{subjects &&
+									subjects.map(ele => (
+										<Select.Option key={ele._id} value={ele._id}>
+											#{ele.tag}&ensp;-&ensp; {ele.name}
+										</Select.Option>
+									))}
 							</Select>,
 						)}
 					</Form.Item>
@@ -170,7 +167,7 @@ function FormEditQuestion(props) {
 								<Row>
 									<Col xs={24} md={3}>
 										<span className="radio-answer">
-											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || info && info.answer}>
+											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || (info && info.answer)}>
 												<Radio value="A">A</Radio>
 											</Radio.Group>
 										</span>
@@ -188,7 +185,7 @@ function FormEditQuestion(props) {
 								<Row>
 									<Col xs={24} md={3}>
 										<span className="radio-answer">
-											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || info && info.answer}>
+											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || (info && info.answer)}>
 												<Radio value="B">B</Radio>
 											</Radio.Group>
 										</span>
@@ -206,7 +203,7 @@ function FormEditQuestion(props) {
 								<Row>
 									<Col xs={24} md={3}>
 										<span className="radio-answer">
-											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || info && info.answer}>
+											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || (info && info.answer)}>
 												<Radio value="C">C</Radio>
 											</Radio.Group>
 										</span>
@@ -224,7 +221,7 @@ function FormEditQuestion(props) {
 								<Row>
 									<Col xs={24} md={3}>
 										<span className="radio-answer">
-											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || info && info.answer}>
+											<Radio.Group onChange={onChangeAnswer} value={valueAnswer || (info && info.answer)}>
 												<Radio value="D">D</Radio>
 											</Radio.Group>
 										</span>

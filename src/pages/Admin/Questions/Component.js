@@ -20,9 +20,12 @@ function QuestionComponent(props) {
 	const {
 		getAndSearchQuestionStatus,
 		removeQuestionStatus,
+		getSubjectsForQuestionStatus,
 		questions: { data, pagination },
+		subjects,
 		getAndSearchQuestionReq,
 		removeQuestionReq,
+		getSubjectsReq,
 	} = props;
 	const history = useHistory();
 	const refSearch = useRef(null);
@@ -30,6 +33,7 @@ function QuestionComponent(props) {
 	const [keyword, setKeyword] = useState('');
 	const [levelPick, setLevelPick] = useState(0);
 	const [typePick, setTypePick] = useState(2);
+	const [tag, setTag] = useState('');
 
 	useEffect(() => {
 		getAndSearchQuestionReq({
@@ -39,12 +43,15 @@ function QuestionComponent(props) {
 				keyword: '',
 				level: 0,
 				type: 2,
+				tag: '',
 			},
 		});
+		getSubjectsReq({});
 	}, []);
 
 	const loadingGetQuestions = getAndSearchQuestionStatus === 'FETCHING';
 	const loadingRemoveQuestions = removeQuestionStatus === 'FETCHING';
+	const loadingGetSubjects = getSubjectsForQuestionStatus === 'FETCHING';
 
 	const handleRemoveQuestion = dataQuestion => {
 		confirm({
@@ -71,21 +78,25 @@ function QuestionComponent(props) {
 				limit: 10,
 				page: 1,
 				keyword: text,
+				level: levelPick,
+				type: typePick,
+				tag,
 			},
 		});
 	};
 	const handleChangePage = page => {
 		setPageCurrent({
-			limit: Number(page.limit),
+			limit: Number(page.pageSize),
 			page: Number(page.current),
 		});
 		getAndSearchQuestionReq({
 			req: {
-				limit: Number(page.limit),
+				limit: Number(page.pageSize),
 				page: Number(page.current),
 				keyword,
 				level: levelPick,
 				type: typePick,
+				tag,
 			},
 		});
 	};
@@ -99,6 +110,7 @@ function QuestionComponent(props) {
 				keyword,
 				type: value,
 				level: levelPick,
+				tag,
 			},
 		});
 	};
@@ -111,6 +123,7 @@ function QuestionComponent(props) {
 				keyword,
 				type: typePick,
 				level: value,
+				tag,
 			},
 		});
 	};
@@ -126,10 +139,36 @@ function QuestionComponent(props) {
 				keyword: '',
 				type: 2,
 				level: 0,
+				tag: '',
 			},
 		});
 	};
-
+	const handleFilter = value => {
+		setTag(value);
+		getAndSearchQuestionReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword,
+				level: levelPick,
+				type: typePick,
+				tag: value,
+			},
+		});
+	};
+	const handleReloadFilter = () => {
+		setTag('');
+		getAndSearchQuestionReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword: '',
+				type: 2,
+				level: 0,
+				tag: '',
+			},
+		});
+	};
 	return (
 		<div>
 			<div className="phh-page-header">
@@ -207,6 +246,10 @@ function QuestionComponent(props) {
 								loadingRemove={loadingRemoveQuestions}
 								handleRemoveQuestion={handleRemoveQuestion}
 								handleChangePage={handleChangePage}
+								subjects={subjects}
+								loadingGetSubjects={loadingGetSubjects}
+								handleFilter={handleFilter}
+								handleReload={handleReloadFilter}
 							/>
 						</Card>
 					</Col>
@@ -219,9 +262,12 @@ function QuestionComponent(props) {
 QuestionComponent.propTypes = {
 	getAndSearchQuestionStatus: PropTypes.string.isRequired,
 	removeQuestionStatus: PropTypes.string.isRequired,
+	getSubjectsForQuestionStatus: PropTypes.string.isRequired,
 	questions: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 	getAndSearchQuestionReq: PropTypes.func.isRequired,
 	removeQuestionReq: PropTypes.func.isRequired,
+	getSubjectsReq: PropTypes.func.isRequired,
 };
 
 export default QuestionComponent;

@@ -187,7 +187,7 @@ function ModalSubject(props) {
 			className="phh-modal"
 			visible={visible}
 			title="Danh sách môn học"
-			width={600}
+			width={750}
 			onCancel={() => {
 				setTabKey('subjectOfSector');
 				setVisible(false);
@@ -231,7 +231,6 @@ function ModalSubject(props) {
 						<Table
 							rowKey="_id"
 							className="phh-table"
-							size="small"
 							onChange={handleChangeSubjectOfSector}
 							scroll={{ x: true, y: true }}
 							dataSource={subjectsOfSector && subjectsOfSector.data}
@@ -282,7 +281,6 @@ function ModalSubject(props) {
 							rowKey="_id"
 							className="phh-table"
 							onChange={handleChangeSubjectForSector}
-							size="small"
 							scroll={{ x: true, y: true }}
 							dataSource={subjectsForSector && subjectsForSector.data}
 							columns={columnAllSubject}

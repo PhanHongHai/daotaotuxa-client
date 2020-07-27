@@ -8,13 +8,16 @@ const mapStateToProps = state => ({
 	removeExamStatus: state.examPage.removeExamStatus,
 	authPasswordStatus: state.examPage.authPasswordStatus,
 	createExamAutoStatus: state.examPage.createExamAutoStatus,
+	getSubjectsExamStatus: state.examPage.getSubjectsExamStatus,
 	getTotalQuestionStatus: state.examPage.getTotalQuestionStatus,
 	exams: state.examPage.exams,
 	totalQuestion: state.examPage.totalQuestion,
+	subjects: state.examPage.subjects,
 });
 
 const mapDispatchToProps = {
 	getExamsReq: Actions.getExamsRequest,
+	getSubjectsReq: Actions.getSubjectsForExamRequest,
 	removeExamReq: Actions.removeExamRequest,
 	authAccountReq: Actions.authPasswordExamRequest,
 	createExamAutoReq: Actions.createExamAutoRequest,

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Card,  } from 'antd';
+import { Row, Col, Card } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -20,22 +20,32 @@ const breadcrumb = [
 	},
 ];
 function CreateExamComponent(props) {
-	const { createExamStatus, createExamReq, questions, getQuestionsForExamStatus, getQuestionsReq } = props;
-
+	const {
+		createExamStatus,
+		createExamReq,
+		questions,
+		getQuestionsForExamStatus,
+		getQuestionsReq,
+		getSubjectsExamStatus,
+		subjects,
+		getSubjectsReq,
+	} = props;
 
 	useEffect(() => {
-		getQuestionsReq({
-			req: {
-				limit: 10,
-				page: 1,
-				keyword: '',
-				level: 0,
-				type: 2,
-			},
-		});
-	}, [getQuestionsReq]);
+		// getQuestionsReq({
+		// 	req: {
+		// 		limit: 10,
+		// 		page: 1,
+		// 		keyword: '',
+		// 		level: 0,
+		// 		type: 2,
+		// 	},
+		// });
+		getSubjectsReq({});
+	}, [getSubjectsReq]);
 
 	const loadingCreateExam = createExamStatus === 'FETCHING';
+	const loadingGetSubjects = getSubjectsExamStatus === 'FETCHING';
 	const loadingGetQuestions = getQuestionsForExamStatus === 'FETCHING';
 
 	return (
@@ -57,6 +67,8 @@ function CreateExamComponent(props) {
 								createExamReq={createExamReq}
 								questions={questions}
 								getQuestionsReq={getQuestionsReq}
+								subjects={subjects}
+								loadingGetSubjects={loadingGetSubjects}
 							/>
 						</Card>
 					</Col>
@@ -69,19 +81,25 @@ function CreateExamComponent(props) {
 CreateExamComponent.propTypes = {
 	createExamStatus: PropTypes.string.isRequired,
 	getQuestionsForExamStatus: PropTypes.string.isRequired,
-	questions: PropTypes.string.isRequired,
+	getSubjectsExamStatus: PropTypes.string.isRequired,
+	questions: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 	createExamReq: PropTypes.func.isRequired,
 	getQuestionsReq: PropTypes.func.isRequired,
+	getSubjectsReq: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
 	createExamStatus: state.examPage.createExamStatus,
 	getQuestionsStatus: state.examPage.getQuestionsForExamStatus,
+	getSubjectsExamStatus: state.examPage.getSubjectsExamStatus,
 	questions: state.examPage.questions,
+	subjects: state.examPage.subjects,
 });
 
 const mapDispatchToProps = {
 	createExamReq: ExamAction.createExamRequest,
+	getSubjectsReq: ExamAction.getSubjectsForExamRequest,
 	getQuestionsReq: ExamAction.getQuestionsForExamRequest,
 };
 

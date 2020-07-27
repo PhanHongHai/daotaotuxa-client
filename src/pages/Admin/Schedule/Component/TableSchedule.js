@@ -28,14 +28,14 @@ function TableSchedule(props) {
 		{
 			title: 'Mã môn học',
 			dataIndex: 'subjectID',
-			key:'tag',
-			render: value => `#${value.tag}`,
+			key: 'tag',
+			render: value => <Tag style={{fontSize:14}}>#{value.tag} </Tag>,
 		},
 		{
 			title: 'Môn học',
 			dataIndex: 'subjectID',
-			key:'name',
-			render: value => value.name,
+			key: 'name',
+			render: value => <Tag style={{fontSize:14}}>#{value.name} </Tag>,
 		},
 		{
 			title: 'Ngày Kiểm Tra',
@@ -53,7 +53,7 @@ function TableSchedule(props) {
 			title: 'Thời gian làm bài',
 			dataIndex: 'timeRange',
 			key: 'timeRange',
-			render : value => `${value} phút`
+			render: value => `${value} phút`,
 		},
 		{
 			title: 'Trạng Thái',

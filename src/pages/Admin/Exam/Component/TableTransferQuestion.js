@@ -4,7 +4,7 @@ import { ConfigProvider, Table, Icon, Tag } from 'antd';
 import LoadingCustom from '../../../../components/LoadingCustom';
 
 function TableTransferQuestion(props) {
-	const { data, rowSelection, loading, pagination } = props;
+	const { data, rowSelection, loading, pagination ,handleChangePage} = props;
 
 	const columns = [
 		{
@@ -12,14 +12,6 @@ function TableTransferQuestion(props) {
 			dataIndex: 'content',
 			key: 'content',
 			render: value => <span className="text" dangerouslySetInnerHTML={{ __html: value }} />,
-		},
-		{
-			title: 'Môn học liên quan',
-			dataIndex: 'tag',
-			key: 'tag',
-			render: value => {
-				if (value && value.length > 0) return value.map(ele => <Tag key={ele}> {ele} </Tag>);
-			},
 		},
 		{
 			title: 'Trạng thái',
@@ -65,6 +57,7 @@ function TableTransferQuestion(props) {
 				columns={columns}
 				size="small"
 				scroll={{ x: true }}
+				onChange={handleChangePage}
 				loading={{
 					spinning: loading,
 					indicator: <LoadingCustom margin={0} />,
@@ -83,6 +76,7 @@ function TableTransferQuestion(props) {
 TableTransferQuestion.propTypes = {
 	data: PropTypes.instanceOf(Array).isRequired,
 	rowSelection: PropTypes.func.isRequired,
+	handleChangePage: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
 };

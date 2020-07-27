@@ -212,7 +212,7 @@ function SubjectComponent(props) {
 											<ul>
 												<li>
 													<Avatar shape="square" size="small" src={IconPdf} />
-													&ensp; {item.totalFile} tệp
+													&ensp; {item.totalFile && item.totalFile > 0 ? item.totalFile : 0} tệp
 												</li>
 											</ul>
 										</div>

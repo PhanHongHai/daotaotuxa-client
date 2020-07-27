@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { Row, Col, Card, Button, Spin, Modal, BackTop } from 'antd';
 
-import customMess from '../../../../utils/customMessage';
+import customMessage from '../../../../utils/customMessage';
+import randomSort from '../../../../utils/randomSort';
 import ExamAction from '../Action';
 import BreadCrumb from '../../../../components/BreadCrumb';
 import LoadingCustom from '../../../../components/LoadingCustom';
@@ -67,7 +68,7 @@ function DetailExam(props) {
 					cb: res => {
 						if (res.isDeleted) {
 							history.push('/admin/quan-ly-de-thi');
-							customMess('notification', 'success', res.msg);
+							customMessage('notification', 'success', res.msg);
 						}
 					},
 				});
@@ -77,7 +78,20 @@ function DetailExam(props) {
 			cancelText: 'Hủy',
 		});
 	};
-
+	const sortAndUpdateQuestion = async arr =>{
+		const arrSorted= await randomSort(arr);
+		updateExamReq({
+			req:{
+				questions:arrSorted
+			},
+			ID,
+			cb: res => {
+				if (res && res.isUpdated) {
+					customMessage('notification', 'success', 'Sắp xếp câu hỏi thành công');
+				}
+			},
+		});
+	};
 	return (
 		<div>
 			<div className="phh-page-header">
@@ -106,13 +120,16 @@ function DetailExam(props) {
 									)}
 
 									<Button
-										icon="edit"
+										icon="plus"
 										onClick={() => {
 											setIsUpdate(false);
 											setVisiblePickQuestions(true);
 										}}
 									>
 										Thêm câu hỏi
+									</Button>
+									<Button icon="plus" className="ml-5">
+										Thêm câu hỏi tự động
 									</Button>
 									{isShowAnswer ? (
 										<Button icon="eye" className="ml-5" onClick={() => setIsShowAnswer(false)}>
@@ -123,6 +140,10 @@ function DetailExam(props) {
 											Hiển thị đáp án
 										</Button>
 									)}
+
+									<Button icon="retweet" className="ml-5" onClick={() => sortAndUpdateQuestion(detailExam && detailExam.questions)}>
+										Trộn câu hỏi
+									</Button>
 									<Button loading={loadingRemoveExam} icon="delete" className="ml-5" onClick={handleRemoveExam}>
 										Xóa
 									</Button>

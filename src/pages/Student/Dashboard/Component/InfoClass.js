@@ -19,13 +19,25 @@ function InfoClass(props) {
 	const renderStatusClass = value => {
 		switch (value) {
 			case 'OP':
-				return <Tag color="#1bb394">Chờ Khai giảng</Tag>;
+				return (
+					<Tag style={{ fontSize: 14 }} color="#1bb394">
+						Chờ Khai giảng
+					</Tag>
+				);
 			case 'HP':
-				return <Tag color="blue">Đang diễn ra</Tag>;
+				return (
+					<Tag style={{ fontSize: 14 }} color="blue">
+						Đang diễn ra
+					</Tag>
+				);
 			case 'END':
-				return <Tag color="blue">Kết thúc</Tag>;
+				return (
+					<Tag style={{ fontSize: 14 }} color="blue">
+						Kết thúc
+					</Tag>
+				);
 			default:
-				return <Tag>Chưa tham gia vào lớp học</Tag>;
+				return <Tag style={{ fontSize: 14 }}>Chưa tham gia vào lớp học</Tag>;
 		}
 	};
 	return (

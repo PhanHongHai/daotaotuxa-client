@@ -124,7 +124,7 @@ function ModalPickQuestion(props) {
 		if (examData.questions && examData.questions.length > 0) arrQuestion = await getIDQuestions(examData.questions);
 		getQuestionsReq({
 			req: {
-				limit: Number(page.limit),
+				limit: Number(page.pageSize),
 				page: Number(page.current),
 				keyword,
 				level: levelPick,
@@ -137,10 +137,8 @@ function ModalPickQuestion(props) {
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			if (selectedRows.length > 0) {
-				const arrAnswer = [];
-				selectedRows.forEach(ele => arrAnswer.push(ele._id));
-				setQuestionData(arrAnswer);
-			} else setQuestionData(selectedRows);
+				setQuestionData(selectedRowKeys);
+			} else setQuestionData(selectedRowKeys);
 		},
 	};
 	const handleUpdateQuestions = () => {

@@ -38,8 +38,9 @@ function ProgressComponent(props) {
 		const rangeStartAt = moment.utc(dateRange && dateRange.startAt);
 		const rangeEndAt = moment.utc(dateRange && dateRange.endAt);
 		if (dateArr && dateArr.length > 0) {
-			const dayCurrent = moment.utc();
-			const checkDay = dateArr.find(ele => moment.utc(ele.date) === dayCurrent);
+			const dayCurrent = moment().format('DD-MM-YYYY');
+			const checkDay = dateArr.find(ele => ele.date === dayCurrent);
+
 			if (!checkDay)
 				return (
 					<Button

@@ -15,6 +15,7 @@ const initialState = {
 	removeExamStatus: STATUS.DEFAULT,
 	authPasswordStatus: STATUS.DEFAULT,
 	getTotalQuestionStatus: STATUS.DEFAULT,
+	getSubjectsExamStatus: STATUS.DEFAULT,
 	questions: {
 		data: [],
 		pagination: {},
@@ -27,6 +28,7 @@ const initialState = {
 		data: [],
 		pagination: {},
 	},
+	subjects: [],
 	detailExam: {},
 	totalQuestion: {},
 };
@@ -82,6 +84,29 @@ const reducer = [
 		reducer: state => ({
 			...state,
 			getQuestionsForUpdateExamStatus: STATUS.FAILURE,
+		}),
+	},
+	// active when call action get subjects for exam
+	{
+		on: Action.getSubjectsForExamRequest,
+		reducer: state => ({
+			...state,
+			getSubjectsExamStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getSubjectsForExamSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getSubjectsExamStatus: STATUS.SUCCESS,
+			subjects: action.payload,
+		}),
+	},
+	{
+		on: Action.getSubjectsForExamFailure,
+		reducer: state => ({
+			...state,
+			getSubjectsExamStatus: STATUS.FAILURE,
 		}),
 	},
 	// active when call action get total question

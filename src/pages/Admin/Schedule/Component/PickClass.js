@@ -16,7 +16,7 @@ function PickClass(props) {
 		setVisibleBtnStep2,
 		selectedClass,
 		setSelectedClass,
-		setClassNameValue
+		setClassNameValue,
 	} = props;
 	const refInput = useRef(null);
 	const [keyword, setKeyword] = useState('');
@@ -27,8 +27,14 @@ function PickClass(props) {
 		},
 		{
 			title: 'Mã lớp',
-			dataIndex: 'name',
+			dataIndex: 'tag',
 			key: 'tag',
+			render: value => <Tag style={{ fontSize: 14 }}>#{value} </Tag>,
+		},
+		{
+			title: 'Tên lớp',
+			dataIndex: 'name',
+			key: 'name',
 			render: value => (value.length > 20 ? <Tooltip title={value}>{value.slice(0, 20)}... </Tooltip> : value),
 		},
 		{
@@ -75,9 +81,7 @@ function PickClass(props) {
 				setVisibleBtnStep2(true);
 				setSelectedClass(selectedRowKeys);
 				setClassNameValue(selectedRows);
-				const arrClass = [];
-				selectedRows.forEach(ele => arrClass.push(ele._id));
-				setClassData(arrClass);
+				setClassData(selectedRowKeys);
 			} else {
 				setClassData([]);
 				setSelectedClass([]);
@@ -92,7 +96,7 @@ function PickClass(props) {
 				limit: Number(page.limit),
 				page: Number(page.current),
 				keyword,
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 			},
 		});
 	};
@@ -104,7 +108,7 @@ function PickClass(props) {
 				limit: 10,
 				page: 1,
 				keyword: '',
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 			},
 		});
 	};
@@ -115,7 +119,7 @@ function PickClass(props) {
 				limit: 10,
 				page: 1,
 				keyword: value,
-				sectorID:sectorID && sectorID[1],
+				sectorID: sectorID && sectorID[1],
 			},
 		});
 	};
