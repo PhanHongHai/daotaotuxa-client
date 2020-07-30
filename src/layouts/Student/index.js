@@ -3,10 +3,7 @@ import { useHistory, Switch, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { message, Row, Col, Button, Menu, Dropdown, Icon } from 'antd';
-import socketIOClient from 'socket.io-client';
 
-// other
-import { HOST_SERVER } from '../../constands/Other';
 import routes from './_nav';
 import AuthorizedRoute from '../../utils/authorized';
 import { LayoutCustom, ContentCustom, StudentLayout, HeaderLayout, MenuStyle } from './Layout.styled';
@@ -26,16 +23,6 @@ function LayoutStudent(props) {
 	const history = useHistory();
 
 	useEffect(() => {
-		const token = localStorage.getItem('token');
-		const socket = socketIOClient(HOST_SERVER);
-		socket
-			.emit('authenticate', { token })
-			.on('authenticated', () => {
-			})
-			.on('unauthorized', msg => {
-				console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
-				throw new Error(msg.data.type);
-			});
 		getProfileReq({
 			req: {},
 			cb: res => {

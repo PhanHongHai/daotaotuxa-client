@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
 	detailOfClass: state.classOfStudentPage.detailOfClass,
 	progressOfStudent: state.classOfStudentPage.progressOfStudent,
 	scheduleOfClass: state.classOfStudentPage.scheduleOfClass,
+	userData:state.loginPage.profileUser,
 });
 
 const mapDispatchToProps = {

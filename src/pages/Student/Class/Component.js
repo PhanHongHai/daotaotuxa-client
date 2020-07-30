@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Breadcrumb, Typography } from 'antd';
+import { Row, Col, Breadcrumb, Typography, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import { useParams, Link } from 'react-router-dom';
-
+import { useParams, Link, useHistory } from 'react-router-dom';
+import socketIOClient from 'socket.io-client';
+// other
+import { HOST_SERVER } from '../../../constands/Other';
 import InfoClass from './Component/InfoClass';
 
 import ModalStudent from './Component/ModalStudentList';
@@ -74,12 +76,40 @@ function ClassStudent(props) {
 		getScheduleOfClassStatus,
 	} = props;
 	const { ID } = useParams();
+	const history = useHistory();
+
 	const [visibleModalStudent, setVisibleModalStudent] = useState(false);
 	const [visibleModalSubject, setVisibleModalSubject] = useState(false);
 	const [visibleModalQuickTest, setVisibleModalQuickTest] = useState(false);
 	const [visibleModalPoint, setVisibleModalPoint] = useState(false);
 	const [visibleModalSchedule, setVisibleModalSchedule] = useState(false);
 
+	const countDown = () => {
+		let secondsToGo = 10;
+		const modal = Modal.warn({
+			title: 'Tài khoản này hiện đang trong phiên hoạt động',
+			content: `Đăng xuất trong vòng ${secondsToGo} giây.`,
+			className: 'model-confirm',
+			okText: 'Thoát',
+			onOk: () => {
+				modal.destroy();
+				localStorage.clear();
+				history.push('/hoc-vien');
+			},
+		});
+		const timer = setInterval(() => {
+			secondsToGo -= 1;
+			modal.update({
+				content: `Đăng xuất trong vòng ${secondsToGo} giây.`,
+			});
+		}, 1000);
+		setTimeout(() => {
+			clearInterval(timer);
+			modal.destroy();
+			localStorage.clear();
+			history.push('/hoc-vien');
+		}, secondsToGo * 1000);
+	};
 
 	useEffect(() => {
 		getDetailOfClassReq({});
@@ -92,6 +122,21 @@ function ClassStudent(props) {
 			},
 		});
 		getProgressReq({});
+		const token = localStorage.getItem('token');
+		const socket = socketIOClient(HOST_SERVER);
+		socket.on('connect', () => {
+			socket
+				.emit('authenticate', { token })
+				.on('authenticated', () => {
+					socket.on('client-was-active', data => {
+						if (data) countDown();
+					});
+					socket.emit('send-class-id',ID);
+				})
+				.on('unauthorized', msg => {
+					console.log(msg);
+				});
+		});
 	}, [ID]);
 
 	const loadingGetSubjects = getSubjectOfClassStatus === 'FETCHING';
@@ -165,7 +210,6 @@ function ClassStudent(props) {
 				visible={visibleModalSchedule}
 				setVisible={setVisibleModalSchedule}
 				classID={ID}
-
 			/>
 		</div>
 	);
