@@ -77,7 +77,7 @@ function ForgotPasswordComponent(props) {
 									Gửi yêu cầu
 								</SubmitButton>
 								<span style={{ float: 'right' }}>
-									Đã có thông tin đăng nhập ? <Link to="/login">Đăng nhập</Link>
+									Đã có thông tin đăng nhập ? <Link to="/">Đăng nhập</Link>
 								</span>
 							</Form.Item>
 						</Col>

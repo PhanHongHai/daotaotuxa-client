@@ -13,7 +13,7 @@ import customMess from '../../../../utils/customMessage';
 const formItemLayout = {
 	labelCol: {
 		xs: { span: 24 },
-		sm: { span:  4},
+		sm: { span: 4 },
 	},
 	wrapperCol: {
 		xs: { span: 24 },
@@ -69,6 +69,13 @@ function FormEdit(props) {
 	return (
 		<Form className="form-custom" {...formItemLayout} onSubmit={handleSubmit}>
 			<Row gutter={16}>
+				<Col xs={24} sm={24} md={24}>
+					<Form.Item label="Mã học viên" labelAlign="left">
+						{getFieldDecorator('email', {
+							initialValue: info && info.tag,
+						})(<Input addonBefore="#" disabled />)}
+					</Form.Item>
+				</Col>
 				<Col xs={24} sm={24} md={24}>
 					<Form.Item label="Email" labelAlign="left">
 						{getFieldDecorator('email', {
@@ -172,7 +179,7 @@ function FormEdit(props) {
 								},
 							],
 						})(
-							<Radio.Group className='radio-custom' onChange={onChangeInput} name="sex">
+							<Radio.Group className="radio-custom" onChange={onChangeInput} name="sex">
 								<Radio value={1}>Nam</Radio>
 								<Radio value={2}>Nữ</Radio>
 							</Radio.Group>,

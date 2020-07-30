@@ -43,7 +43,7 @@ function ModalCreateExamAuto(props) {
 		validateFields((err, values) => {
 			if (!err) {
 				if (values.level1 === 0 && values.level2 === 0 && values.level3 === 0 && values.level4 === 0)
-					customMessage('message', 'error', 'Vui lòng nhập số lượng câu hỏi');
+					customMessage('message', 'error', 'Số lượng câu hỏi không đủ để tạo đề thi');
 				else
 					createReq({
 						req: {

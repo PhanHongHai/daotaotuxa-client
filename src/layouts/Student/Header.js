@@ -12,25 +12,6 @@ function HeaderComponent(props) {
 	const { setCollapsed, collapsed, handleLogout, clientWidth, loadingGet, userData, } = props;
 	const history = useHistory();
 
-	const menu = (
-		<Menu>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-					1st menu item
-				</a>
-			</Menu.Item>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-					2nd menu item
-				</a>
-			</Menu.Item>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-					3rd menu item
-				</a>
-			</Menu.Item>
-		</Menu>
-	);
 
 	return (
 		<HeaderCustom>
@@ -49,11 +30,7 @@ function HeaderComponent(props) {
 
 				<GroupMenuHeader>
 					<p className="text-welcome">Chào mừng đến với Academy HCM</p>
-					<span className="phh-menuNoti">
-						<Dropdown placement="bottomRight" overlay={menu}>
-							<Icon theme="filled" type="bell" />
-						</Dropdown>
-					</span>
+				
 					<span className="phh-menuAcc">
 						<Dropdown
 							placement="bottomCenter"

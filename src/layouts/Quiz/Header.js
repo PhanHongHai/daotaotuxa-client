@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Dropdown, Menu, Avatar, Button } from 'antd';
 
-
+import {useHistory} from 'react-router-dom';
 
 import { HeaderCustom, GroupMenuHeader } from './styled';
 
@@ -10,27 +10,7 @@ import Logo from '../../assets/images/logo-white.png';
 
 function HeaderComponent(props) {
 	const { handleLogout, clientWidth, loadingGet, userData, } = props;
-
-
-	const menu = (
-		<Menu>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-					1st menu item
-				</a>
-			</Menu.Item>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-					2nd menu item
-				</a>
-			</Menu.Item>
-			<Menu.Item>
-				<a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-					3rd menu item
-				</a>
-			</Menu.Item>
-		</Menu>
-	);
+	const history = useHistory();
 
 	return (
 		<HeaderCustom>
@@ -45,19 +25,14 @@ function HeaderComponent(props) {
 
 				<GroupMenuHeader>
 					<p className="text-welcome">Chào mừng đến với Academy HCM</p>
-					<span className="phh-menuNoti">
-						<Dropdown placement="bottomRight" overlay={menu}>
-							<Icon theme="filled" type="bell" />
-						</Dropdown>
-					</span>
-					<span className="phh-menuAcc">
+					<span className="phh-menuAcc  ml-10">
 						<Dropdown
 							placement="bottomCenter"
 							trigger="hover"
 							overlay={
 								<Menu>
 									<Menu.Item>Xin chào! {userData && userData.name}</Menu.Item>
-									<Menu.Item >
+									<Menu.Item onClick={() => history.push('/student/dashboard/thiet-lap')}>
 										<Icon type="user" />
 										Quản lý tài khoản
 									</Menu.Item>

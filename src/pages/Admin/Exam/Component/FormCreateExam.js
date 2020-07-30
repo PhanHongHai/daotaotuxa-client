@@ -202,7 +202,7 @@ function FormCreateExam(props) {
 								{subjects &&
 									subjects.map(ele => (
 										<Select.Option value={ele._id} key={ele._id}>
-											{ele.name}
+											#{ele.tag}&ensp;-&ensp;{ele.name}
 										</Select.Option>
 									))}
 							</Select>,

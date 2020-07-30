@@ -33,11 +33,15 @@ function LoginComponent(props) {
 								case 'partner':
 									history.push('/partner/dashboard');
 									break;
-								case 'teacher':
-									history.push('/teacher/dashboard');
+								// case 'teacher':
+								// 	history.push('/teacher/dashboard');
+								// 	break;
+								case 'student':
+									localStorage.clear();
+									history.push('/hoc-vien');
 									break;
 								default:
-									history.push('/student/dashboard');
+									history.push('/teacher/dashboard');
 									break;
 							}
 							notification.success({

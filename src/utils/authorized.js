@@ -11,7 +11,7 @@ function AuthorizedRoute(props) {
 		<Route
 			{...rest}
 			render={routeProps => {
-				return token ? <Component {...routeProps} /> : <Redirect to={{ pathname: '/login' }} />;
+				return token ? <Component {...routeProps} /> : <Redirect to={{ pathname: '/hoc-vien' }} />;
 			}}
 		/>
 	) : (

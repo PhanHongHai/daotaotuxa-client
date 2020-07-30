@@ -28,7 +28,7 @@ function LayoutAdmin(props) {
 			cb: res => {
 				if (res.isRedirect) {
 					localStorage.clear();
-					history.push('/login');
+					history.push('/dang-nhap');
 				}
 				if (res.role && res.role !== 'teacher') history.push(`/${res.role}/dashboard`);
 			},
@@ -46,7 +46,7 @@ function LayoutAdmin(props) {
 	};
 	const handleLogout = () => {
 		localStorage.clear();
-		history.push('/login');
+		history.push('/dang-nhap');
 		message.success('Đăng xuất thành công');
 	};
 

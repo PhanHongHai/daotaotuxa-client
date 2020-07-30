@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button, Modal, ConfigProvider, Icon, Tag, Tooltip } from 'antd';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 import ModalEdit from './ModalEdit';
 import customMess from '../../../../utils/customMessage';
@@ -110,6 +111,12 @@ function TableData(props) {
 			dataIndex: 'sex',
 			key: 'sex',
 			render: value => (Number(value) === 1 ? 'Nam' : 'Nữ'),
+		},
+		{
+			title: 'Ngày sinh',
+			dataIndex: 'birthDay',
+			key: 'birth',
+			render: value => (value ? moment(value).format('DD-MM-YYYY') : ''),
 		},
 		{
 			title: 'SĐT',

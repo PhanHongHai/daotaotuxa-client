@@ -15,8 +15,8 @@ function CalendarAttendance(props) {
 
 	const dateCellRender = value => {
 		if (timeKeeping && timeKeeping.length > 0) {
-			return timeKeeping.map(element => {
-				if (moment(value).format('DD-MM-YYYY') === moment(element.date).format('DD-MM-YYYY'))
+			return timeKeeping.map(ele => {
+				if (moment(value).format('DD-MM-YYYY') === ele.date)
 					return <AttendancedDay></AttendancedDay>;
 				return '';
 			});

@@ -14,6 +14,7 @@ const StudentLayout = lazy(() => import('../layouts/Student'));
 const LearningLayout = lazy(() => import('../layouts/Learn'));
 const QuizLayout = lazy(() => import('../layouts/Quiz'));
 const LoginPage = lazy(() => import('../pages/Login/Container'));
+const LoginStudent = lazy(() => import('../pages/Student/Login/Container'));
 const ForgotPassword = lazy(() => import('../pages/ForgotPassword/Container'));
 const ResetPassword = lazy(() => import('../pages/ResetPassword/Container'));
 const ActiveAccount = lazy(() => import('../pages/ActiveAccount/Container'));
@@ -25,7 +26,8 @@ export default function App() {
 		<BrowserRouter>
 			<Suspense fallback={<LoadingCustom margin={20} />}>
 				<Switch>
-					<AuthorizedRoute authority={false} type="none" exact path={['/login', '/']} component={LoginPage} />
+					<AuthorizedRoute authority={false} type="none" exact path={['/hoc-vien', '/']} component={LoginStudent} />
+					<AuthorizedRoute authority={false} type="none" exact path='/dang-nhap' component={LoginPage} />
 					<AuthorizedRoute
 						authority={false}
 						type="none"

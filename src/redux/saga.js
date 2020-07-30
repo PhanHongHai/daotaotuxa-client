@@ -16,6 +16,7 @@ import ScheduleSaga from '../pages/Admin/Schedule/Saga';
 // partner
 import PartnerDashboardSaga from '../pages/Partner/Dashboard/Saga';
 // student
+import LoginStudentSaga from '../pages/Student/Login/Saga';
 import DashboardStudentSaga from '../pages/Student/Dashboard/Saga';
 import ClassStudentSaga from '../pages/Student/Class/Saga';
 // teacher
@@ -49,5 +50,6 @@ export default [
 	...StudentTeacherSaga,
 	...SubjectTeacherSaga,
 	...QuestionTeacherSaga,
-	...ExamTeacherSaga
+	...ExamTeacherSaga,
+	...LoginStudentSaga
 ];

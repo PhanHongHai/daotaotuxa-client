@@ -9,6 +9,14 @@ async function login(req) {
 		return err;
 	}
 }
+async function loginStudent(req) {
+	try {
+		const res = await restful.POST('/api/v1/login-student', req);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 // get info account
 async function getProfile(req) {
 	try {
@@ -184,6 +192,7 @@ async function getAndSearchStudentByPartner(req) {
 
 export default {
 	login,
+	loginStudent,
 	getProfile,
 	getAndSearch,
 	getDetailAccount,
