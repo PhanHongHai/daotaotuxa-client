@@ -127,7 +127,7 @@ function SideBarTime(props) {
 
 SideBarTime.propTypes = {
 	expiryTimestamp: PropTypes.number.isRequired,
-	data: PropTypes.objectOf(PropTypes.object).isRequired,
+	data: PropTypes.objectOf(PropTypes.any).isRequired,
 	setIsShowResult: PropTypes.func.isRequired,
 };
 

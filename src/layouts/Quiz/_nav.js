@@ -1,6 +1,6 @@
 import {lazy} from 'react';
 
-const Quiz= lazy(() => import('../../pages/Student/Quiz/Component'));
+const Quiz= lazy(() => import('../../pages/Student/Quiz/Container'));
 const Lesson= lazy(() => import('../../pages/Student/Class/Page/DetailSubject'));
 
 

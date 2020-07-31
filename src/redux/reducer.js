@@ -21,6 +21,7 @@ import PartnerDashboardReducer from '../pages/Partner/Dashboard/Reducer';
 import LoginStudentReducer from '../pages/Student/Login/Reducer';
 import DashboardStudentReducer from '../pages/Student/Dashboard/Reducer';
 import ClassStudentReducer from '../pages/Student/Class/Reducer';
+import QuizStudentReducer from '../pages/Student/Quiz/Reducer';
 // teacher
 import DashboardTeacherReducer from '../pages/Teacher/Dashboard/Reducer';
 import ClassTeacherReducer from '../pages/Teacher/Class/Reducer';
@@ -54,6 +55,7 @@ const appReducer = combineReducers({
 	...QuestionTeacherReducer,
 	...ExamTeacherReducer,
 	...LoginStudentReducer,
+	...QuizStudentReducer
 });
 
 const intialReducer = appReducer({}, {});

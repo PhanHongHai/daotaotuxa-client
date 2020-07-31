@@ -2,10 +2,11 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useHistory, Switch, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { message, Row, Col, Button, Menu, Dropdown, Icon } from 'antd';
+import { message, Row, Col, Button, Menu, Dropdown, Icon , Modal} from 'antd';
 
 import routes from './_nav';
 import AuthorizedRoute from '../../utils/authorized';
+import {configSocket,getSocket} from '../../socket';
 import { LayoutCustom, ContentCustom, StudentLayout, HeaderLayout, MenuStyle } from './Layout.styled';
 import LoginAction from '../../pages/Login/Action';
 // import Loading from '../utils/loading';
@@ -22,7 +23,38 @@ function LayoutStudent(props) {
 	const [clientWidth, setClientWidth] = useState(window.document.body.clientWidth);
 	const history = useHistory();
 
+	const countDown = () => {
+		let secondsToGo = 10;
+		const modal = Modal.warn({
+			title: 'Tài khoản này hiện đang trong phiên hoạt động',
+			content: `Đăng xuất trong vòng ${secondsToGo} giây.`,
+			className: 'model-confirm',
+			okText: 'Thoát',
+			onOk: () => {
+				modal.destroy();
+				localStorage.clear();
+				history.push('/hoc-vien');
+			},
+		});
+		const timer = setInterval(() => {
+			secondsToGo -= 1;
+			modal.update({
+				content: `Đăng xuất trong vòng ${secondsToGo} giây.`,
+			});
+		}, 1000);
+		setTimeout(() => {
+			clearInterval(timer);
+			modal.destroy();
+			localStorage.clear();
+			history.push('/hoc-vien');
+		}, secondsToGo * 1000);
+	};
+
 	useEffect(() => {
+		configSocket();
+		getSocket().on('client-was-active', data => {
+			if (data) countDown();
+		});
 		getProfileReq({
 			req: {},
 			cb: res => {

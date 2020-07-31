@@ -10,7 +10,7 @@ function TableSchedule(props) {
 	const {
 		scheduleData: { data, pagination },
 		loading,
-		onChangeTable
+		onChangeTable,
 	} = props;
 	const history = useHistory();
 
@@ -51,14 +51,27 @@ function TableSchedule(props) {
 			render: value => `${value} phút`,
 		},
 		{
+			title: 'Đếm ngược',
+			dataIndex: 'dayAt',
+			key: 'countdown',
+			render: value => {
+				if (value)
+					return (
+						<span>
+							{moment(value).fromNow()}
+						</span>
+					);
+			},
+		},
+		{
 			title: 'Trạng Thái',
 			key: 'status',
 			render: row => {
-				if (moment.utc(row.dayAt) < moment().utc()) return <Tag color="silver">Kết thúc</Tag>;
-				if (moment.utc(row.dayAt) === moment().utc()) {
-					if (moment.utc(row.timeAt).format('HH:MM') < moment.utc().format('HH:MM'))
+				if (moment(row.dayAt) < moment()) return <Tag color="silver">Kết thúc</Tag>;
+				if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
+					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM'))
 						return <Tag color="green">Chuẩn bị</Tag>;
-					if (moment.utc(row.timeAt).format('HH:MM') >= moment.utc().format('HH:MM'))
+					if (moment.utc(row.timeAt).format('HH:MM') >= moment.format('HH:MM'))
 						return <Tag color="silver">Kết thúc</Tag>;
 				}
 				return <Tag color="cyan">Chưa diễn ra</Tag>;
