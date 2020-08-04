@@ -26,9 +26,15 @@ function ModalClass(props) {
 		},
 		{
 			title: 'Mã lớp',
-			dataIndex: 'name',
+			dataIndex: 'tag',
 			key: 'tag',
 			render: value => <Tag>#{value} </Tag>,
+		},
+		{
+			title: 'Tên lớp',
+			dataIndex: 'name',
+			key: 'name',
+			render: value => <Tag>{value} </Tag>,
 		},
 
 		{

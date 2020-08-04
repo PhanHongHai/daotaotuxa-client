@@ -7,7 +7,7 @@ import viVN from 'antd/es/locale/vi_VN';
 import 'moment/locale/vi';
 import _ from 'lodash';
 
-
+import { scheduleTitle } from '../../../../constands/Other';
 import ModalPickExam from './ModalPickExam';
 import customMessage from '../../../../utils/customMessage';
 
@@ -28,7 +28,7 @@ const formItemLayout = {
 
 function FormCreateSchedule(props) {
 	const {
-		form: { getFieldDecorator, validateFields,resetFields },
+		form: { getFieldDecorator, validateFields, resetFields },
 		createReq,
 		loading,
 	} = props;
@@ -38,7 +38,7 @@ function FormCreateSchedule(props) {
 	const handleSubmit = e => {
 		e.preventDefault();
 		validateFields((err, values) => {
-			if(_.isEmpty(dataForm))	customMessage('notification', 'warn','Thiếu thông tin');
+			if (_.isEmpty(dataForm)) customMessage('notification', 'warn', 'Thiếu thông tin');
 			if (!err && !_.isEmpty(dataForm)) {
 				createReq({
 					req: {
@@ -113,6 +113,26 @@ function FormCreateSchedule(props) {
 									<Select.Option value={60}>60 phút</Select.Option>
 									<Select.Option value={90}>90 phút</Select.Option>
 									<Select.Option value={120}>120 phút</Select.Option>
+								</Select>,
+							)}
+						</Form.Item>
+					</Col>
+					<Col xs={24} md={12}>
+						<Form.Item label="Loại kiểm tra" labelAlign="left">
+							{getFieldDecorator('type', {
+								rules: [
+									{
+										required: true,
+										message: 'Không được để trống loại kiểm tra',
+									},
+								],
+							})(
+								<Select placeholder="Chọn hình thức kiểm tra">
+									{scheduleTitle.map(ele => (
+										<Select.Option value={ele.key} key={ele.key}>
+											{ele.value}
+										</Select.Option>
+									))}
 								</Select>,
 							)}
 						</Form.Item>

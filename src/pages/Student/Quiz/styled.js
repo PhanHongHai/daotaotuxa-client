@@ -56,9 +56,11 @@ export const QuizStyle = styled.div`
 export const FrameQuestionStyle = styled.div`
 	background-color: #fff;
 	padding: 1em 2em;
+	height: 100vh;
 	.question-item {
 		border-bottom: 1px solid #ece8e8;
 		margin-bottom: 10px;
+		padding: 0 0 3em 0;
 		.question-name {
 			text-align: justify;
 			color: #585858;
@@ -67,6 +69,54 @@ export const FrameQuestionStyle = styled.div`
 	.radio-custom {
 		.ant-radio-wrapper {
 			color: #585858 !important;
+		}
+	}
+	.choice {
+		float: left;
+		display:flex;
+		align-items:center;
+		span {
+			display:inline-block;
+			&:first-child {
+				background: #d4d4d4;
+				height: 40px;
+				text-align: center;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: black;
+				font-weight: 500;
+				padding: 0 1em;
+				margin-right:15px;
+			}
+			&:last-child {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				h2,h1{
+					margin:0 !important;
+				}
+				h2 {
+					&:first-child {
+						color: green;
+						font-weight: bold;
+					}
+					&:last-child {
+						color: red;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+	.group-btn {
+		float: right;
+		.btn-submit {
+			height: 35px !important;
+		}
+		.btn-nexr {
+			height: 35px !important;
+			margin-left: 10px;
 		}
 	}
 `;
@@ -119,6 +169,18 @@ export const SidebarTimeStyle = styled.div`
 		color: black;
 		font-weight: 500;
 		text-align: center;
+	}
+	.info-student {
+		display: flex;
+		align-items: center;
+		padding: 5px 2em;
+		ul {
+			padding: 10px !important;
+			li {
+				list-style: none;
+				text-align: justify;
+			}
+		}
 	}
 	.info-schedule {
 		ul {
@@ -175,37 +237,7 @@ export const SidebarTimeStyle = styled.div`
 			border-color: #4dc3ab !important;
 		}
 	}
-	.choice {
-		span {
-			&:first-child {
-				background: #d4d4d4;
-				width: 100%;
-				height: 40px;
-				text-align: center;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				color: black;
-				font-weight: 500;
-			}
-			&:last-child {
-				width: 100%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				h2 {
-					&:first-child {
-						color: green;
-						font-weight: bold;
-					}
-					&:last-child {
-						color: red;
-						font-weight: bold;
-					}
-				}
-			}
-		}
-	}
+
 	@media only screen and (max-width: 445px) {
 		height: unset !important;
 		box-shadow: 0 2px 1px -1px rgba(48, 64, 62, 0.2), 0 1px 1px 0 rgba(48, 64, 62, 0.14),

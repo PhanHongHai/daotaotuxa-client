@@ -3,6 +3,7 @@ import { message } from 'antd';
 import Redux from '../../../utils/redux';
 import ScheduleApi from '../../../apis/Schedule';
 import ExamApi from '../../../apis/Exam';
+import PointApi from '../../../apis/Point';
 import ScheduleAction from './Action';
 import filterError from '../../../utils/filterError';
 
@@ -25,10 +26,10 @@ function* handleGetScheduleDetail(action) {
 }
 function* handleSubmitTask(action) {
 	try {
-		const { req, scheduleID, cb } = action.payload;
-		const res = yield call(ScheduleApi.getDetailSchedule, { req, ID: scheduleID });
+		const { req, cb } = action.payload;
+		const res = yield call(PointApi.submitTask,req);
 		if (!res.errors) {
-			yield put(ScheduleAction.submitTaskSuccess());
+			yield put(ScheduleAction.submitTaskSuccess(res));
 			if (cb && typeof cb === 'function') yield cb({ isSubmited: true, msg: 'Gửi bài thi thành công' });
 		} else {
 			yield put(ScheduleAction.submitTaskFailure());

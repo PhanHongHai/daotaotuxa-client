@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
   scheduleDetail:state.scheduleStudentPage.scheduleDetail,
   getExamByQuizStatus:state.scheduleStudentPage.getExamByQuizStatus,
   examDetail:state.scheduleStudentPage.examDetail,
+  resultTask:state.scheduleStudentPage.resultTask,
 
 });
 

@@ -3,6 +3,7 @@ import { Result, Button, BackTop, Icon, Spin, Tag } from 'antd';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import 'moment/locale/vi';
 
 import IconQuiz from '../../../assets/images/test.jpg';
 
@@ -13,14 +14,7 @@ import LoadingCustom from '../../../components/LoadingCustom';
 
 import { NotiStyle, QuizStyle } from './styled';
 
-const time = new Date();
-time.setSeconds(time.getSeconds() + 600);
-
-const result = {
-	wrongAnswer: 4,
-	rightAnswer: 6,
-	point: 6,
-};
+moment.locale('vi');
 
 function QuizComponent(props) {
 	const {
@@ -32,10 +26,12 @@ function QuizComponent(props) {
 		getExamByQuizStatus,
 		examDetail,
 		getExamReq,
+		resultTask
 	} = props;
 
 	const [isStart, setIsStart] = useState(false);
 	const [isShowResult, setIsShowResult] = useState(false);
+	const [dataChoice, setDataChoice] = useState([]);
 	const { ID } = useParams();
 
 	useEffect(() => {
@@ -50,28 +46,49 @@ function QuizComponent(props) {
 		getExamReq({ ID: id });
 		setIsStart(true);
 	};
-
+	const handleSubmitTask = () => {
+		submitTaskReq({
+			req: {
+				scheduleID:ID,
+				examID:scheduleDetail.examID && scheduleDetail.examID._id,
+				subjectID:scheduleDetail.subjectID && scheduleDetail.subjectID._id,
+				answers: dataChoice,
+			},
+			cb: res => {
+				if (res && res.isSubmited) {
+					setIsShowResult(true);
+				}
+			},
+		});
+	};
 	const renderContent = () => {
 		if (isStart && !isShowResult) {
 			return (
 				<div className="quiz-content">
 					<div className="quiz-exam">
-						<FrameQuestion loading={loadingGetExam} data={examDetail && examDetail.questions} />
+						<FrameQuestion
+							loading={loadingGetExam}
+							data={examDetail && examDetail.questions}
+							setDataChoice={setDataChoice}
+							dataChoice={dataChoice}
+							submitTaskReq={handleSubmitTask}
+							loadingSubmitTask={loadingSubmitTask}
+						/>
 						<BackTop />
 					</div>
 					<div className="quiz-info">
 						<SideBarTime
 							loading={loadingGetScheduleDetail}
-							setIsShowResult={setIsShowResult}
 							data={scheduleDetail}
-							expiryTimestamp={time}
+							submitTaskReq={handleSubmitTask}
+							loadingSubmitTask={loadingSubmitTask}
 						/>
 					</div>
 				</div>
 			);
 		}
 		if (isShowResult) {
-			return <ResuleQuizStyle info={scheduleDetail} result={result} />;
+			return <ResuleQuizStyle info={scheduleDetail} result={resultTask} />;
 		}
 
 		return (
@@ -132,6 +149,7 @@ QuizComponent.propTypes = {
 	submitTaskReq: PropTypes.func.isRequired,
 	scheduleDetail: PropTypes.objectOf(PropTypes.any).isRequired,
 	examDetail: PropTypes.objectOf(PropTypes.any).isRequired,
+	resultTask: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default QuizComponent;

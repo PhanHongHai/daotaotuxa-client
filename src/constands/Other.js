@@ -55,20 +55,30 @@ export const translateRules = [
 		name: 'Quản lý hồ sơ học viên',
 	},
 ];
-export const color = ['#48c0a8','#7cb9ca', '#83d0c0', '#e2e2e2', '#ededed', '#69b8cb', '#9cdacd', '#a3e1d4', '#b5b8cf'];
+export const color = [
+	'#48c0a8',
+	'#7cb9ca',
+	'#83d0c0',
+	'#e2e2e2',
+	'#ededed',
+	'#69b8cb',
+	'#9cdacd',
+	'#a3e1d4',
+	'#b5b8cf',
+];
 
 export const scheduleTitle = [
 	{
-		key: 'GK',
+		key: 0,
+		value: 'Kiểm tra ngẫu nhiên',
+	},
+	{
+		key: 1,
 		value: 'Kiểm tra giữa kỳ',
 	},
 	{
-		key: 'CK',
+		key: 2,
 		value: 'Kiểm tra cuối kỳ',
-	},
-	{
-		key: 'KT',
-		value: 'Kiểm tra ',
 	},
 ];
 

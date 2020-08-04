@@ -10,6 +10,7 @@ const initialState = {
 	getExamByQuizStatus: STATUS.DEFAULT,
 	scheduleDetail: {},
 	examDetail: {},
+	resultTask: {},
 };
 
 const reducer = [
@@ -73,9 +74,10 @@ const reducer = [
 	},
 	{
 		on: Action.submitTaskSuccess,
-		reducer: state => ({
+		reducer: (state, action) => ({
 			...state,
 			submitTaskStatus: STATUS.SUCCESS,
+			resultTask: action.payload,
 		}),
 	},
 	{

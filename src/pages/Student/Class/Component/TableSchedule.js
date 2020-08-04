@@ -4,6 +4,7 @@ import { ConfigProvider, Icon, Table, Button, Tag } from 'antd';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
+import { getSocket } from '../../../../socket';
 import LoadingCustom from '../../../../components/LoadingCustom';
 
 function TableSchedule(props) {
@@ -14,6 +15,10 @@ function TableSchedule(props) {
 	} = props;
 	const history = useHistory();
 
+	const handleJoinRoomTest = ID => {
+		getSocket().emit('join-room-test', ID);
+		history.push(`/quiz/${ID}`);
+	};
 	const column = [
 		{
 			title: 'Tiêu Đề',
@@ -51,26 +56,12 @@ function TableSchedule(props) {
 			render: value => `${value} phút`,
 		},
 		{
-			title: 'Đếm ngược',
-			dataIndex: 'dayAt',
-			key: 'countdown',
-			render: value => {
-				if (value)
-					return (
-						<span>
-							{moment(value).fromNow()}
-						</span>
-					);
-			},
-		},
-		{
 			title: 'Trạng Thái',
 			key: 'status',
 			render: row => {
 				if (moment(row.dayAt) < moment()) return <Tag color="silver">Kết thúc</Tag>;
 				if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
-					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM'))
-						return <Tag color="green">Chuẩn bị</Tag>;
+					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM')) return <Tag color="green">Chuẩn bị</Tag>;
 					if (moment.utc(row.timeAt).format('HH:MM') >= moment.format('HH:MM'))
 						return <Tag color="silver">Kết thúc</Tag>;
 				}
@@ -80,11 +71,33 @@ function TableSchedule(props) {
 		{
 			title: 'Thao Tác',
 			key: 'actions',
-			render: row => (
-				<Button className="btn" onClick={() => history.push(`/quiz/${row._id}`)}>
-					Vào phòng thi
-				</Button>
-			),
+			render: row => {
+				if (moment(row.dayAt) < moment())
+					return (
+						<Button className="btn" disabled>
+							Phòng thi đã đóng
+						</Button>
+					);
+				if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
+					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM'))
+						return (
+							<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
+								Vào phòng thi
+							</Button>
+						);
+					if (moment.utc(row.timeAt).format('HH:MM') >= moment.format('HH:MM'))
+						return (
+							<Button className="btn" disabled>
+								Phòng thi đã đóng
+							</Button>
+						);
+				}
+				return (
+					<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
+						Vào phòng thi
+					</Button>
+				);
+			},
 		},
 	];
 

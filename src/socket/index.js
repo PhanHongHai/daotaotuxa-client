@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 // other
 import { HOST_SERVER } from '../constands/Other';
 
@@ -24,6 +24,11 @@ export const configSocket = () => {
 	});
 	socket.on('connect', onConnected);
 	socket.on('disconnect', onDisconnect);
+
+	socket.on('join-room-test', data =>{
+		socket.join(data);
+	});
+
 
 	return socket;
 };

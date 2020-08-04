@@ -41,6 +41,11 @@ const { getProgressByStudentRequest, getProgressByStudentSuccess, getProgressByS
 	'GET_PROGRESS_BY_STUDENT',
 );
 
+const { getPointsByStudentRequest, getPointsByStudentSuccess, getPointsByStudentFailure } = createAsyncAction(
+	'getPointsByStudent',
+	'GET_POINTS_BY_STUDENT',
+);
+
 const {
 	getDetailSubjectProgressRequest,
 	getDetailSubjectProgressSuccess,
@@ -100,6 +105,10 @@ const Actions = {
 	getProgressByStudentRequest,
 	getProgressByStudentSuccess,
 	getProgressByStudentFailure,
+
+	getPointsByStudentRequest,
+	getPointsByStudentSuccess,
+	getPointsByStudentFailure,
 
 	createSubjectProgressRequest,
 	createSubjectProgressSuccess,

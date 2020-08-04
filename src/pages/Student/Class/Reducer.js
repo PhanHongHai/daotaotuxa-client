@@ -16,6 +16,7 @@ const initialState = {
 	getProgressByStudentStatus: STATUS.DEFAULT,
 	createSubjectProgressStatus: STATUS.DEFAULT,
 	getScheduleOfClassStatus: STATUS.DEFAULT,
+	getPointsByStudentStatus: STATUS.DEFAULT,
 	detailOfClass: {},
 	infoSubject: {},
 	detailDocument: {},
@@ -36,6 +37,10 @@ const initialState = {
 		pagination: {},
 	},
 	scheduleOfClass: {
+		data: [],
+		pagination: {},
+	},
+	pointsOfStudent: {
 		data: [],
 		pagination: {},
 	},
@@ -253,6 +258,34 @@ const reducer = [
 			return {
 				...state,
 				getDetaiSubjectProgressStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get points by student
+	{
+		on: Action.getPointsByStudentRequest,
+		reducer: state => ({
+			...state,
+			getPointsByStudentStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getPointsByStudentSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getPointsByStudentStatus: STATUS.SUCCESS,
+			pointsOfStudent: {
+				data: action.payload.docs,
+				pagination: action.payload,
+			},
+		}),
+	},
+	{
+		on: Action.getPointsByStudentFailure,
+		reducer: state => {
+			return {
+				...state,
+				getPointsByStudentStatus: STATUS.FAILURE,
 			};
 		},
 	},

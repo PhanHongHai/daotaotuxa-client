@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
+import { scheduleTitle } from '../../../../constands/Other';
 
 function TableSchedule(props) {
 	const {
@@ -26,16 +27,26 @@ function TableSchedule(props) {
 			key: 'title',
 		},
 		{
+			title: 'Loại',
+			dataIndex: 'type',
+			key: 'type',
+			render: value => {
+				const result = scheduleTitle.find(ele => ele.key === value);
+				if (result) return result.value;
+				return 'Không xác định';
+			},
+		},
+		{
 			title: 'Mã môn học',
 			dataIndex: 'subjectID',
 			key: 'tag',
-			render: value => <Tag style={{fontSize:14}}>#{value.tag} </Tag>,
+			render: value => <Tag style={{ fontSize: 14 }}>#{value.tag} </Tag>,
 		},
 		{
 			title: 'Môn học',
 			dataIndex: 'subjectID',
 			key: 'name',
-			render: value => <Tag style={{fontSize:14}}>#{value.name} </Tag>,
+			render: value => <Tag style={{ fontSize: 14 }}>{value.name} </Tag>,
 		},
 		{
 			title: 'Ngày Kiểm Tra',

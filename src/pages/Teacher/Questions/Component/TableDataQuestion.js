@@ -51,9 +51,7 @@ function TableDataQuestion(props) {
 			title: 'Trạng thái',
 			dataIndex: 'type',
 			key: 'type',
-			render: value => {
-				return <Switch checkedChildren="Công khai" unCheckedChildren="Riêng tư" checked={value} />;
-			},
+			render: value => value === 1 ? 'Riêng Tư' : 'Công khai',
 		},
 		{
 			title: 'Thao tác',
