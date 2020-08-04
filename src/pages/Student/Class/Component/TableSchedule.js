@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 
 import { getSocket } from '../../../../socket';
 import LoadingCustom from '../../../../components/LoadingCustom';
+import { scheduleTitle } from '../../../../constands/Other';
 
 function TableSchedule(props) {
 	const {
@@ -21,9 +22,14 @@ function TableSchedule(props) {
 	};
 	const column = [
 		{
-			title: 'Tiêu Đề',
-			dataIndex: 'title',
-			key: 'title',
+			title: 'Nội dung',
+			dataIndex: 'type',
+			key: 'type',
+			render: value => {
+				const result = scheduleTitle.find(ele => ele.key === value);
+				if (result) return result.value;
+				return 'Không xác định';
+			},
 		},
 		{
 			title: 'Mã môn học',
@@ -55,46 +61,51 @@ function TableSchedule(props) {
 			key: 'timeRange',
 			render: value => `${value} phút`,
 		},
-		{
-			title: 'Trạng Thái',
-			key: 'status',
-			render: row => {
-				if (moment(row.dayAt) < moment()) return <Tag color="silver">Kết thúc</Tag>;
-				if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
-					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM')) return <Tag color="green">Chuẩn bị</Tag>;
-					if (moment.utc(row.timeAt).format('HH:MM') >= moment.format('HH:MM'))
-						return <Tag color="silver">Kết thúc</Tag>;
-				}
-				return <Tag color="cyan">Chưa diễn ra</Tag>;
-			},
-		},
+		// {
+		// 	title: 'Trạng Thái',
+		// 	key: 'status',
+		// 	render: row => {
+		// 		if (moment(row.dayAt) < moment()) return <Tag color="silver">Kết thúc</Tag>;
+		// 		if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
+		// 			if (moment(row.timeAt).isBefore(moment)) return <Tag color="green">Chuẩn bị</Tag>;
+		// 			if (moment(row.timeAt).format('HH:mm') >= moment.format('HH:mm'))
+		// 				return <Tag color="silver">Kết thúc</Tag>;
+		// 		}
+		// 		return <Tag color="cyan">Chưa diễn ra</Tag>;
+		// 	},
+		// },
 		{
 			title: 'Thao Tác',
 			key: 'actions',
 			render: row => {
-				if (moment(row.dayAt) < moment())
-					return (
-						<Button className="btn" disabled>
-							Phòng thi đã đóng
-						</Button>
-					);
 				if (moment(row.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
-					if (moment(row.timeAt).format('HH:MM') < moment.format('HH:MM'))
-						return (
-							<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
-								Vào phòng thi
-							</Button>
-						);
-					if (moment.utc(row.timeAt).format('HH:MM') >= moment.format('HH:MM'))
-						return (
-							<Button className="btn" disabled>
-								Phòng thi đã đóng
-							</Button>
-						);
+					const timeEnd = moment(row.timeAt).add(row.timeRange, 'minute');
+					const hourTimeAt = moment(row.timeAt).hour();
+					const minuteTimeAt = moment(row.timeAt).minute();
+					const hourTimeEnd = moment(timeEnd, 'HH:mm').hour();
+					const minuteTimeEnd = moment(timeEnd, 'HH:mm').minute();
+					const hourCurrent = moment().hour();
+					const minuteCurrent = moment().minute();
+					if (hourCurrent >= hourTimeAt && hourCurrent < hourTimeEnd) {
+						if (minuteCurrent >= minuteTimeAt)
+							return (
+								<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
+									Vào phòng thi
+								</Button>
+							);
+					} else if (hourCurrent === hourTimeEnd) {
+						if (minuteCurrent <= minuteTimeEnd) {
+							return (
+								<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
+									Vào phòng thi
+								</Button>
+							);
+						}
+					}
 				}
 				return (
-					<Button className="btn" onClick={() => handleJoinRoomTest(row._id)}>
-						Vào phòng thi
+					<Button className="btn" disabled>
+						Phòng thi đã đóng
 					</Button>
 				);
 			},

@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfigProvider, Icon, Table } from 'antd';
-
+import { ConfigProvider, Icon, Table, Tag } from 'antd';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 
 function TablePoint(props) {
-	const { data } = props;
+	const {
+		points: { data, pagination },
+		loading,
+		onChangePage,
+	} = props;
 	const column = [
 		{
 			title: '#',
@@ -15,33 +18,43 @@ function TablePoint(props) {
 		},
 		{
 			title: 'Mã môn học',
-			dataIndex: 'tag',
+			dataIndex: 'subjectID.tag',
 			key: 'tag',
+			render: value => <Tag>#{value} </Tag>,
 		},
 		{
 			title: 'Tên môn học',
-			dataIndex: 'name',
+			dataIndex: 'subjectID.name',
 			key: 'name',
+			render: value => <Tag>{value} </Tag>,
 		},
 		{
-			title: 'Điểm quá trình',
-			dataIndex: 'pointProcess',
-			key: 'pointProcess',
-		},
-		{
-			title: 'Điểm giữa kỳ',
+			title: 'Điểm giữa kỳ (30%)',
 			dataIndex: 'pointMiddle',
 			key: 'pointMiddle',
+			render: value => {
+				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
+				return <span style={{ color: 'green' }}>{value} </span>;
+			},
 		},
 		{
-			title: 'Điểm cuối kỳ',
+			title: 'Điểm cuối kỳ (70%)',
 			dataIndex: 'pointLast',
 			key: 'pointLast',
+			render: value => {
+				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
+				return <span style={{ color: 'green' }}>{value} </span>;
+			},
 		},
-	
-	
-	
-		
+		{
+			title: 'Điểm tổng kết',
+			dataIndex: 'pointTotal',
+			key: 'pointTotal',
+			render: value => {
+				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
+				return <span style={{ color: 'green' }}>{value} </span>;
+			},
+		},
 	];
 
 	return (
@@ -54,23 +67,32 @@ function TablePoint(props) {
 			)}
 		>
 			<Table
+				bordered
 				className="phh-table"
 				dataSource={data}
 				columns={column}
 				rowKey={ele => ele._id}
 				scroll={{ x: true }}
+				onChange={onChangePage}
 				loading={{
-					spinning: false,
+					spinning: loading,
 					indicator: <LoadingCustom />,
 				}}
-				pagination={{}}
+				pagination={{
+					current: pagination.page && Number(pagination.page),
+					total: pagination.total,
+					pageSize: pagination.limit && Number(pagination.limit),
+					defaultCurrent: pagination.page && Number(pagination.page),
+				}}
 			/>
 		</ConfigProvider>
 	);
 }
 
 TablePoint.propTypes = {
-	data: PropTypes.instanceOf(Array).isRequired,
+	points: PropTypes.instanceOf(Array).isRequired,
+	loading: PropTypes.bool.isRequired,
+	onChangePage: PropTypes.func.isRequired,
 };
 
 export default TablePoint;

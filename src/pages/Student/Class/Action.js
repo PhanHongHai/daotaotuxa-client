@@ -69,6 +69,12 @@ const {
 	getScheduleOfClassByIDFailure,
 } = createAsyncAction('getScheduleOfClassByID', 'GET_SCHEDULE_OF_CLASS_BY_ID');
 
+const {
+	getLogsPointByStudentRequest,
+	getLogsPointByStudentSuccess,
+	getLogsPointByStudentFailure,
+} = createAsyncAction('getLogsPointByStudent', 'GET_LOGS_POINT_BY_STUDENT');
+
 const Actions = {
 	getDetailOfClassByStudentIDRequest,
 	getDetailOfClassByStudentIDSuccess,
@@ -117,6 +123,10 @@ const Actions = {
 	getScheduleOfClassByIDRequest,
 	getScheduleOfClassByIDSuccess,
 	getScheduleOfClassByIDFailure,
+
+	getLogsPointByStudentRequest,
+	getLogsPointByStudentSuccess,
+	getLogsPointByStudentFailure,
 };
 
 export default Actions;

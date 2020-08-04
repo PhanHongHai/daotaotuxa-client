@@ -6,6 +6,8 @@ import ClassApi from '../../../apis/Class';
 import SubjectApi from '../../../apis/Subject';
 import DocumentApi from '../../../apis/Document';
 import ScheduleApi from '../../../apis/Schedule';
+import PointApi from '../../../apis/Point';
+import LogPointApi from '../../../apis/LogPoint';
 import SubjectProgressApi from '../../../apis/SubjectProgress';
 import filterError from '../../../utils/filterError';
 
@@ -137,6 +139,21 @@ function* handleGetSubjectProgressByStudent() {
 	}
 }
 
+function* handleGetPointsOfStudent() {
+	try {
+		const res = yield call(PointApi.getPoinByStudent);
+		if (!res.errors) {
+			yield put(Action.getPointsByStudentSuccess(res));
+		} else {
+			yield put(Action.getPointsByStudentFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getPointsByStudentFailure());
+		message.error('Lấy thông tin điểm không thành công ! Xin thử lại');
+	}
+}
+
 function* handleGetDetailSubjectProgress(action) {
 	try {
 		const { req } = action.payload;
@@ -183,6 +200,21 @@ function* handleGetScheduleOfClassByID(action) {
 	} catch (error) {
 		yield put(Action.getScheduleOfClassByIDFailure());
 		message.error('Lấy danh sách lịch thi không thành công ! Xin thử lại');
+	}
+}
+function* handleGetLogsPointByStudent(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(LogPointApi.getLogPoinByStudent, req);
+		if (!res.errors) {
+			yield put(Action.getLogsPointByStudentSuccess(res));
+		} else {
+			yield put(Action.getLogsPointByStudentFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getLogsPointByStudentFailure());
+		message.error('Lấy danh sách lịch sử thi không thành công ! Xin thử lại');
 	}
 }
 
@@ -238,6 +270,14 @@ const getScheduleOfClassByIDSaga = {
 	on: Action.getScheduleOfClassByIDRequest,
 	worker: handleGetScheduleOfClassByID,
 };
+const getPointsByStudentSaga = {
+	on: Action.getPointsByStudentRequest,
+	worker: handleGetPointsOfStudent,
+};
+const getLogsPointByStudentSaga = {
+	on: Action.getLogsPointByStudentRequest,
+	worker: handleGetLogsPointByStudent,
+};
 
 export default createSagas([
 	getDetailOfClassByStudentIDSaga,
@@ -251,4 +291,6 @@ export default createSagas([
 	createSubjectProgressSaga,
 	getProgressByStudentSaga,
 	getScheduleOfClassByIDSaga,
+	getPointsByStudentSaga,
+	getLogsPointByStudentSaga
 ]);

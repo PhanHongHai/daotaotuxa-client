@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Breadcrumb, Typography,  } from 'antd';
+import { Row, Col, Breadcrumb, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { useParams, Link,  } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import InfoClass from './Component/InfoClass';
 
@@ -10,50 +10,9 @@ import ModalSubject from './Component/ModalSubjectList';
 import ModalQuickTest from './Component/ModalQuickTest';
 import ModalPoint from './Component/ModalPoint';
 import ModalSchedule from './Component/ModalSchedule';
+import ModalHistoryTest from './Component/ModalHistoryTest';
 
 const { Title } = Typography;
-const dataPoint = [
-	{
-		_id: 1,
-		tag: '#343344',
-		name: 'Lập trình web',
-		pointProcess: 6,
-		pointMiddle: 8,
-		pointLast: 9,
-	},
-	{
-		_id: 2,
-		tag: '#343344',
-		name: 'Ngoại ngữ chuyên ngành',
-		pointProcess: 6,
-		pointMiddle: 8,
-		pointLast: 9,
-	},
-	{
-		_id: 3,
-		tag: '#343344',
-		name: 'Hệ thống thông tin',
-		pointProcess: 6,
-		pointMiddle: 8,
-		pointLast: 9,
-	},
-	{
-		_id: 4,
-		tag: '#332344',
-		name: 'Toán đại cương',
-		pointProcess: 6,
-		pointMiddle: 8,
-		pointLast: 9,
-	},
-	{
-		_id: 5,
-		tag: '#335544',
-		name: 'Vật lý đại cương',
-		pointProcess: 6,
-		pointMiddle: 8,
-		pointLast: 9,
-	},
-];
 
 function ClassStudent(props) {
 	const {
@@ -62,16 +21,22 @@ function ClassStudent(props) {
 		getDetailOfClassReq,
 		getProgressReq,
 		getScheduleReq,
+		getPointsReq,
+		getLogsPointReq,
 		studentsClass,
 		subjectsClass,
 		progressOfStudent,
 		detailOfClass: { countStudent, infoTeacher, infoClass },
+		pointsOfStudent,
 		scheduleOfClass,
+		logsPoint,
 		getSubjectOfClassStatus,
 		getStudentsOfClassStatus,
 		getDetailOfClassByStudentIDStatus,
 		getProgressByStudentStatus,
 		getScheduleOfClassStatus,
+		getPointsByStudentStatus,
+		getLogsPointByStudentStatus,
 	} = props;
 	const { ID } = useParams();
 
@@ -80,6 +45,7 @@ function ClassStudent(props) {
 	const [visibleModalQuickTest, setVisibleModalQuickTest] = useState(false);
 	const [visibleModalPoint, setVisibleModalPoint] = useState(false);
 	const [visibleModalSchedule, setVisibleModalSchedule] = useState(false);
+	const [visibleModalHistoryTest, setVisibleModalHistoryTest] = useState(false);
 
 	useEffect(() => {
 		getDetailOfClassReq({});
@@ -92,13 +58,26 @@ function ClassStudent(props) {
 			},
 		});
 		getProgressReq({});
-	
+		getPointsReq({
+			req: {
+				page: 1,
+				limit: 10,
+			},
+		});
+		getLogsPointReq({
+			req: {
+				page: 1,
+				limit: 10,
+			},
+		});
 	}, [ID]);
 
 	const loadingGetSubjects = getSubjectOfClassStatus === 'FETCHING';
 	const loadingGetStudents = getStudentsOfClassStatus === 'FETCHING';
 	const loadingGetProgressByStudent = getProgressByStudentStatus === 'FETCHING';
 	const loadingGetScheduleOfClass = getScheduleOfClassStatus === 'FETCHING';
+	const loadingGetPointsOfStudent = getPointsByStudentStatus === 'FETCHING';
+	const loadingGetLogPoint = getLogsPointByStudentStatus === 'FETCHING';
 	const loadingGetDetailOfClassByStudent = getDetailOfClassByStudentIDStatus === 'FETCHING';
 
 	return (
@@ -124,6 +103,7 @@ function ClassStudent(props) {
 						openQuickTest={setVisibleModalQuickTest}
 						openPoint={setVisibleModalPoint}
 						openSchedule={setVisibleModalSchedule}
+						openHistory={setVisibleModalHistoryTest}
 					/>
 				</Col>
 				{/* <Col xs={24} md={24} className="mt-5">
@@ -158,7 +138,13 @@ function ClassStudent(props) {
 				getSubjectsReq={getSubjectsOfClassReq}
 				classID={ID}
 			/>
-			<ModalPoint visible={visibleModalPoint} setVisible={setVisibleModalPoint} data={dataPoint} />
+			<ModalPoint
+				visible={visibleModalPoint}
+				setVisible={setVisibleModalPoint}
+				data={pointsOfStudent}
+				loading={loadingGetPointsOfStudent}
+				getPointsReq={getPointsReq}
+			/>
 			<ModalSchedule
 				scheduleData={scheduleOfClass}
 				loadingGet={loadingGetScheduleOfClass}
@@ -166,6 +152,13 @@ function ClassStudent(props) {
 				visible={visibleModalSchedule}
 				setVisible={setVisibleModalSchedule}
 				classID={ID}
+			/>
+			<ModalHistoryTest
+				logsPointData={logsPoint}
+				loading={loadingGetLogPoint}
+				getLogPointReq={getLogsPointReq}
+				visible={visibleModalHistoryTest}
+				setVisible={setVisibleModalHistoryTest}
 			/>
 		</div>
 	);
@@ -177,16 +170,22 @@ ClassStudent.propTypes = {
 	getDetailOfClassReq: PropTypes.func.isRequired,
 	getProgressReq: PropTypes.func.isRequired,
 	getScheduleReq: PropTypes.func.isRequired,
+	getPointsReq: PropTypes.func.isRequired,
+	getLogsPointReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	progressOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 	scheduleOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
+	pointsOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
+	logsPoint: PropTypes.objectOf(PropTypes.any).isRequired,
 	getSubjectOfClassStatus: PropTypes.string.isRequired,
 	getStudentsOfClassStatus: PropTypes.string.isRequired,
 	getDetailOfClassByStudentIDStatus: PropTypes.string.isRequired,
 	getProgressByStudentStatus: PropTypes.string.isRequired,
 	getScheduleOfClassStatus: PropTypes.string.isRequired,
+	getPointsByStudentStatus: PropTypes.string.isRequired,
+	getLogsPointByStudentStatus: PropTypes.string.isRequired,
 };
 
 export default ClassStudent;

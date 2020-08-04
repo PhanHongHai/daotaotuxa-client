@@ -13,7 +13,7 @@ import customMessage from '../../../../utils/customMessage';
 
 const disabledDate = current => {
 	// Can not select days before today and today
-	return current && current < moment().endOf('day');
+	return current && current <= moment().subtract(1, 'day');
 };
 const formItemLayout = {
 	labelCol: {
@@ -25,7 +25,13 @@ const formItemLayout = {
 		sm: { span: 16 },
 	},
 };
-
+const getDisabledHours = () => {
+	const hours = [];
+	for (let i = 0; i < moment().hour(); i++) {
+		hours.push(i);
+	}
+	return hours;
+};
 function FormCreateSchedule(props) {
 	const {
 		form: { getFieldDecorator, validateFields, resetFields },
@@ -95,7 +101,14 @@ function FormCreateSchedule(props) {
 										message: 'Không được để trống tiêu đề',
 									},
 								],
-							})(<TimePicker style={{ width: '100%' }} format="HH:mm" placeholder="Nhập thời gian bắt đầu thi" />)}
+							})(
+								<TimePicker
+									disabledHours={getDisabledHours}
+									style={{ width: '100%' }}
+									format="HH:mm"
+									placeholder="Nhập thời gian bắt đầu thi"
+								/>,
+							)}
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={12}>

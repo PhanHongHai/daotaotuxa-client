@@ -17,6 +17,7 @@ const initialState = {
 	createSubjectProgressStatus: STATUS.DEFAULT,
 	getScheduleOfClassStatus: STATUS.DEFAULT,
 	getPointsByStudentStatus: STATUS.DEFAULT,
+	getLogsPointByStudentStatus: STATUS.DEFAULT,
 	detailOfClass: {},
 	infoSubject: {},
 	detailDocument: {},
@@ -41,6 +42,10 @@ const initialState = {
 		pagination: {},
 	},
 	pointsOfStudent: {
+		data: [],
+		pagination: {},
+	},
+	logsPoint: {
 		data: [],
 		pagination: {},
 	},
@@ -286,6 +291,34 @@ const reducer = [
 			return {
 				...state,
 				getPointsByStudentStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get logs point by student
+	{
+		on: Action.getLogsPointByStudentRequest,
+		reducer: state => ({
+			...state,
+			getLogsPointByStudentStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getLogsPointByStudentSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getLogsPointByStudentStatus: STATUS.SUCCESS,
+			logsPoint: {
+				data: action.payload.docs,
+				pagination: action.payload,
+			},
+		}),
+	},
+	{
+		on: Action.getLogsPointByStudentFailure,
+		reducer: state => {
+			return {
+				...state,
+				getLogsPointByStudentStatus: STATUS.FAILURE,
 			};
 		},
 	},

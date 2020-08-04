@@ -26,7 +26,7 @@ function QuizComponent(props) {
 		getExamByQuizStatus,
 		examDetail,
 		getExamReq,
-		resultTask
+		resultTask,
 	} = props;
 
 	const [isStart, setIsStart] = useState(false);
@@ -49,9 +49,9 @@ function QuizComponent(props) {
 	const handleSubmitTask = () => {
 		submitTaskReq({
 			req: {
-				scheduleID:ID,
-				examID:scheduleDetail.examID && scheduleDetail.examID._id,
-				subjectID:scheduleDetail.subjectID && scheduleDetail.subjectID._id,
+				scheduleID: ID,
+				examID: scheduleDetail.examID && scheduleDetail.examID._id,
+				subjectID: scheduleDetail.subjectID && scheduleDetail.subjectID._id,
 				answers: dataChoice,
 			},
 			cb: res => {
@@ -60,6 +60,46 @@ function QuizComponent(props) {
 				}
 			},
 		});
+	};
+	const renderButtonEvent = data => {
+		if (moment(data.dayAt).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')) {
+			const timeEnd = moment(data.timeAt).add(data.timeRange, 'minute');
+			const hourTimeAt = moment(data.timeAt).hour();
+			const minuteTimeAt = moment(data.timeAt).minute();
+			const hourTimeEnd = moment(timeEnd, 'HH:mm').hour();
+			const minuteTimeEnd = moment(timeEnd, 'HH:mm').minute();
+			const hourCurrent = moment().hour();
+			const minuteCurrent = moment().minute();
+			if (hourCurrent >= hourTimeAt && hourCurrent < hourTimeEnd) {
+				if (minuteCurrent >= minuteTimeAt)
+					return (
+						<Button
+							loading={loadingGetExam}
+							onClick={() => renderQuestions(scheduleDetail.examID && scheduleDetail.examID._id)}
+							className="btn"
+						>
+							Bắt đầu
+						</Button>
+					);
+			} else if (hourCurrent === hourTimeEnd) {
+				if (minuteCurrent <= minuteTimeEnd) {
+					return (
+						<Button
+							loading={loadingGetExam}
+							onClick={() => renderQuestions(scheduleDetail.examID && scheduleDetail.examID._id)}
+							className="btn"
+						>
+							Bắt đầu
+						</Button>
+					);
+				}
+			}
+		}
+		return (
+			<Button className="btn" disabled>
+				Đang đóng
+			</Button>
+		);
 	};
 	const renderContent = () => {
 		if (isStart && !isShowResult) {
@@ -122,13 +162,7 @@ function QuizComponent(props) {
 									</li>
 								</ul>
 
-								<Button
-									loading={loadingGetExam}
-									onClick={() => renderQuestions(scheduleDetail.examID && scheduleDetail.examID._id)}
-									className="btn"
-								>
-									Bắt đầu
-								</Button>
+								{renderButtonEvent(scheduleDetail)}
 							</div>
 						}
 					/>

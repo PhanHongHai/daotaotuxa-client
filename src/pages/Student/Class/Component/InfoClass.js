@@ -36,6 +36,7 @@ function InfoClass(props) {
 		openQuickTest,
 		openPoint,
 		openSchedule,
+		openHistory,
 		getScheduleReq,
 	} = props;
 
@@ -167,7 +168,6 @@ function InfoClass(props) {
 											limit: 10,
 											keyword: '',
 											classID: infoClass && infoClass._id,
-										
 										},
 									});
 									openSchedule(true);
@@ -193,7 +193,13 @@ function InfoClass(props) {
 							/>
 						</Col>
 						<Col xs={24} md={8} className="mb-15">
-							<FeatureBox icon="carry-out" title="Điểm Thi" onSelect={() => {}} />
+							<FeatureBox
+								icon="carry-out"
+								title="Điểm Thi"
+								onSelect={() => {
+									openHistory(true);
+								}}
+							/>
 						</Col>
 					</Row>
 				</Col>
@@ -211,6 +217,7 @@ InfoClass.propTypes = {
 	openQuickTest: PropTypes.func.isRequired,
 	openPoint: PropTypes.func.isRequired,
 	openSchedule: PropTypes.func.isRequired,
+	openHistory: PropTypes.func.isRequired,
 	getScheduleReq: PropTypes.func.isRequired,
 };
 
