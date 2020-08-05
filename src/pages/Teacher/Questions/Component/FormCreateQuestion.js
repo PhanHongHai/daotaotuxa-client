@@ -132,10 +132,10 @@ function FormCreateQuestion(props) {
 							'tag',
 							{},
 						)(
-							<Select loading={loadingSubjectsForQuestion} mode="multiple">
+							<Select loading={loadingSubjectsForQuestion} showSearch placeholder='-- Môn học --'>
 								{subjects.map(ele => (
-									<Select.Option key={ele._id} value={ele.name}>
-										{ele.name}
+									<Select.Option key={ele._id} value={ele._id}>
+										#{ele.tag}&ensp;-&ensp; {ele.name}
 									</Select.Option>
 								))}
 							</Select>,

@@ -15,6 +15,24 @@ const {
 } = createAsyncAction('getStudentOfClassByTeacher', 'GET_STUDENT_OF_CLASS_BY_TEACHER');
 
 const {
+	getDetailExamByTeacherRequest,
+	getDetailExamByTeacherSuccess,
+	getDetailExamByTeacherFailure,
+} = createAsyncAction('getDetailExamByTeacher', 'GET_DETAIL_EXAM_TEACHER');
+
+const {
+	getScheduleOfClassByTeacherRequest,
+	getScheduleOfClassByTeacherSuccess,
+	getScheduleOfClassByTeacherFailure,
+} = createAsyncAction('getScheduleOfClassByTeacher', 'GET_SCHEDULE_OF_CLASS_BY_TEACHER');
+
+const {
+	getLogsScheduleOfClassByTeacherRequest,
+	getLogsScheduleOfClassByTeacherSuccess,
+	getLogsScheduleOfClassByTeacherFailure,
+} = createAsyncAction('getLogsScheduleOfClassByTeacher', 'GET_LOGS_SCHEDULE_OF_CLASS_BY_TEACHER');
+
+const {
 	getSubjectOfClassByTeacherRequest,
 	getSubjectOfClassByTeacherSuccess,
 	getSubjectOfClassByTeacherFailure,
@@ -31,6 +49,12 @@ const { updateClassByTeacherRequest, updateClassByTeacherSuccess, updateClassByT
 	'UPDATE_CLASS_BY_TEACHER',
 );
 
+const {
+	exportLogScheduleByTeacherRequest,
+	exportLogScheduleByTeacherSuccess,
+	exportLogScheduleByTeacherFailure,
+} = createAsyncAction('exportLogScheduleByTeacher', 'EXPORT_LOG_SCHEDULE_BY_TEACHER');
+
 const Actions = {
 	getDetailClassByTeacherRequest,
 	getDetailClassByTeacherSuccess,
@@ -44,6 +68,18 @@ const Actions = {
 	getSubjectOfClassByTeacherSuccess,
 	getSubjectOfClassByTeacherFailure,
 
+	getDetailExamByTeacherRequest,
+	getDetailExamByTeacherSuccess,
+	getDetailExamByTeacherFailure,
+
+	getScheduleOfClassByTeacherRequest,
+	getScheduleOfClassByTeacherSuccess,
+	getScheduleOfClassByTeacherFailure,
+
+	getLogsScheduleOfClassByTeacherRequest,
+	getLogsScheduleOfClassByTeacherSuccess,
+	getLogsScheduleOfClassByTeacherFailure,
+
 	createSubjectByTeacherRequest,
 	createSubjectByTeacherSuccess,
 	createSubjectByTeacherFailure,
@@ -51,6 +87,10 @@ const Actions = {
 	updateClassByTeacherRequest,
 	updateClassByTeacherSuccess,
 	updateClassByTeacherFailure,
+
+	exportLogScheduleByTeacherRequest,
+	exportLogScheduleByTeacherSuccess,
+	exportLogScheduleByTeacherFailure,
 };
 
 export default Actions;

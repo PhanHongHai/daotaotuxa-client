@@ -38,11 +38,16 @@ function TableDataQuestion(props) {
 			title: 'Môn học liên quan',
 			dataIndex: 'tag',
 			key: 'tag',
-			render: value => (
-				<Tag style={{ fontSize: 14 }} key={value._id}>
-					{value.name}
-				</Tag>
-			),
+			render: value => {
+				const result = subjects && subjects.find(ele => ele._id === value._id);
+				if (result)
+					return (
+						<Tag style={{ fontSize: 14 }} key={value._id}>
+							{value.name}
+						</Tag>
+					);
+				return 'Không xác định';
+			},
 			filterMultiple: false,
 			filterDropdown: () => {
 				return (
@@ -52,7 +57,6 @@ function TableDataQuestion(props) {
 								{subjects.length > 0 &&
 									subjects.map(ele => (
 										<Radio value={ele._id}>
-											{' '}
 											#{ele.tag}&ensp;-&ensp; {ele.name}
 										</Radio>
 									))}

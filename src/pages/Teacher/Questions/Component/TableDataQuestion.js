@@ -1,13 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, ConfigProvider, Icon, Tooltip, Tag, Switch } from 'antd';
+import { Table, Button, ConfigProvider, Icon, Tooltip, Tag, Radio } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
 
 function TableDataQuestion(props) {
-	const { data, pagination, loading, loadingRemove, handleRemoveQuestion, handleChangePage } = props;
+	const {
+		data,
+		pagination,
+		loading,
+		loadingRemove,
+		handleRemoveQuestion,
+		handleChangePage,
+		subjects,
+		handleFilter,
+		handleReload,
+		loadingGetSubjects
+	} = props;
 
+	const [tagSelect, setTagSelect] = React.useState('');
+	const refInput = React.useRef(null);
 	const history = useHistory();
 
 	const columns = [
@@ -27,7 +40,47 @@ function TableDataQuestion(props) {
 			dataIndex: 'tag',
 			key: 'tag',
 			render: value => {
-				if (value && value.length > 0) return value.map(ele => <Tag key={ele}> {ele} </Tag>);
+				const result = subjects && subjects.find(ele => ele._id === value._id);
+				if (result)
+					return (
+						<Tag style={{ fontSize: 14 }} key={value._id}>
+							{value.name}
+						</Tag>
+					);
+				return 'Không xác định';
+			},
+			filterMultiple: false,
+			filterDropdown: () => {
+				return (
+					<div style={{ padding: 8 }}>
+						<div className="mb-10 mt-1">
+							<Radio.Group ref={refInput} onChange={e => setTagSelect(e.target.value)}>
+								{subjects.length > 0 &&
+									subjects.map(ele => (
+										<Radio value={ele._id}>
+											#{ele.tag}&ensp;-&ensp; {ele.name}
+										</Radio>
+									))}
+							</Radio.Group>
+						</div>
+						<Button
+							type="primary"
+							icon="search"
+							size="small"
+							style={{ width: 90, marginRight: 8 }}
+							onClick={() => handleFilter(tagSelect)}
+						/>
+						<Button
+							size="small"
+							style={{ width: 90 }}
+							icon="sync"
+							onClick={() => {
+								refInput.current.state.value = '';
+								handleReload();
+							}}
+						/>
+					</div>
+				);
 			},
 		},
 		{
@@ -51,7 +104,7 @@ function TableDataQuestion(props) {
 			title: 'Trạng thái',
 			dataIndex: 'type',
 			key: 'type',
-			render: value => value === 1 ? 'Riêng Tư' : 'Công khai',
+			render: value => (value && value === 1 ? 'Công khai' : 'Riêng Tư'),
 		},
 		{
 			title: 'Thao tác',
@@ -60,7 +113,10 @@ function TableDataQuestion(props) {
 				return (
 					<div className="phh-group-btn-action">
 						<Tooltip title="Chi tiết">
-							<Button icon="export" onClick={() => history.push(`/teacher/dashboard/ngan-hang-cau-hoi/chi-tiet/${row._id}`)} />
+							<Button
+								icon="export"
+								onClick={() => history.push(`/teacher/dashboard/ngan-hang-cau-hoi/chi-tiet/${row._id}`)}
+							/>
 						</Tooltip>
 						<Tooltip title="Xóa">
 							<Button icon="delete" loading={loadingRemove} onClick={() => handleRemoveQuestion(row)} />
@@ -94,7 +150,7 @@ function TableDataQuestion(props) {
 					defaultCurrent: pagination.page && Number(pagination.page),
 				}}
 				loading={{
-					spinning: loading,
+					spinning: loading || loadingGetSubjects,
 					indicator: <LoadingCustom margin={0} />,
 				}}
 			/>
@@ -105,10 +161,14 @@ function TableDataQuestion(props) {
 TableDataQuestion.propTypes = {
 	data: PropTypes.instanceOf(Array).isRequired,
 	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjects: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
+	loadingGetSubjects: PropTypes.bool.isRequired,
 	loadingRemove: PropTypes.bool.isRequired,
 	handleRemoveQuestion: PropTypes.func.isRequired,
 	handleChangePage: PropTypes.func.isRequired,
+	handleFilter: PropTypes.func.isRequired,
+	handleReload: PropTypes.func.isRequired,
 };
 
 export default TableDataQuestion;

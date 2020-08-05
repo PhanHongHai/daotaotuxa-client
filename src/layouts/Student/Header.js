@@ -29,7 +29,7 @@ function HeaderComponent(props) {
 				) : ''}
 
 				<GroupMenuHeader>
-					<p className="text-welcome">Chào mừng đến với Academy HCM</p>
+					<p className="text-welcome mr-15">Chào mừng đến với Academy HCM</p>
 				
 					<span className="phh-menuAcc">
 						<Dropdown

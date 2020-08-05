@@ -5,6 +5,9 @@ import Action from './Action';
 import ClassApi from '../../../apis/Class';
 import TrainingSectorApi from '../../../apis/TrainingSector';
 import SubjectApi from '../../../apis/Subject';
+import ExamApi from '../../../apis/Exam';
+import ScheduleApi from '../../../apis/Schedule';
+import LogsScheduleApi from '../../../apis/LogPoint';
 import filterError from '../../../utils/filterError';
 
 const { createSagas } = Redux;
@@ -55,6 +58,38 @@ function* handleGetSubjectOfClass(action) {
 	}
 }
 
+function* handleGetSchedulesClass(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(ScheduleApi.getScheduleByClassID, req);
+		if (!res.errors) {
+			yield put(Action.getScheduleOfClassByTeacherSuccess(res));
+		} else {
+			yield put(Action.getScheduleOfClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getScheduleOfClassByTeacherFailure());
+		message.error('Lấy thông tin lịch thi của lớp không thành công ! Xin thử lại');
+	}
+}
+
+function* handleGetLogSchedulesClass(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(LogsScheduleApi.getLogPoinByTeacher, req);
+		if (!res.errors) {
+			yield put(Action.getLogsScheduleOfClassByTeacherSuccess(res));
+		} else {
+			yield put(Action.getLogsScheduleOfClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getLogsScheduleOfClassByTeacherFailure());
+		message.error('Lấy thông tin kết quả lịch thi của lớp không thành công ! Xin thử lại');
+	}
+}
+
 function* handleCreateSubjectOfClass(action) {
 	try {
 		const { req, pageCurrent, keyword, sectorID, cb } = action.payload;
@@ -91,6 +126,38 @@ function* handleUpdateClass(action) {
 	}
 }
 
+function* handleGetDetailExam(action) {
+	try {
+		const { ID } = action.payload;
+		const res = yield call(ExamApi.getDetailExam, ID);
+		if (!res.errors) {
+			yield put(Action.getDetailExamByTeacherSuccess(res));
+		} else {
+			yield put(Action.getDetailExamByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getDetailExamByTeacherFailure());
+		message.error('Lấy thông tin đề thi của lớp học không thành công ! Xin thử lại');
+	}
+}
+
+function* handleExportLogSchedule(action) {
+	try {
+		const { scheduleID } = action.payload;
+		const res = yield call(ClassApi.updateClass, scheduleID);
+		if (!res.errors) {
+			yield put(Action.exportLogScheduleByTeacherSuccess());
+		} else {
+			yield put(Action.exportLogScheduleByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.exportLogScheduleByTeacherFailure());
+		message.error('Xuất excel kết quả thi của lớp học không thành công ! Xin thử lại');
+	}
+}
+
 const getDetailClassSaga = {
 	on: Action.getDetailClassByTeacherRequest,
 	worker: handleGetDetailClass,
@@ -104,6 +171,10 @@ const getSubjectOfClassSaga = {
 	on: Action.getSubjectOfClassByTeacherRequest,
 	worker: handleGetSubjectOfClass,
 };
+const getScheduleOfClassSaga = {
+	on: Action.getScheduleOfClassByTeacherRequest,
+	worker: handleGetSchedulesClass,
+};
 const createSubjectOfClassSaga = {
 	on: Action.createSubjectByTeacherRequest,
 	worker: handleCreateSubjectOfClass,
@@ -114,10 +185,29 @@ const updateClasByTeacherSaga = {
 	worker: handleUpdateClass,
 };
 
+const exportLogScheduleSaga = {
+	on: Action.exportLogScheduleByTeacherRequest,
+	worker: handleExportLogSchedule,
+};
+
+const getLogScheduleSaga = {
+	on: Action.getLogsScheduleOfClassByTeacherRequest,
+	worker: handleGetLogSchedulesClass,
+};
+
+const getDetailExamSaga = {
+	on: Action.getDetailExamByTeacherRequest,
+	worker: handleGetDetailExam,
+};
+
 export default createSagas([
 	getDetailClassSaga,
 	getStudentOfClassSaga,
 	getSubjectOfClassSaga,
 	createSubjectOfClassSaga,
-	updateClasByTeacherSaga
+	updateClasByTeacherSaga,
+	getScheduleOfClassSaga,
+	exportLogScheduleSaga,
+	getLogScheduleSaga,
+	getDetailExamSaga
 ]);

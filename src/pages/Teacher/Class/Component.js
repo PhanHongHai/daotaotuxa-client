@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Input, Button, Tooltip } from 'antd';
+import { Row, Col, Card, Input, Button, DatePicker } from 'antd';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 import TablePoint from './Component/TablePointAll';
 import TableSubjectData from './Component/TableSubjectData';
 import TableStudentData from './Component/TableStudentData';
+import TableScheduleData from './Component/TableScheduleData';
 import ModalCreateSubject from './Component/ModalSubjectCreate';
+import ModalViewExam from './Component/ModalViewExam';
 import BreadCrumb from '../../../components/BreadCrumb';
 import InfoClass from './Component/InfoClass';
 
@@ -24,15 +27,21 @@ function Component(props) {
 		getStudentOfClassStatus,
 		getSubjectOfClassStatus,
 		createSubjectOfClassStatus,
+		getScheduleOfClassStatus,
+		getDetailExamStatus,
 		updateOfClassStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
+		schedulesClass,
+		detailExam,
 		getDetailClassReq,
 		getStudentClassReq,
 		getSubjectClassReq,
 		createSubjectReq,
-		updateClassReq
+		updateClassReq,
+		getScheduleClassReq,
+		getDetailExamReq,
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -48,14 +57,21 @@ function Component(props) {
 	}, [ID]);
 	const [tabKey, setTabKey] = useState('student');
 	const refSearch = useRef(null);
+	const refInput = useRef(null);
+	const refDatePicker = useRef(null);
 	const [keyword, setKeyword] = useState('');
 	const [visibleCreate, setVisibleCreate] = useState(false);
+	const [visibleViewExam, setVisibleViewExam] = useState(false);
 	const [pageCurrent, setPageCurrent] = useState({ limit: 10, page: 1 });
+	const [datePick, setDatePick] = useState({});
+
 	const loadingGetDetailClass = getDetailClassStatus === 'FETCHING';
 	const loadingGetStudentClass = getStudentOfClassStatus === 'FETCHING';
 	const loadingGetSubjectClass = getSubjectOfClassStatus === 'FETCHING';
 	const loadingCreateSubject = createSubjectOfClassStatus === 'FECTHING';
 	const loadingUpdateClass = updateOfClassStatus === 'FECTHING';
+	const loadingGetDetailExam = getDetailExamStatus === 'FECTHING';
+	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FECTHING';
 
 	const tabList = [
 		{
@@ -65,6 +81,10 @@ function Component(props) {
 		{
 			key: 'point',
 			tab: 'Danh Sách Điểm',
+		},
+		{
+			key: 'schedule',
+			tab: 'Danh Sách Lịch Thi',
 		},
 		{
 			key: 'subject',
@@ -151,6 +171,8 @@ function Component(props) {
 		});
 	};
 	const handleChangeTab = key => {
+		setKeyword('');
+		setDatePick({});
 		switch (key) {
 			case 'student':
 				getStudentClassReq({
@@ -173,11 +195,86 @@ function Component(props) {
 					},
 				});
 				break;
+			case 'schedule':
+				getScheduleClassReq({
+					req: {
+						page: 1,
+						limit: 10,
+						keyword: '',
+						classID: infoClass && infoClass._id,
+					},
+				});
+				break;
 
 			default:
 				break;
 		}
 		setTabKey(key);
+	};
+	const handleChangeDatePick = date => {
+		if (date.length > 0) {
+			setDatePick({
+				startAt: moment(date[0]).toISOString(),
+				endAt: moment(date[1]).toISOString(),
+			});
+			getScheduleClassReq({
+				req: {
+					limit: 10,
+					page: 1,
+					keyword,
+					startAt: moment(date[0]).toISOString(),
+					endAt: moment(date[1]).toISOString(),
+				},
+			});
+		}
+	};
+	const handleSearchScheduleTable = value => {
+		setKeyword(setKeyword);
+		getScheduleClassReq({
+			req: {
+				page: 1,
+				limit: 10,
+				keyword: value,
+				classID: infoClass && infoClass._id,
+				...datePick,
+			},
+		});
+	};
+	const onChangeTableSchedule = page => {
+		setPageCurrent({
+			limit: Number(page.pageSize),
+			page: Number(page.current),
+		});
+		getScheduleClassReq({
+			req: {
+				limit: Number(page.pageSize),
+				page: Number(page.current),
+				keyword,
+				classID: infoClass && infoClass._id,
+				...datePick,
+			},
+		});
+	};
+	const handleReloadScheduleTable = () => {
+		setKeyword('');
+		setDatePick({});
+		setPageCurrent({ limit: 10, page: 1 });
+		refInput.current.input.state.value = '';
+		refDatePicker.current.picker.state.value = [];
+		getScheduleClassReq({
+			req: {
+				limit: 10,
+				page: 1,
+				keyword,
+				classID: infoClass && infoClass._id,
+			},
+		});
+	};
+	const handleViewExam = examID => {
+		getDetailExamReq({
+			ID: examID,
+		});
+		setVisibleViewExam(true);
 	};
 	const contentList = {
 		student: (
@@ -231,6 +328,54 @@ function Component(props) {
 				<TablePoint data={[]} />
 			</Card>
 		),
+		schedule: (
+			<Card className="phh-card">
+				<div className="mt-15 mb-10">
+					<Row gutter={16}>
+						<Col xs={24} md={24}>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<h3>Lọc theo ngày tháng :&ensp;</h3>
+								<DatePicker.RangePicker
+									className="phh-date-pick"
+									ref={refDatePicker}
+									format="DD-MM-YYYY"
+									placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}
+									onChange={handleChangeDatePick}
+								/>
+							</div>
+						</Col>
+					</Row>
+				</div>
+				<div className="phh-group-search mb-10">
+					<Input.Search
+						ref={refInput}
+						addonBefore={
+							<Button
+								className="btn-reload"
+								style={{ backgroundColor: 'red !important', height: '35px', color: 'black' }}
+								icon="sync"
+								loading={loadingGetScheduleClass}
+								onClick={handleReloadScheduleTable}
+							>
+								Làm mới
+							</Button>
+						}
+						placeholder="Nhập từ khóa.."
+						enterButton
+						onSearch={handleSearchScheduleTable}
+					/>
+				</div>
+				<TableScheduleData
+					data={schedulesClass && schedulesClass.data}
+					pagination={schedulesClass && schedulesClass.pagination}
+					loading={loadingGetScheduleClass}
+					handleChangePage={onChangeTableSchedule}
+					classID={ID}
+					loadingGetExam={loadingGetDetailExam}
+					handleViewExam={handleViewExam}
+				/>
+			</Card>
+		),
 		subject: (
 			<Card className="phh-card">
 				<div className="phh-group-search mb-10 mt-10 flex" style={{ alignItems: 'center' }}>
@@ -281,7 +426,11 @@ function Component(props) {
 				<Row>
 					<Col xs={24} sm={24} md={24} className="mb-10">
 						<Card title="Thông Tin Lớp Học" className="phh-card" loading={loadingGetDetailClass}>
-							<InfoClass info={{ countStudent, infoClass }} updateReq={updateClassReq} loadingUpdate={loadingUpdateClass} />
+							<InfoClass
+								info={{ countStudent, infoClass }}
+								updateReq={updateClassReq}
+								loadingUpdate={loadingUpdateClass}
+							/>
 						</Card>
 					</Col>
 					<Col xs={24} sm={24} md={24} className="mb-10">
@@ -304,6 +453,12 @@ function Component(props) {
 				keyword={keyword}
 				sectorID={infoClass && infoClass.trainingSectorID._id}
 			/>
+			<ModalViewExam
+				visible={visibleViewExam}
+				setVisible={setVisibleViewExam}
+				data={detailExam}
+				loading={loadingGetDetailExam}
+			/>
 		</div>
 	);
 }
@@ -314,14 +469,20 @@ Component.propTypes = {
 	getSubjectOfClassStatus: PropTypes.string.isRequired,
 	createSubjectOfClassStatus: PropTypes.string.isRequired,
 	updateOfClassStatus: PropTypes.string.isRequired,
+	getScheduleOfClassStatus: PropTypes.string.isRequired,
+	getDetailExamStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
 	getSubjectClassReq: PropTypes.func.isRequired,
 	createSubjectReq: PropTypes.func.isRequired,
 	updateClassReq: PropTypes.func.isRequired,
+	getScheduleClassReq: PropTypes.func.isRequired,
+	getDetailExamReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
+	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,
+	detailExam: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Component;

@@ -1,31 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, ConfigProvider, Icon, Tooltip, Button, Tag } from 'antd';
-import moment from 'moment';
+import { ConfigProvider, Icon, Table, Button, Tooltip, Tag } from 'antd';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
-import { scheduleTitle } from '../../../../constands/Other';
+import {scheduleTitle} from '../../../../constands/Other';
 
-function TableSchedule(props) {
-	const {
-		sheduleData: { data, pagination },
-		handleRemove,
-		loadingRemove,
-		loadingGetDetailExam,
-		loadingGet,
-		onChangeTable,
-		handleViewClass,
-		handleViewExam,
-	} = props;
-
+function TableScheduleData(props) {
+	const { data, loading, pagination, handleChangePage, classID, loadingGetExam, handleViewExam } = props;
 	const history = useHistory();
 	const column = [
-		{
-			title: 'Tiêu Đề',
-			dataIndex: 'title',
-			key: 'title',
-		},
 		{
 			title: 'Nội dung',
 			dataIndex: 'type',
@@ -87,19 +72,7 @@ function TableSchedule(props) {
 			render: value => (
 				<div className="phh-group-btn-action">
 					<Tooltip title="Xem">
-						<Button loading={loadingGetDetailExam} icon="eye" onClick={() => handleViewExam(value)} />
-					</Tooltip>
-				</div>
-			),
-		},
-		{
-			title: 'Lớp',
-			dataIndex: 'classes',
-			key: 'classes',
-			render: value => (
-				<div className="phh-group-btn-action">
-					<Tooltip title="Xem">
-						<Button icon="eye" onClick={() => handleViewClass(value)} />
+						<Button loading={loadingGetExam} icon="eye" onClick={() => handleViewExam(value)} />
 					</Tooltip>
 				</div>
 			),
@@ -111,9 +84,6 @@ function TableSchedule(props) {
 				<div className="phh-group-btn-action">
 					<Tooltip title="Chi tiết">
 						<Button icon="export" onClick={() => history.push(`/admin/lich-thi/chi-tiet/${row._id}`)} />
-					</Tooltip>
-					<Tooltip title="Xóa">
-						<Button icon="delete" onClick={() => handleRemove(row)} loading={loadingRemove} />
 					</Tooltip>
 				</div>
 			),
@@ -132,34 +102,28 @@ function TableSchedule(props) {
 			<Table
 				className="phh-table"
 				dataSource={data}
+				onChange={handleChangePage}
 				columns={column}
 				rowKey={ele => ele._id}
 				scroll={{ x: true }}
-				onChange={onChangeTable}
 				loading={{
-					spinning: loadingGet,
-					indicator: <LoadingCustom margin={0} />,
+					spinning: loading,
+					indicator: <LoadingCustom margin={10} />,
 				}}
-				pagination={{
-					current: pagination.page && Number(pagination.page),
-					total: pagination.total,
-					pageSize: pagination.limit && Number(pagination.limit),
-					defaultCurrent: pagination.page && Number(pagination.page),
-				}}
+				pagination={pagination}
 			/>
 		</ConfigProvider>
 	);
 }
 
-TableSchedule.propTypes = {
-	sheduleData: PropTypes.objectOf(PropTypes.any).isRequired,
-	handleRemove: PropTypes.func.isRequired,
-	loadingRemove: PropTypes.bool.isRequired,
-	loadingGet: PropTypes.bool.isRequired,
-	loadingGetDetailExam: PropTypes.bool.isRequired,
-	onChangeTable: PropTypes.func.isRequired,
-	handleViewClass: PropTypes.func.isRequired,
+TableScheduleData.propTypes = {
+	data: PropTypes.instanceOf(Array).isRequired,
+	loading: PropTypes.bool.isRequired,
+	loadingGetExam: PropTypes.bool.isRequired,
+	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
+	handleChangePage: PropTypes.func.isRequired,
 	handleViewExam: PropTypes.func.isRequired,
+	classID: PropTypes.string.isRequired,
 };
 
-export default TableSchedule;
+export default TableScheduleData;

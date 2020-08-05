@@ -85,7 +85,7 @@ function InfoClass(props) {
 		}
 	};
 	return (
-		<Descriptions>
+		<Descriptions >
 			<Descriptions.Item label="Ngành Đào Tạo">{infoClass && infoClass.trainingSectorID.name}</Descriptions.Item>
 			<Descriptions.Item label="Thời Gian Học">
 				{!_.isEmpty(infoClass)

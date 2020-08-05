@@ -27,7 +27,9 @@ export default function App() {
 			<Suspense fallback={<LoadingCustom margin={20} />}>
 				<Switch>
 					<AuthorizedRoute authority={false} type="none" exact path={['/hoc-vien', '/']} component={LoginStudent} />
-					<AuthorizedRoute authority={false} type="none" exact path='/dang-nhap' component={LoginPage} />
+					<AuthorizedRoute authority={false} type="none" exact path='/giang-vien' component={LoginPage} />
+					<AuthorizedRoute authority={false} type="none" exact path='/quan-tri-vien' component={LoginPage} />
+					<AuthorizedRoute authority={false} type="none" exact path='/doi-tac' component={LoginPage} />
 					<AuthorizedRoute
 						authority={false}
 						type="none"

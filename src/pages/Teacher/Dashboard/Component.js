@@ -62,19 +62,33 @@ function DashboadTeacher(props) {
 							</div>
 						</Card>
 					</Col> */}
-					<Col xs={24} sm={24} md={16}>
+					<Col xs={24} sm={24} md={24}>
 						<Row gutter={16}>
-							<Col xs={24} md={12} className="mb-10">
+							<Col xs={24} md={6} className="mb-10">
 								<BoxFeature
 									icon="question-circle"
 									title="Câu Hỏi"
 									onSelect={() => history.push('/teacher/dashboard/ngan-hang-cau-hoi')}
 								/>
 							</Col>
-							<Col xs={24} md={12} className="mb-10">
+							<Col xs={24} md={6} className="mb-10">
 								<BoxFeature
 									icon="reconciliation"
 									title="Đề Thi"
+									onSelect={() => history.push('/teacher/dashboard/de-thi')}
+								/>
+							</Col>
+							<Col xs={24} md={6} className="mb-10">
+								<BoxFeature
+									icon="calendar"
+									title="Lịch thi"
+									onSelect={() => history.push('/teacher/dashboard/de-thi')}
+								/>
+							</Col>
+							<Col xs={24} md={6} className="mb-10">
+								<BoxFeature
+									icon="calendar"
+									title="Tạo lịch điểm danh"
 									onSelect={() => history.push('/teacher/dashboard/de-thi')}
 								/>
 							</Col>
