@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfigProvider, Icon, Table, Button, Tooltip, Tag } from 'antd';
-import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
-import {scheduleTitle} from '../../../../constands/Other';
+import { scheduleTitle } from '../../../../constands/Other';
 
 function TableScheduleData(props) {
-	const { data, loading, pagination, handleChangePage, classID, loadingGetExam, handleViewExam } = props;
-	const history = useHistory();
+	const {
+		data,
+		loading,
+		pagination,
+		handleChangePage,
+		classID,
+		loadingGetExam,
+		loadingGetLog,
+		handleViewExam,
+		setScheduleID,
+		getLogScheduleReq,
+		setVisibleLogSchedule,
+	} = props;
 	const column = [
 		{
 			title: 'Nội dung',
@@ -71,19 +81,34 @@ function TableScheduleData(props) {
 			key: 'exam',
 			render: value => (
 				<div className="phh-group-btn-action">
-					<Tooltip title="Xem">
+					<Tooltip title="Xem đề thi">
 						<Button loading={loadingGetExam} icon="eye" onClick={() => handleViewExam(value)} />
 					</Tooltip>
 				</div>
 			),
 		},
 		{
-			title: 'Thao tác',
+			title: 'Kết quả thi',
 			key: 'actions',
 			render: row => (
 				<div className="phh-group-btn-action">
-					<Tooltip title="Chi tiết">
-						<Button icon="export" onClick={() => history.push(`/admin/lich-thi/chi-tiet/${row._id}`)} />
+					<Tooltip title="Xem kết quả">
+						<Button
+							loading={loadingGetLog}
+							icon="eye"
+							onClick={() => {
+								setScheduleID(row._id);
+								getLogScheduleReq({
+									req: {
+										limit: 10,
+										page: 1,
+										classID,
+										scheduleID: row._id,
+									},
+								});
+								setVisibleLogSchedule(true);
+							}}
+						/>
 					</Tooltip>
 				</div>
 			),
@@ -108,9 +133,14 @@ function TableScheduleData(props) {
 				scroll={{ x: true }}
 				loading={{
 					spinning: loading,
-					indicator: <LoadingCustom margin={10} />,
+					indicator: <LoadingCustom margin={0} />,
 				}}
-				pagination={pagination}
+				pagination={{
+					current: pagination.page && Number(pagination.page),
+					total: pagination.total,
+					pageSize: pagination.limit && Number(pagination.limit),
+					defaultCurrent: pagination.page && Number(pagination.page),
+				}}
 			/>
 		</ConfigProvider>
 	);
@@ -120,9 +150,13 @@ TableScheduleData.propTypes = {
 	data: PropTypes.instanceOf(Array).isRequired,
 	loading: PropTypes.bool.isRequired,
 	loadingGetExam: PropTypes.bool.isRequired,
+	loadingGetLog: PropTypes.bool.isRequired,
 	pagination: PropTypes.objectOf(PropTypes.any).isRequired,
 	handleChangePage: PropTypes.func.isRequired,
 	handleViewExam: PropTypes.func.isRequired,
+	setScheduleID: PropTypes.func.isRequired,
+	getLogScheduleReq: PropTypes.func.isRequired,
+	setVisibleLogSchedule: PropTypes.func.isRequired,
 	classID: PropTypes.string.isRequired,
 };
 

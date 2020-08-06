@@ -83,7 +83,12 @@ function TableData(props) {
 				scroll={{ x: true }}
 				dataSource={handleCheckData(data)}
 				columns={column}
-				pagination={pagination}
+				pagination={{
+					current: pagination.page && Number(pagination.page),
+					total: pagination.total,
+					pageSize: pagination.limit && Number(pagination.limit),
+					defaultCurrent: pagination.page && Number(pagination.page),
+				}}
 			/>
 		</ConfigProvider>
 	);

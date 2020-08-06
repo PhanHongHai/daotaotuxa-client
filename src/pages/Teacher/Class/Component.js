@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Input, Button, DatePicker } from 'antd';
+import { Row, Col, Card, Input, Button, DatePicker, Select } from 'antd';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 
@@ -10,6 +10,7 @@ import TableStudentData from './Component/TableStudentData';
 import TableScheduleData from './Component/TableScheduleData';
 import ModalCreateSubject from './Component/ModalSubjectCreate';
 import ModalViewExam from './Component/ModalViewExam';
+import ModalLogSchedule from './Component/ModelLogSchedule';
 import BreadCrumb from '../../../components/BreadCrumb';
 import InfoClass from './Component/InfoClass';
 
@@ -30,11 +31,13 @@ function Component(props) {
 		getScheduleOfClassStatus,
 		getDetailExamStatus,
 		updateOfClassStatus,
+		getLogsScheduleOfClassStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
 		schedulesClass,
 		detailExam,
+		logsScheduleClass,
 		getDetailClassReq,
 		getStudentClassReq,
 		getSubjectClassReq,
@@ -42,6 +45,7 @@ function Component(props) {
 		updateClassReq,
 		getScheduleClassReq,
 		getDetailExamReq,
+		getLogScheduleClassReq,
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -62,8 +66,10 @@ function Component(props) {
 	const [keyword, setKeyword] = useState('');
 	const [visibleCreate, setVisibleCreate] = useState(false);
 	const [visibleViewExam, setVisibleViewExam] = useState(false);
+	const [visibleLogSchedule, setVisibleLogSchedule] = useState(false);
 	const [pageCurrent, setPageCurrent] = useState({ limit: 10, page: 1 });
 	const [datePick, setDatePick] = useState({});
+	const [scheduleID, setScheduleID] = useState('');
 
 	const loadingGetDetailClass = getDetailClassStatus === 'FETCHING';
 	const loadingGetStudentClass = getStudentOfClassStatus === 'FETCHING';
@@ -71,6 +77,7 @@ function Component(props) {
 	const loadingCreateSubject = createSubjectOfClassStatus === 'FECTHING';
 	const loadingUpdateClass = updateOfClassStatus === 'FECTHING';
 	const loadingGetDetailExam = getDetailExamStatus === 'FECTHING';
+	const loadingGetLogSchedule = getLogsScheduleOfClassStatus === 'FECTHING';
 	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FECTHING';
 
 	const tabList = [
@@ -80,7 +87,7 @@ function Component(props) {
 		},
 		{
 			key: 'point',
-			tab: 'Danh Sách Điểm',
+			tab: 'Bảng Điểm',
 		},
 		{
 			key: 'schedule',
@@ -309,21 +316,27 @@ function Component(props) {
 		),
 		point: (
 			<Card className="phh-card">
-				<div className="phh-group-search mb-10 mt-10 " style={{ alignItems: 'center' }}>
-					<Input.Search
-						addonBefore={
-							<Button
-								className="btn-reload"
-								style={{ backgroundColor: 'red !important', height: '35px', color: 'black' }}
-								icon="sync"
-							>
-								Làm mới
-							</Button>
-						}
-						ref={refSearch}
-						placeholder="Nhập từ khóa.."
-						enterButton
-					/>
+				<div className="phh-group-search mb-10" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+					<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="sync">
+						Làm mới
+					</Button>
+					<div className="mr-5">
+						<h4>Lọc theo môn học</h4>
+						<Select placeholder="-- Môn Học --">
+							{subjectsClass &&
+								subjectsClass.map(ele => (
+									<Select.Option value={ele._id} key={ele._id}>
+										{ele.name}
+									</Select.Option>
+								))}
+						</Select>
+					</div>
+					<Button className="mr=5" style={{ height: '35px', color: 'white' }} icon="file-excel">
+						Bảng điểm tổng
+					</Button>
+					<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
+						Xuất excel
+					</Button>
 				</div>
 				<TablePoint data={[]} />
 			</Card>
@@ -373,6 +386,10 @@ function Component(props) {
 					classID={ID}
 					loadingGetExam={loadingGetDetailExam}
 					handleViewExam={handleViewExam}
+					setScheduleID={setScheduleID}
+					setVisibleLogSchedule={setVisibleLogSchedule}
+					getLogScheduleReq={getLogScheduleClassReq}
+					loadingGetLog={loadingGetLogSchedule}
 				/>
 			</Card>
 		),
@@ -459,6 +476,15 @@ function Component(props) {
 				data={detailExam}
 				loading={loadingGetDetailExam}
 			/>
+			<ModalLogSchedule
+				visible={visibleLogSchedule}
+				setVisible={setVisibleLogSchedule}
+				classID={ID}
+				scheduleID={scheduleID}
+				getLogScheduleReq={getLogScheduleClassReq}
+				dataLog={logsScheduleClass}
+				loading={loadingGetLogSchedule}
+			/>
 		</div>
 	);
 }
@@ -471,6 +497,7 @@ Component.propTypes = {
 	updateOfClassStatus: PropTypes.string.isRequired,
 	getScheduleOfClassStatus: PropTypes.string.isRequired,
 	getDetailExamStatus: PropTypes.string.isRequired,
+	getLogsScheduleOfClassStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
@@ -479,10 +506,12 @@ Component.propTypes = {
 	updateClassReq: PropTypes.func.isRequired,
 	getScheduleClassReq: PropTypes.func.isRequired,
 	getDetailExamReq: PropTypes.func.isRequired,
+	getLogScheduleClassReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailExam: PropTypes.objectOf(PropTypes.any).isRequired,
+	logsScheduleClass: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Component;

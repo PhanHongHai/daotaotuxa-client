@@ -14,7 +14,7 @@ import ModalPickSubject from './ModalPickSubject';
 
 const disabledDate = current => {
 	// Can not select days before today and today
-	return current && current < moment().endOf('day');
+	return current && current <= moment().subtract(1, 'day');
 };
 const formItemLayout = {
 	labelCol: {
@@ -26,7 +26,20 @@ const formItemLayout = {
 		sm: { span: 16 },
 	},
 };
-
+const getDisabledHours = () => {
+	const hours = [];
+	for (let i = 0; i < moment().hour(); i++) {
+		hours.push(i);
+	}
+	return hours;
+};
+const getDisabledMinute = () => {
+	const minute = [];
+	for (let i = 0; i < moment().minute(); i++) {
+		minute.push(i);
+	}
+	return minute;
+};
 function FormUpdateSchedule(props) {
 	const {
 		form: { getFieldDecorator, validateFields },
@@ -158,6 +171,8 @@ function FormUpdateSchedule(props) {
 								],
 							})(
 								<TimePicker
+									disabledHours={getDisabledHours}
+									disabledMinutes={getDisabledMinute}
 									onChange={onChangeTimePicker}
 									style={{ width: '100%' }}
 									format="HH:mm"

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfigProvider, Icon, Table, Button, Tag } from 'antd';
+import { ConfigProvider, Icon, Table, Button,  } from 'antd';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
@@ -13,12 +13,13 @@ function TableSchedule(props) {
 		scheduleData: { data, pagination },
 		loading,
 		onChangeTable,
+		classID
 	} = props;
 	const history = useHistory();
 
 	const handleJoinRoomTest = ID => {
 		getSocket().emit('join-room-test', ID);
-		history.push(`/quiz/${ID}`);
+		history.push(`/quiz/${classID}/${ID}`);
 	};
 	const column = [
 		{
@@ -147,6 +148,7 @@ TableSchedule.propTypes = {
 	scheduleData: PropTypes.objectOf(PropTypes.any).isRequired,
 	loading: PropTypes.bool.isRequired,
 	onChangeTable: PropTypes.func.isRequired,
+	classID: PropTypes.string.isRequired,
 };
 
 export default TableSchedule;

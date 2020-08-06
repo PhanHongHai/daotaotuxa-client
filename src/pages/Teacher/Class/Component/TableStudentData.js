@@ -101,7 +101,12 @@ function TableStudentData(props) {
 					spinning: loading,
 					indicator: <LoadingCustom margin={0} />,
 				}}
-				pagination={pagination}
+				pagination={{
+					current: pagination.page && Number(pagination.page),
+					total: pagination.total,
+					pageSize: pagination.limit && Number(pagination.limit),
+					defaultCurrent: pagination.page && Number(pagination.page),
+				}}
 			/>
 		</ConfigProvider>
 	);

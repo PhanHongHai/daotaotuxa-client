@@ -7,8 +7,8 @@ const Lesson= lazy(() => import('../../pages/Student/Class/Page/DetailSubject'))
 
 export default [
 	{
-		path: '/quiz/:ID',
-		key: '/quiz/:ID',
+		path: '/quiz/:classID/:scheduleID',
+		key: '/quiz/:classID/:scheduleID',
 		icon: 'tool',
 		title: 'Chi Tiết Môn Học',
 		component: Quiz,

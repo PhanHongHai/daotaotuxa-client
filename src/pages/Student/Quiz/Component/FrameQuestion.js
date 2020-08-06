@@ -15,10 +15,7 @@ function FrameQuestion(props) {
 		submitTaskReq,
 		setDataChoice,
 		dataChoice,
-		scheduleID,
-		examID,
-		subjectID,
-		setIsShowResult,
+
 	} = props;
 	const [current, setCurrent] = React.useState(0);
 	const [arrayQuestion, setArrayQuestion] = React.useState([]);
@@ -209,10 +206,6 @@ FrameQuestion.propTypes = {
 	loadingSubmitTask: PropTypes.bool.isRequired,
 	submitTaskReq: PropTypes.func.isRequired,
 	setDataChoice: PropTypes.func.isRequired,
-	setIsShowResult: PropTypes.func.isRequired,
-	scheduleID: PropTypes.string.isRequired,
-	examID: PropTypes.string.isRequired,
-	subjectID: PropTypes.string.isRequired,
 };
 
 export default FrameQuestion;

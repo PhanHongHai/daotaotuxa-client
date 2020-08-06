@@ -110,7 +110,7 @@ function ModalSchedule(props) {
 					onSearch={handleSearch}
 				/>
 			</div>
-			<TableSchedule scheduleData={scheduleData} loading={loadingGet} onChangeTable={onChangeTable} />
+			<TableSchedule scheduleData={scheduleData} loading={loadingGet} classID={classID} onChangeTable={onChangeTable} />
 		</Modal>
 	);
 }

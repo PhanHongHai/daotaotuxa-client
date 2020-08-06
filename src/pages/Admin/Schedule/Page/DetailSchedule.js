@@ -177,7 +177,7 @@ function DetailSchedule(props) {
 		setTabKey(key);
 		if (key === 'exam') {
 			getDetailExamReq({
-				ID: detailSchedule && detailSchedule.examID,
+				ID: detailSchedule.examID && detailSchedule.examID._id,
 			});
 		}
 	};

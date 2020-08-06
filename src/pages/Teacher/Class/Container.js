@@ -10,11 +10,13 @@ const mapStateToProps = state => ({
 	updateOfClassStatus: state.classOfTeacherPage.updateOfClassStatus,
 	getScheduleOfClassStatus: state.classOfTeacherPage.getScheduleOfClassStatus,
 	getDetailExamStatus: state.classOfTeacherPage.getDetailExamStatus,
+	getLogsScheduleOfClassStatus: state.classOfTeacherPage.getLogsScheduleOfClassStatus,
 	detailClass: state.classOfTeacherPage.detailClass,
 	studentsClass: state.classOfTeacherPage.studentsClass,
 	subjectsClass: state.classOfTeacherPage.subjectsClass,
 	schedulesClass: state.classOfTeacherPage.schedulesClass,
 	detailExam: state.classOfTeacherPage.detailExam,
+	logsScheduleClass: state.classOfTeacherPage.logsScheduleClass,
 });
 
 const mapDispatchToProps = {
@@ -22,6 +24,7 @@ const mapDispatchToProps = {
 	getSubjectClassReq: Actions.getSubjectOfClassByTeacherRequest,
 	getStudentClassReq: Actions.getStudentOfClassByTeacherRequest,
 	getScheduleClassReq: Actions.getScheduleOfClassByTeacherRequest,
+	getLogScheduleClassReq: Actions.getLogsScheduleOfClassByTeacherRequest,
 	createSubjectReq: Actions.createSubjectByTeacherRequest,
 	updateClassReq: Actions.updateClassByTeacherRequest,
 	getDetailExamReq: Actions.getDetailExamByTeacherRequest,

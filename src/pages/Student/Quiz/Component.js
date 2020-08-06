@@ -32,11 +32,11 @@ function QuizComponent(props) {
 	const [isStart, setIsStart] = useState(false);
 	const [isShowResult, setIsShowResult] = useState(false);
 	const [dataChoice, setDataChoice] = useState([]);
-	const { ID } = useParams();
+	const { classID, scheduleID } = useParams();
 
 	useEffect(() => {
-		getScheduleDetailReq({ ID });
-	}, [ID]);
+		getScheduleDetailReq({ ID:scheduleID });
+	}, [scheduleID]);
 
 	const loadingGetScheduleDetail = getScheduleDetailStatus === 'FETCHING';
 	const loadingGetExam = getExamByQuizStatus === 'FETCHING';
@@ -49,7 +49,8 @@ function QuizComponent(props) {
 	const handleSubmitTask = () => {
 		submitTaskReq({
 			req: {
-				scheduleID: ID,
+				scheduleID,
+				classID,
 				examID: scheduleDetail.examID && scheduleDetail.examID._id,
 				subjectID: scheduleDetail.subjectID && scheduleDetail.subjectID._id,
 				answers: dataChoice,
