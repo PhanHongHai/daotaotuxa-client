@@ -33,6 +33,24 @@ const {
 } = createAsyncAction('getLogsScheduleOfClassByTeacher', 'GET_LOGS_SCHEDULE_OF_CLASS_BY_TEACHER');
 
 const {
+	getPointsStudentOfClassByTeacherRequest,
+	getPointsStudentOfClassByTeacherSuccess,
+	getPointsStudentOfClassByTeacherFailure,
+} = createAsyncAction('getPointsStudentOfClassByTeacher', 'GET_POINTS_STUDENT_OF_CLASS_BY_TEACHER');
+
+const {
+	getPointSubjectStudentOfClassByTeacherRequest,
+	getPointSubjectStudentOfClassByTeacherSuccess,
+	getPointSubjectStudentOfClassByTeacherFailure,
+} = createAsyncAction('getPointSubjectStudentOfClassByTeacher', 'GET_POINT_SUBJECT_STUDENT_OF_CLASS_BY_TEACHER');
+
+const {
+	getSubjectAllOfClassByTeacherRequest,
+	getSubjectAllOfClassByTeacherSuccess,
+	getSubjectAllOfClassByTeacherFailure,
+} = createAsyncAction('getSubjectAllOfClassByTeacher', 'GET_SUBJECT_ALL_OF_CLASS_BY_TEACHER');
+
+const {
 	getSubjectOfClassByTeacherRequest,
 	getSubjectOfClassByTeacherSuccess,
 	getSubjectOfClassByTeacherFailure,
@@ -68,6 +86,10 @@ const Actions = {
 	getSubjectOfClassByTeacherSuccess,
 	getSubjectOfClassByTeacherFailure,
 
+	getSubjectAllOfClassByTeacherRequest,
+	getSubjectAllOfClassByTeacherSuccess,
+	getSubjectAllOfClassByTeacherFailure,
+
 	getDetailExamByTeacherRequest,
 	getDetailExamByTeacherSuccess,
 	getDetailExamByTeacherFailure,
@@ -79,6 +101,14 @@ const Actions = {
 	getLogsScheduleOfClassByTeacherRequest,
 	getLogsScheduleOfClassByTeacherSuccess,
 	getLogsScheduleOfClassByTeacherFailure,
+
+	getPointsStudentOfClassByTeacherRequest,
+	getPointsStudentOfClassByTeacherSuccess,
+	getPointsStudentOfClassByTeacherFailure,
+
+	getPointSubjectStudentOfClassByTeacherRequest,
+	getPointSubjectStudentOfClassByTeacherSuccess,
+	getPointSubjectStudentOfClassByTeacherFailure,
 
 	createSubjectByTeacherRequest,
 	createSubjectByTeacherSuccess,

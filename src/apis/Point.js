@@ -5,6 +5,18 @@ const { restful } = api;
 /**
  * get  points
  */
+async function getPoinSubjectOfStudent(req) {
+	try {
+		const res = await restful.GET('/api/v1/points/get-points-by-subject',req);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
+
+/**
+ * get  points
+ */
 async function getPoinByStudent() {
 	try {
 		const res = await restful.GET('/api/v1/points/detail-point-by-student');
@@ -54,6 +66,7 @@ async function updatePointMiddle({ req, ID }) {
 
 export default {
 	submitTask,
+	getPoinSubjectOfStudent,
 	getPoinByStudent,
   getPointsByAccountID,
   updatePointMiddle

@@ -752,6 +752,19 @@ i.icon-fold-custom{
 	}
 }
 
+.select-custom{
+	.ant-select-selection--single {
+		height: 35px !important;
+		width:100%;
+		display:block;
+	}
+}
+
+.edit-row{
+	button{
+		width: 25px !important;
+	}
+}
 
 ${_utilityClasses}
 `;

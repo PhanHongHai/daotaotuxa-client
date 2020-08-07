@@ -19,6 +19,14 @@ async function getSubjectForSector(req) {
 		return err;
 	}
 }
+async function getSubjectAllOfSector(req) {
+	try {
+		const res = await restful.GET('/api/v1/group-subjects', req);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 async function getSubjectOfSector(req) {
 	try {
 		const res = await restful.GET('/api/v1/group-subjects/getListSubject', req);
@@ -98,7 +106,7 @@ export default {
 	getSubjectOfSector,
 	getSubjectOfSectorGroupFile,
 	addSubjectToSector,
-	removeSubjectFromSector
-
+	removeSubjectFromSector,
+	getSubjectAllOfSector
 
 };

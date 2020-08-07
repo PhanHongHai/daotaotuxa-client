@@ -8,6 +8,7 @@ import SubjectApi from '../../../apis/Subject';
 import ExamApi from '../../../apis/Exam';
 import ScheduleApi from '../../../apis/Schedule';
 import LogsScheduleApi from '../../../apis/LogPoint';
+import PointApi from '../../../apis/Point';
 import filterError from '../../../utils/filterError';
 
 const { createSagas } = Redux;
@@ -54,6 +55,22 @@ function* handleGetSubjectOfClass(action) {
 		}
 	} catch (error) {
 		yield put(Action.getSubjectOfClassByTeacherFailure());
+		message.error('Lấy thông tin môn học của lớp không thành công ! Xin thử lại');
+	}
+}
+
+function* handleGetSubjectAllOfClass(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(TrainingSectorApi.getSubjectAllOfSector, req);
+		if (!res.errors) {
+			yield put(Action.getSubjectAllOfClassByTeacherSuccess(res));
+		} else {
+			yield put(Action.getSubjectAllOfClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getSubjectAllOfClassByTeacherFailure());
 		message.error('Lấy thông tin môn học của lớp không thành công ! Xin thử lại');
 	}
 }
@@ -142,6 +159,38 @@ function* handleGetDetailExam(action) {
 	}
 }
 
+function* handleGetPointSubjectOfStudent(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(PointApi.getPoinSubjectOfStudent, req);
+		if (!res.errors) {
+			yield put(Action.getPointSubjectStudentOfClassByTeacherSuccess(res));
+		} else {
+			yield put(Action.getPointSubjectStudentOfClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getPointSubjectStudentOfClassByTeacherFailure());
+		message.error('Lấy thông tin điểm môn học của lớp học không thành công ! Xin thử lại');
+	}
+}
+
+function* handleGetPointAllOfStudent(action) {
+	try {
+		const { req } = action.payload;
+		const res = yield call(ExamApi.getDetailExam, req);
+		if (!res.errors) {
+			yield put(Action.getPointsStudentOfClassByTeacherSuccess(res));
+		} else {
+			yield put(Action.getPointsStudentOfClassByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getPointsStudentOfClassByTeacherFailure());
+		message.error('Lấy thông tin điểm môn học của lớp học không thành công ! Xin thử lại');
+	}
+}
+
 function* handleExportLogSchedule(action) {
 	try {
 		const { scheduleID } = action.payload;
@@ -170,6 +219,10 @@ const getStudentOfClassSaga = {
 const getSubjectOfClassSaga = {
 	on: Action.getSubjectOfClassByTeacherRequest,
 	worker: handleGetSubjectOfClass,
+};
+const getSubjectAllOfClassSaga = {
+	on: Action.getSubjectAllOfClassByTeacherRequest,
+	worker: handleGetSubjectAllOfClass,
 };
 const getScheduleOfClassSaga = {
 	on: Action.getScheduleOfClassByTeacherRequest,
@@ -200,6 +253,16 @@ const getDetailExamSaga = {
 	worker: handleGetDetailExam,
 };
 
+const getPointSubjectOfStudentSaga = {
+	on: Action.getPointSubjectStudentOfClassByTeacherRequest,
+	worker: handleGetPointSubjectOfStudent,
+};
+
+const getPointsOfStudentSaga = {
+	on: Action.getPointsStudentOfClassByTeacherRequest,
+	worker: handleGetPointAllOfStudent,
+};
+
 export default createSagas([
 	getDetailClassSaga,
 	getStudentOfClassSaga,
@@ -209,5 +272,8 @@ export default createSagas([
 	getScheduleOfClassSaga,
 	exportLogScheduleSaga,
 	getLogScheduleSaga,
-	getDetailExamSaga
+	getDetailExamSaga,
+	getSubjectAllOfClassSaga,
+	getPointSubjectOfStudentSaga,
+	getPointsOfStudentSaga
 ]);

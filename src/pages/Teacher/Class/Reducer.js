@@ -8,15 +8,23 @@ const initialState = {
 	getDetailClassStatus: STATUS.DEFAULT,
 	getStudentOfClassStatus: STATUS.DEFAULT,
 	getSubjectOfClassStatus: STATUS.DEFAULT,
+	getSubjectAllOfClassStatus: STATUS.DEFAULT,
 	getScheduleOfClassStatus: STATUS.DEFAULT,
 	getLogsScheduleOfClassStatus: STATUS.DEFAULT,
 	createSubjectOfClassStatus: STATUS.DEFAULT,
 	updateOfClassStatus: STATUS.DEFAULT,
 	getDetailExamStatus: STATUS.DEFAULT,
+	getPointSubjectOfStudentStatus: STATUS.DEFAULT,
+	getPointsOfStudentStatus: STATUS.DEFAULT,
 	exportLogScheduleStatus: STATUS.DEFAULT,
 	detailClass: {},
 	detailExam: {},
+	subjectsOfClass: [],
 	studentsClass: {
+		data: [],
+		pagination: {},
+	},
+	poinOfStudent: {
 		data: [],
 		pagination: {},
 	},
@@ -88,6 +96,62 @@ const reducer = [
 			};
 		},
 	},
+	// active when call action get point subject of student of class by teacher
+	{
+		on: Action.getPointSubjectStudentOfClassByTeacherRequest,
+		reducer: state => ({
+			...state,
+			getPointSubjectOfStudentStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getPointSubjectStudentOfClassByTeacherSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getPointSubjectOfStudentStatus: STATUS.SUCCESS,
+			poinOfStudent: {
+				data: action.payload.docs,
+				pagination: action.payload,
+			},
+		}),
+	},
+	{
+		on: Action.getPointSubjectStudentOfClassByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				getPointSubjectOfStudentStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get point all of student of class by teacher
+	{
+		on: Action.getPointsStudentOfClassByTeacherRequest,
+		reducer: state => ({
+			...state,
+			getPointsOfStudentStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getPointsStudentOfClassByTeacherSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getPointsOfStudentStatus: STATUS.SUCCESS,
+			poinOfStudent: {
+				data: action.payload.docs,
+				pagination: action.payload,
+			},
+		}),
+	},
+	{
+		on: Action.getPointsStudentOfClassByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				getPointsOfStudentStatus: STATUS.FAILURE,
+			};
+		},
+	},
 	// active when call action get detail exam  by teacher
 	{
 		on: Action.getDetailExamByTeacherRequest,
@@ -110,6 +174,31 @@ const reducer = [
 			return {
 				...state,
 				getDetailExamStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get all subject of class by teacher
+	{
+		on: Action.getSubjectAllOfClassByTeacherRequest,
+		reducer: state => ({
+			...state,
+			getPointsOfStudentStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getSubjectAllOfClassByTeacherSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getPointsOfStudentStatus: STATUS.SUCCESS,
+			subjectsOfClass: action.payload,
+		}),
+	},
+	{
+		on: Action.getSubjectAllOfClassByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				getPointsOfStudentStatus: STATUS.FAILURE,
 			};
 		},
 	},

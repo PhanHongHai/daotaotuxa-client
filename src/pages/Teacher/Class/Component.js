@@ -32,12 +32,16 @@ function Component(props) {
 		getDetailExamStatus,
 		updateOfClassStatus,
 		getLogsScheduleOfClassStatus,
+		getSubjectAllOfClassStatus,
+		getPointSubjectOfStudentStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
 		schedulesClass,
 		detailExam,
+		subjectsOfClass,
 		logsScheduleClass,
+		poinOfStudent,
 		getDetailClassReq,
 		getStudentClassReq,
 		getSubjectClassReq,
@@ -46,6 +50,8 @@ function Component(props) {
 		getScheduleClassReq,
 		getDetailExamReq,
 		getLogScheduleClassReq,
+		getSubjectAllReq,
+		getPointSubjectClassReq,
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -70,15 +76,18 @@ function Component(props) {
 	const [pageCurrent, setPageCurrent] = useState({ limit: 10, page: 1 });
 	const [datePick, setDatePick] = useState({});
 	const [scheduleID, setScheduleID] = useState('');
+	const [typeTablePoint, setTypeTablePoint] = useState(false);
 
 	const loadingGetDetailClass = getDetailClassStatus === 'FETCHING';
 	const loadingGetStudentClass = getStudentOfClassStatus === 'FETCHING';
 	const loadingGetSubjectClass = getSubjectOfClassStatus === 'FETCHING';
-	const loadingCreateSubject = createSubjectOfClassStatus === 'FECTHING';
-	const loadingUpdateClass = updateOfClassStatus === 'FECTHING';
-	const loadingGetDetailExam = getDetailExamStatus === 'FECTHING';
-	const loadingGetLogSchedule = getLogsScheduleOfClassStatus === 'FECTHING';
-	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FECTHING';
+	const loadingCreateSubject = createSubjectOfClassStatus === 'FETCHING';
+	const loadingUpdateClass = updateOfClassStatus === 'FETCHING';
+	const loadingGetDetailExam = getDetailExamStatus === 'FETCHING';
+	const loadingGetLogSchedule = getLogsScheduleOfClassStatus === 'FETCHING';
+	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FETCHING';
+	const loadingGetSubjectAllClass = getSubjectAllOfClassStatus === 'FETCHING';
+	const loadingGetPointSubjectClass = getPointSubjectOfStudentStatus === 'FETCHING';
 
 	const tabList = [
 		{
@@ -214,6 +223,11 @@ function Component(props) {
 				break;
 
 			default:
+				getSubjectAllReq({
+					req: {
+						sectorID: infoClass && infoClass.trainingSectorID._id,
+					},
+				});
 				break;
 		}
 		setTabKey(key);
@@ -316,29 +330,52 @@ function Component(props) {
 		),
 		point: (
 			<Card className="phh-card">
-				<div className="phh-group-search mb-10" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-					<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="sync">
-						Làm mới
-					</Button>
-					<div className="mr-5">
-						<h4>Lọc theo môn học</h4>
-						<Select placeholder="-- Môn Học --">
-							{subjectsClass &&
-								subjectsClass.map(ele => (
-									<Select.Option value={ele._id} key={ele._id}>
-										{ele.name}
-									</Select.Option>
-								))}
-						</Select>
-					</div>
-					<Button className="mr=5" style={{ height: '35px', color: 'white' }} icon="file-excel">
-						Bảng điểm tổng
-					</Button>
-					<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
-						Xuất excel
-					</Button>
-				</div>
-				<TablePoint data={[]} />
+				<Row>
+					<Col className="mt-15 mb-10" xs={24} md={12}>
+						<div className="mr-5" style={{ display: 'flex', alignItems: 'center' }}>
+							<h4 style={{ width: '150px' }}>Lọc theo môn học</h4>
+							<Select
+								className="select-custom"
+								style={{ width: '60%' }}
+								loading={loadingGetSubjectAllClass}
+								placeholder="-- Môn Học --"
+								onChange={value => {
+									setTypeTablePoint(false);
+									getPointSubjectClassReq({
+										req: {
+											limit: 10,
+											page: 1,
+											classID: ID,
+											subjectID: value,
+										},
+									});
+								}}
+							>
+								{subjectsOfClass &&
+									subjectsOfClass.map(ele => (
+										<Select.Option value={ele.subjectID._id} key={ele._id}>
+											{ele.subjectID.name}
+										</Select.Option>
+									))}
+							</Select>
+						</div>
+					</Col>
+					<Col className="mt-15 mb-10" xs={24} md={12}>
+						<div className="phh-group-search" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+							<Button className="mr-5" style={{ height: '35px', color: 'white' }} icon="sync">
+								Làm mới
+							</Button>
+							<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="file-excel">
+								Bảng điểm tổng
+							</Button>
+							<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
+								Xuất excel
+							</Button>
+						</div>
+					</Col>
+				</Row>
+
+				<TablePoint dataPoint={poinOfStudent} type={typeTablePoint} loading={loadingGetPointSubjectClass} />
 			</Card>
 		),
 		schedule: (
@@ -497,7 +534,9 @@ Component.propTypes = {
 	updateOfClassStatus: PropTypes.string.isRequired,
 	getScheduleOfClassStatus: PropTypes.string.isRequired,
 	getDetailExamStatus: PropTypes.string.isRequired,
+	getSubjectAllOfClassStatus: PropTypes.string.isRequired,
 	getLogsScheduleOfClassStatus: PropTypes.string.isRequired,
+	getPointSubjectOfStudentStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
@@ -507,11 +546,15 @@ Component.propTypes = {
 	getScheduleClassReq: PropTypes.func.isRequired,
 	getDetailExamReq: PropTypes.func.isRequired,
 	getLogScheduleClassReq: PropTypes.func.isRequired,
+	getSubjectAllReq: PropTypes.func.isRequired,
+	getPointSubjectClassReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailExam: PropTypes.objectOf(PropTypes.any).isRequired,
 	logsScheduleClass: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjectsOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
+	poinOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Component;
