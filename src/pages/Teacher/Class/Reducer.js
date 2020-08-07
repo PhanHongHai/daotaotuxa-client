@@ -13,6 +13,7 @@ const initialState = {
 	getLogsScheduleOfClassStatus: STATUS.DEFAULT,
 	createSubjectOfClassStatus: STATUS.DEFAULT,
 	updateOfClassStatus: STATUS.DEFAULT,
+	updatePointMiddleStatus: STATUS.DEFAULT,
 	getDetailExamStatus: STATUS.DEFAULT,
 	getPointSubjectOfStudentStatus: STATUS.DEFAULT,
 	getPointsOfStudentStatus: STATUS.DEFAULT,
@@ -334,6 +335,28 @@ const reducer = [
 			};
 		},
 	},
+		// active when call action update point middle by teacher
+		{
+			on: Action.updatePointMiddleByTeacherRequest,
+			reducer: state => ({
+				...state,
+				updatePointMiddleStatus: STATUS.FETCHING,
+			}),
+		},
+		{
+			on: Action.updatePointMiddleByTeacherSuccess,
+			reducer: state => ({
+				...state,
+				updatePointMiddleStatus: STATUS.SUCCESS,
+			}),
+		},
+		{
+			on: Action.updatePointMiddleByTeacherFailure,
+			reducer: state => ({
+				...state,
+				updatePointMiddleStatus: STATUS.FAILURE,
+			}),
+		},
 	// active when call action export log schedule of class by teacher
 	{
 		on: Action.exportLogScheduleByTeacherRequest,

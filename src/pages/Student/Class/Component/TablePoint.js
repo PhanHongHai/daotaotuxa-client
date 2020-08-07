@@ -33,8 +33,7 @@ function TablePoint(props) {
 			dataIndex: 'pointMiddle',
 			key: 'pointMiddle',
 			render: value => {
-				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
-				return <span style={{ color: 'green' }}>{value} </span>;
+				return <span style={{ color: value < 5 ? 'red' : 'green' }}>{value} </span>;
 			},
 		},
 		{
@@ -42,8 +41,7 @@ function TablePoint(props) {
 			dataIndex: 'pointLast',
 			key: 'pointLast',
 			render: value => {
-				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
-				return <span style={{ color: 'green' }}>{value} </span>;
+				return <span style={{ color: value < 5 ? 'red' : 'green' }}>{value} </span>;
 			},
 		},
 		{
@@ -51,8 +49,7 @@ function TablePoint(props) {
 			dataIndex: 'pointTotal',
 			key: 'pointTotal',
 			render: value => {
-				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
-				return <span style={{ color: 'green' }}>{value} </span>;
+				return <span style={{ color: value < 5 ? 'red' : 'green' }}>{value} </span>;
 			},
 		},
 	];

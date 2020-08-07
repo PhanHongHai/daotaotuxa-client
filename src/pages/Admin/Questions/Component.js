@@ -29,6 +29,8 @@ function QuestionComponent(props) {
 	} = props;
 	const history = useHistory();
 	const refSearch = useRef(null);
+	const refSelectStatus = useRef(null);
+	const refSelectLevel = useRef(null);
 	const [pageCurrent, setPageCurrent] = useState({ limit: 10, page: 1 });
 	const [keyword, setKeyword] = useState('');
 	const [levelPick, setLevelPick] = useState(0);
@@ -132,6 +134,8 @@ function QuestionComponent(props) {
 		setLevelPick(0);
 		setKeyword('');
 		refSearch.current.input.state.value = '';
+		refSelectStatus.current.rcSelect.state.value = [2];
+		refSelectLevel.current.rcSelect.state.value = [0];
 		getAndSearchQuestionReq({
 			req: {
 				limit: 10,
@@ -218,7 +222,7 @@ function QuestionComponent(props) {
 									<Col xs={12} md={4} className="mt-15">
 										<div className="select-pick">
 											<h4>Trạng thái </h4>
-											<Select defaultValue={2} onChange={handlePickTypeQuestion}>
+											<Select ref={refSelectStatus} defaultValue={2} onChange={handlePickTypeQuestion}>
 												<Select.Option value={2}>Tất cả</Select.Option>
 												<Select.Option value={1}>Công khai</Select.Option>
 												<Select.Option value={0}>Riêng tư</Select.Option>
@@ -228,7 +232,7 @@ function QuestionComponent(props) {
 									<Col xs={12} md={4} className="mt-15">
 										<div className="select-pick">
 											<h4>Mức độ </h4>
-											<Select defaultValue={0} onChange={handlePickLevelQuestion}>
+											<Select ref={refSelectLevel} defaultValue={0} onChange={handlePickLevelQuestion}>
 												<Select.Option value={0}>Tất cả</Select.Option>
 												<Select.Option value={1}>Dễ</Select.Option>
 												<Select.Option value={2}>Trung bình</Select.Option>

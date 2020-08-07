@@ -73,6 +73,12 @@ const {
 	exportLogScheduleByTeacherFailure,
 } = createAsyncAction('exportLogScheduleByTeacher', 'EXPORT_LOG_SCHEDULE_BY_TEACHER');
 
+const {
+	updatePointMiddleByTeacherRequest,
+	updatePointMiddleByTeacherSuccess,
+	updatePointMiddleByTeacherFailure,
+} = createAsyncAction('updatePointMiddleByTeacher', 'UPDATE_POINT_MIDDLE_BY_TEACHER');
+
 const Actions = {
 	getDetailClassByTeacherRequest,
 	getDetailClassByTeacherSuccess,
@@ -117,6 +123,10 @@ const Actions = {
 	updateClassByTeacherRequest,
 	updateClassByTeacherSuccess,
 	updateClassByTeacherFailure,
+
+	updatePointMiddleByTeacherRequest,
+	updatePointMiddleByTeacherSuccess,
+	updatePointMiddleByTeacherFailure,
 
 	exportLogScheduleByTeacherRequest,
 	exportLogScheduleByTeacherSuccess,

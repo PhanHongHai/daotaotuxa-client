@@ -26,6 +26,7 @@ const { updateQuestionTeacherRequest, updateQuestionTeacherSuccess, updateQuesti
 	'updateQuestionTeacher',
 	'UPDATE_QUESTION_TEACHER',
 );
+
 const { removeQuestionTeacherRequest, removeQuestionTeacherSuccess, removeQuestionTeacherFailure } = createAsyncAction(
 	'removeQuestionTeacher',
 	'REMOVE_QUESTION_TEACHER',
@@ -56,6 +57,8 @@ const Actions = {
 	updateQuestionTeacherRequest,
 	updateQuestionTeacherSuccess,
 	updateQuestionTeacherFailure,
+
+
 
 	removeQuestionTeacherRequest,
 	removeQuestionTeacherSuccess,

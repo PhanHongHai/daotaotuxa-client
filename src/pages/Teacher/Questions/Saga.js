@@ -86,6 +86,7 @@ function* handleUpdateQuestion(action) {
 		message.error('Cập nhật câu hỏi không thành công ! Xin thử lại');
 	}
 }
+
 function* handleRemoveQuestion(action) {
 	try {
 		const { ID, cb, pageCurrent, keyword } = action.payload;
@@ -138,10 +139,11 @@ const getCreateQuestionSaga = {
 	on: QuestionAction.createQuestionTeacherRequest,
 	worker: handleCreateQuestion,
 };
-const getUpdateQuestionSaga = {
+const updateQuestionSaga = {
 	on: QuestionAction.updateQuestionTeacherRequest,
 	worker: handleUpdateQuestion,
 };
+
 const getRemoveQuestionSaga = {
 	on: QuestionAction.removeQuestionTeacherRequest,
 	worker: handleRemoveQuestion,
@@ -156,7 +158,7 @@ export default createSagas([
 	getAndSearchQuestionSaga,
 	getDetailQuestionSaga,
 	getCreateQuestionSaga,
-	getUpdateQuestionSaga,
+	updateQuestionSaga,
 	getRemoveQuestionSaga,
-	getRemoveDetailQuestionSaga
+	getRemoveDetailQuestionSaga,
 ]);

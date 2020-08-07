@@ -34,6 +34,7 @@ function Component(props) {
 		getLogsScheduleOfClassStatus,
 		getSubjectAllOfClassStatus,
 		getPointSubjectOfStudentStatus,
+		updatePointMiddleStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
@@ -52,6 +53,7 @@ function Component(props) {
 		getLogScheduleClassReq,
 		getSubjectAllReq,
 		getPointSubjectClassReq,
+		updatePointMiddleReq,
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -69,6 +71,7 @@ function Component(props) {
 	const refSearch = useRef(null);
 	const refInput = useRef(null);
 	const refDatePicker = useRef(null);
+	const refSelect = useRef(null);
 	const [keyword, setKeyword] = useState('');
 	const [visibleCreate, setVisibleCreate] = useState(false);
 	const [visibleViewExam, setVisibleViewExam] = useState(false);
@@ -77,6 +80,7 @@ function Component(props) {
 	const [datePick, setDatePick] = useState({});
 	const [scheduleID, setScheduleID] = useState('');
 	const [typeTablePoint, setTypeTablePoint] = useState(false);
+	const [subjectID, setSubjectID] = useState(null);
 
 	const loadingGetDetailClass = getDetailClassStatus === 'FETCHING';
 	const loadingGetStudentClass = getStudentOfClassStatus === 'FETCHING';
@@ -87,6 +91,7 @@ function Component(props) {
 	const loadingGetLogSchedule = getLogsScheduleOfClassStatus === 'FETCHING';
 	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FETCHING';
 	const loadingGetSubjectAllClass = getSubjectAllOfClassStatus === 'FETCHING';
+	const loadingUpdatePointMiddle = updatePointMiddleStatus === 'FETCHING';
 	const loadingGetPointSubjectClass = getPointSubjectOfStudentStatus === 'FETCHING';
 
 	const tabList = [
@@ -139,6 +144,7 @@ function Component(props) {
 	const handleReload = () => {
 		setKeyword('');
 		refSearch.current.input.state.value = '';
+
 		switch (tabKey) {
 			case 'student':
 				getStudentClassReq({
@@ -157,6 +163,16 @@ function Component(props) {
 						limit: 10,
 						keyword: '',
 						sectorID: infoClass && infoClass.trainingSectorID._id,
+					},
+				});
+				break;
+			case 'point':
+				getPointSubjectClassReq({
+					req: {
+						limit: 10,
+						page: 1,
+						classID: ID,
+						subjectID,
 					},
 				});
 				break;
@@ -297,6 +313,19 @@ function Component(props) {
 		});
 		setVisibleViewExam(true);
 	};
+	const handleReloadPoint = () => {
+		if (subjectID !== null) {
+			refSelect.current.rcSelect.state.value = [subjectID];
+			getPointSubjectClassReq({
+				req: {
+					limit: 10,
+					page: 1,
+					classID: ID,
+					subjectID,
+				},
+			});
+		} else refSelect.current.rcSelect.state.value = [];
+	};
 	const contentList = {
 		student: (
 			<Card className="phh-card">
@@ -335,11 +364,13 @@ function Component(props) {
 						<div className="mr-5" style={{ display: 'flex', alignItems: 'center' }}>
 							<h4 style={{ width: '150px' }}>Lọc theo môn học</h4>
 							<Select
+								ref={refSelect}
 								className="select-custom"
 								style={{ width: '60%' }}
 								loading={loadingGetSubjectAllClass}
 								placeholder="-- Môn Học --"
 								onChange={value => {
+									setSubjectID(value);
 									setTypeTablePoint(false);
 									getPointSubjectClassReq({
 										req: {
@@ -362,7 +393,12 @@ function Component(props) {
 					</Col>
 					<Col className="mt-15 mb-10" xs={24} md={12}>
 						<div className="phh-group-search" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-							<Button className="mr-5" style={{ height: '35px', color: 'white' }} icon="sync">
+							<Button
+								onClick={handleReloadPoint}
+								className="mr-5"
+								style={{ height: '35px', color: 'white' }}
+								icon="sync"
+							>
 								Làm mới
 							</Button>
 							<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="file-excel">
@@ -375,7 +411,17 @@ function Component(props) {
 					</Col>
 				</Row>
 
-				<TablePoint dataPoint={poinOfStudent} type={typeTablePoint} loading={loadingGetPointSubjectClass} />
+				<TablePoint
+					classID={ID}
+					subjectID={subjectID}
+					subjectsOfClass={subjectsOfClass}
+					dataPoint={poinOfStudent}
+					type={typeTablePoint}
+					loading={loadingGetPointSubjectClass}
+					loadingUpdatePointMiddle={loadingUpdatePointMiddle}
+					updatePointMiddleReq={updatePointMiddleReq}
+					getReq={getPointSubjectClassReq}
+				/>
 			</Card>
 		),
 		schedule: (
@@ -537,6 +583,7 @@ Component.propTypes = {
 	getSubjectAllOfClassStatus: PropTypes.string.isRequired,
 	getLogsScheduleOfClassStatus: PropTypes.string.isRequired,
 	getPointSubjectOfStudentStatus: PropTypes.string.isRequired,
+	updatePointMiddleStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
@@ -548,6 +595,7 @@ Component.propTypes = {
 	getLogScheduleClassReq: PropTypes.func.isRequired,
 	getSubjectAllReq: PropTypes.func.isRequired,
 	getPointSubjectClassReq: PropTypes.func.isRequired,
+	updatePointMiddleReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,

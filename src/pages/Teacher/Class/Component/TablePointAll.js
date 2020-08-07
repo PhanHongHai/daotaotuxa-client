@@ -1,17 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfigProvider, Icon, Table, Tag, Button, Tooltip, Input } from 'antd';
-import _ from 'lodash';
 
 import LoadingCustom from '../../../../components/LoadingCustom';
+import customMessage from '../../../../utils/customMessage';
 
 function TablePointAll(props) {
 	const {
 		dataPoint: { data, pagination },
 		type,
 		loading,
+		getReq,
+		subjectID,
+		classID,
+		subjectsOfClass,
+		updatePointMiddleReq,
+		loadingUpdatePointMiddle,
 	} = props;
 	const [isEditRow, setIsEditRow] = React.useState(false);
+	const [valueMiddlePoint, setValueMiddlePoint] = React.useState(null);
+	const [pageCurrent, setPageCurrent] = React.useState({
+		limit: 10,
+		page: 1,
+	});
 	const column = [
 		{
 			title: '#',
@@ -54,6 +65,31 @@ function TablePointAll(props) {
 			key: 'vldc',
 		},
 	];
+	const renderTitleSubject = () => {
+		if (subjectID !== null && subjectsOfClass.length > 0) {
+			const result = subjectsOfClass.find(ele => ele.subjectID._id === subjectID);
+			if (result) return result.subjectID.name;
+		}
+		return 'Không xác định';
+	};
+	const onChangeInputMiddlePoint = e => {
+		const { value } = e.target;
+		setValueMiddlePoint(value);
+	};
+	const onChangeTable = page => {
+		setPageCurrent({
+			limit: Number(page.pageSize),
+			page: Number(page.current),
+		});
+		getReq({
+			req: {
+				limit: Number(page.pageSize),
+				page: Number(page.current),
+				classID,
+				subjectID,
+			},
+		});
+	};
 	const columnPointSubject = [
 		{
 			title: '#',
@@ -73,15 +109,13 @@ function TablePointAll(props) {
 			render: value => <span>{value.name} </span>,
 		},
 		{
-			title: 'Tên môn học',
+			title: renderTitleSubject(),
 			children: [
 				{
 					title: 'Điểm Giữa Kỳ (30%)',
-					dataIndex: 'pointMiddle',
 					key: 'point-mid',
 					width: 150,
-					render: value => {
-						if (value < 5)
+					render: row => {
 							return (
 								<span
 									className="edit-row"
@@ -101,7 +135,12 @@ function TablePointAll(props) {
 												alignItems: 'center',
 											}}
 										>
-											<Input value={value} />
+											<Input
+												style={{ height: '30px' }}
+												name="pointMiddle"
+												onChange={onChangeInputMiddlePoint}
+												defaultValue={row.pointMiddle}
+											/>
 											<span
 												style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginLeft: '5px' }}
 											>
@@ -109,9 +148,28 @@ function TablePointAll(props) {
 													style={{
 														marginRight: 5,
 													}}
-													onClick={() => setIsEditRow(false)}
+													onClick={() => {
+														updatePointMiddleReq({
+															req: {
+																pointMiddle: Number(valueMiddlePoint),
+															},
+															pageCurrent,
+															subjectID,
+															classID,
+															ID: row._id,
+															cb: res => {
+																if (res && res.isUpdated) {
+																	setIsEditRow(false);
+																	setValueMiddlePoint(null);
+																	customMessage('notification', 'success', res.msg);
+																}
+															},
+														});
+													}}
+													disabled={valueMiddlePoint === null}
 													icon="check"
 													className="btn-transparent"
+													loading={loadingUpdatePointMiddle}
 												/>
 												<Button
 													style={{}}
@@ -123,7 +181,7 @@ function TablePointAll(props) {
 										</div>
 									) : (
 										<>
-											{value}
+											<span style={{color:row.pointMiddle < 5 ? 'red' : 'green'}}>{row.pointMiddle}</span>
 											<Tooltip title="Sửa">
 												<Button
 													style={{
@@ -141,7 +199,6 @@ function TablePointAll(props) {
 									)}
 								</span>
 							);
-						return <span style={{ color: 'green' }}>{value} </span>;
 					},
 				},
 				{
@@ -157,7 +214,7 @@ function TablePointAll(props) {
 				{
 					title: 'Điểm Tổng Kết',
 					dataIndex: 'pointTotal',
-					key: 'point-last',
+					key: 'point-total',
 					width: 150,
 					render: value => {
 						if (value < 5) return <span style={{ color: 'red' }}>{value} </span>;
@@ -180,6 +237,7 @@ function TablePointAll(props) {
 				className="phh-table"
 				dataSource={data}
 				bordered
+				onChange={onChangeTable}
 				columns={type ? column : columnPointSubject}
 				rowKey={ele => ele._id}
 				scroll={{ x: true }}
@@ -199,9 +257,15 @@ function TablePointAll(props) {
 }
 
 TablePointAll.propTypes = {
-	dataPoint: PropTypes.instanceOf(Array).isRequired,
+	dataPoint: PropTypes.objectOf(PropTypes.any).isRequired,
+	subjectsOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	type: PropTypes.bool.isRequired,
 	loading: PropTypes.bool.isRequired,
+	loadingUpdatePointMiddle: PropTypes.bool.isRequired,
+	subjectID: PropTypes.string.isRequired,
+	classID: PropTypes.string.isRequired,
+	updatePointMiddleReq: PropTypes.func.isRequired,
+	getReq: PropTypes.func.isRequired,
 };
 
 export default TablePointAll;

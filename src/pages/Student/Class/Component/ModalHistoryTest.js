@@ -81,8 +81,7 @@ function ModalHistoryTest(props) {
 			dataIndex: 'result',
 			key: 'result',
 			render: value => {
-				if (value <= 4) return <span style={{ color: 'red' }}>{value} </span>;
-				return <span style={{ color: 'green' }}>{value} </span>;
+				return <span style={{ color: value < 5 ? 'red' : 'green' }}>{value} </span>;
 			},
 		},
 	];

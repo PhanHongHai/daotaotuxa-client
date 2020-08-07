@@ -57,7 +57,7 @@ async function submitTask(req) {
  */
 async function updatePointMiddle({ req, ID }) {
 	try {
-		const res = await restful.POST(`/api/v1/points/${ID}`, req);
+		const res = await restful.PATCH(`/api/v1/points/${ID}`, req);
 		return res;
 	} catch (err) {
 		return err;

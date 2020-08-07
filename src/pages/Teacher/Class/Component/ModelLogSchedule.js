@@ -69,8 +69,7 @@ function ModelLogSchedule(props) {
 					key: 'point-number',
 					width: 150,
 					render: value => {
-						if (value < 5) return <span style={{ color: 'red' }}>{value} </span>;
-						return <span style={{ color: 'green' }}>{value} </span>;
+						return <span style={{ color: value < 5 ? 'red' : 'green' }}>{value} </span>;
 					},
 				},
 			],

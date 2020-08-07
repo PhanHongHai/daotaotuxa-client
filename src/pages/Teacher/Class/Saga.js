@@ -142,7 +142,23 @@ function* handleUpdateClass(action) {
 		message.error('Cập nhật trạng thái lớp học không thành công ! Xin thử lại');
 	}
 }
-
+function* handleUpdatePointMiddleByTeacher(action) {
+	try {
+		const { req, ID, pageCurrent, subjectID, classID, cb } = action.payload;
+		const res = yield call(PointApi.updatePointMiddle, { req, ID });
+		if (!res.errors) {
+			yield put(Action.updatePointMiddleByTeacherSuccess());
+			yield put(Action.getPointSubjectStudentOfClassByTeacherRequest({ req: { ...pageCurrent, subjectID, classID } }));
+			if (cb && typeof cb === 'function') yield cb({ isUpdated: true, msg: 'Cập nhật điểm thành công' });
+		} else {
+			yield put(Action.updateQuestionTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.updateQuestionTeacherFailure());
+		message.error('Cập nhật điểm không thành công ! Xin thử lại');
+	}
+}
 function* handleGetDetailExam(action) {
 	try {
 		const { ID } = action.payload;
@@ -237,7 +253,10 @@ const updateClasByTeacherSaga = {
 	on: Action.updateClassByTeacherRequest,
 	worker: handleUpdateClass,
 };
-
+const updatePointMiddleSaga = {
+	on: Action.updatePointMiddleByTeacherRequest,
+	worker: handleUpdatePointMiddleByTeacher,
+};
 const exportLogScheduleSaga = {
 	on: Action.exportLogScheduleByTeacherRequest,
 	worker: handleExportLogSchedule,
@@ -275,5 +294,6 @@ export default createSagas([
 	getDetailExamSaga,
 	getSubjectAllOfClassSaga,
 	getPointSubjectOfStudentSaga,
-	getPointsOfStudentSaga
+	getPointsOfStudentSaga,
+	updatePointMiddleSaga,
 ]);
