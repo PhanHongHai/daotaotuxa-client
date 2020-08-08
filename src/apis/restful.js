@@ -27,7 +27,7 @@ async function request(path, method, payload = {}) {
 	}
 }
 
-async function uploadFile(path, payload) {
+async function uploadFileWithData(path, payload) {
 	try {
 		const url = new URL(`${API_URL}${path}`);
 		const token = localStorage.getItem('token');
@@ -52,4 +52,4 @@ const restful = {
 	DELETE: (path, params) => request(path, 'DELETE', params),
 };
 
-export default { restful, uploadFile };
+export default { restful, uploadFileWithData };

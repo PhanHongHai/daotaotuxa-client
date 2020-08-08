@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Modal } from 'antd';
+import { Modal,Button } from 'antd';
 
 import { BASE_COLOR } from '../../../constands/Other';
 
@@ -114,5 +114,38 @@ export const ModalEditProfileStyle = styled(Modal)`
 	}
 	.ant-modal-body {
 		padding: 0 !important;
+	}
+`;
+
+export const AvatarUploadStyle = styled.div`
+	// display: flex;
+	h4{
+		line-height: 40px !important;
+		margin:0 !important;
+	}
+	.upload {
+		display:inline-block;
+		.note {
+			display: block;
+			color: black;
+			font-size: 14px;
+		}
+	}
+	@media only screen and (max-width: 425px) {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+`;
+export const ButtonUpload = styled(Button)`
+	color: ${BASE_COLOR} !important;
+	border-color: ${BASE_COLOR} !important;
+	&:hover {
+		border-color: ${BASE_COLOR} !important;
+		color: #fff !important;
+		background: ${BASE_COLOR} !important;
+	}
+	@media only screen and (max-width: 425px) {
+		width: 100% !important;
 	}
 `;
