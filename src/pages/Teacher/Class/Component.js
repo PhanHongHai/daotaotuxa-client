@@ -35,6 +35,7 @@ function Component(props) {
 		getSubjectAllOfClassStatus,
 		getPointSubjectOfStudentStatus,
 		updatePointMiddleStatus,
+		exportStudentsOfClassStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
@@ -54,6 +55,7 @@ function Component(props) {
 		getSubjectAllReq,
 		getPointSubjectClassReq,
 		updatePointMiddleReq,
+		exportStudentsClassReq,
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -92,6 +94,7 @@ function Component(props) {
 	const loadingGetScheduleClass = getScheduleOfClassStatus === 'FETCHING';
 	const loadingGetSubjectAllClass = getSubjectAllOfClassStatus === 'FETCHING';
 	const loadingUpdatePointMiddle = updatePointMiddleStatus === 'FETCHING';
+	const loadingExportStudentsClass = exportStudentsOfClassStatus === 'FETCHING';
 	const loadingGetPointSubjectClass = getPointSubjectOfStudentStatus === 'FETCHING';
 
 	const tabList = [
@@ -347,6 +350,15 @@ function Component(props) {
 						enterButton
 						onSearch={handleSearch}
 					/>
+					<Button
+						className="ml-5"
+						loading={loadingExportStudentsClass}
+						style={{ height: '35px', color: 'white' }}
+						icon="file-excel"
+						onClick={() => exportStudentsClassReq({ ID })}
+					>
+						Xuất excel
+					</Button>
 				</div>
 				<TableStudentData
 					data={studentsClass && studentsClass.data}
@@ -584,6 +596,7 @@ Component.propTypes = {
 	getLogsScheduleOfClassStatus: PropTypes.string.isRequired,
 	getPointSubjectOfStudentStatus: PropTypes.string.isRequired,
 	updatePointMiddleStatus: PropTypes.string.isRequired,
+	exportStudentsOfClassStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
@@ -596,6 +609,7 @@ Component.propTypes = {
 	getSubjectAllReq: PropTypes.func.isRequired,
 	getPointSubjectClassReq: PropTypes.func.isRequired,
 	updatePointMiddleReq: PropTypes.func.isRequired,
+	exportStudentsClassReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,

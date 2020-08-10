@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+
 const API_URL = process.env.NODE_ENV === 'production' ? 'http://103.130.218.161:9000' : 'http://localhost:9000';
 
 async function request(path, method, payload = {}) {
@@ -45,6 +47,29 @@ async function uploadFileWithData(path, payload) {
 		throw err;
 	}
 }
+async function exportExcel(path) {
+	try {
+		const url = new URL(`${API_URL}${path}`);
+		const token = localStorage.getItem('token');
+		const options = {
+			method: 'GET',
+			headers: {
+				accessToken: token || '',
+			},
+		};
+		const res = await fetch(url, options);
+		if (res.status > 200) throw await res.json();
+		else{
+			let blob = new Blob([res], {type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
+			console.log(blob);
+			console.log(res.json());
+			saveAs(blob, 'fileName.xls');
+		}
+	} catch (err) {
+		console.log(err);
+		throw err;
+	}
+}
 const restful = {
 	GET: (path, params) => request(path, 'GET', params),
 	POST: (path, body) => request(path, 'POST', body),
@@ -52,4 +77,4 @@ const restful = {
 	DELETE: (path, params) => request(path, 'DELETE', params),
 };
 
-export default { restful, uploadFileWithData };
+export default { restful, uploadFileWithData,exportExcel };

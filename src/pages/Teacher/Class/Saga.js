@@ -223,6 +223,22 @@ function* handleExportLogSchedule(action) {
 	}
 }
 
+function* handleExportStudentsOfClass(action) {
+	try {
+		const { ID } = action.payload;
+		const res = yield call(ClassApi.exportExcelStudentsOfClass, ID);
+		if (!res && !res.errors) {
+			yield put(Action.exportExcelStudentsByTeacherSuccess());
+		} else {
+			yield put(Action.exportExcelStudentsByTeacherFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.exportExcelStudentsByTeacherFailure());
+		message.error('Xuất excel danh sách học viên của lớp học không thành công ! Xin thử lại');
+	}
+}
+
 const getDetailClassSaga = {
 	on: Action.getDetailClassByTeacherRequest,
 	worker: handleGetDetailClass,
@@ -282,6 +298,11 @@ const getPointsOfStudentSaga = {
 	worker: handleGetPointAllOfStudent,
 };
 
+const exportStudentsOfClassSaga = {
+	on: Action.exportExcelStudentsByTeacherRequest,
+	worker: handleExportStudentsOfClass,
+};
+
 export default createSagas([
 	getDetailClassSaga,
 	getStudentOfClassSaga,
@@ -296,4 +317,5 @@ export default createSagas([
 	getPointSubjectOfStudentSaga,
 	getPointsOfStudentSaga,
 	updatePointMiddleSaga,
+	exportStudentsOfClassSaga
 ]);

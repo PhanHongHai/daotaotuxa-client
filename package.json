@@ -8,6 +8,7 @@
     "antd": "^3.26.13",
     "chart.js": "^2.9.3",
     "customize-cra": "^0.2.12",
+    "file-saver": "^2.0.2",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "lodash": "^4.17.11",

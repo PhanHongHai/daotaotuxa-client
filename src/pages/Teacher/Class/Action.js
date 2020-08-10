@@ -3,6 +3,11 @@ import Redux from '../../../utils/redux';
 const { createAsyncAction } = Redux;
 
 const {
+	exportExcelStudentsByTeacherRequest,
+	exportExcelStudentsByTeacherSuccess,
+	exportExcelStudentsByTeacherFailure,
+} = createAsyncAction('exportExcelStudentsByTeacher', 'EXPORT_EXCEL_STUDENTS_BY_TEACHER');
+const {
 	getDetailClassByTeacherRequest,
 	getDetailClassByTeacherSuccess,
 	getDetailClassByTeacherFailure,
@@ -131,6 +136,10 @@ const Actions = {
 	exportLogScheduleByTeacherRequest,
 	exportLogScheduleByTeacherSuccess,
 	exportLogScheduleByTeacherFailure,
+
+	exportExcelStudentsByTeacherRequest,
+	exportExcelStudentsByTeacherSuccess,
+	exportExcelStudentsByTeacherFailure,
 };
 
 export default Actions;

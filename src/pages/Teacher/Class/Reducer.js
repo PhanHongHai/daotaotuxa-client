@@ -18,6 +18,7 @@ const initialState = {
 	getPointSubjectOfStudentStatus: STATUS.DEFAULT,
 	getPointsOfStudentStatus: STATUS.DEFAULT,
 	exportLogScheduleStatus: STATUS.DEFAULT,
+	exportStudentsOfClassStatus: STATUS.DEFAULT,
 	detailClass: {},
 	detailExam: {},
 	subjectsOfClass: [],
@@ -378,6 +379,30 @@ const reducer = [
 			return {
 				...state,
 				exportLogScheduleStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action export students of class by teacher
+	{
+		on: Action.exportExcelStudentsByTeacherRequest,
+		reducer: state => ({
+			...state,
+			exportStudentsOfClassStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.exportExcelStudentsByTeacherSuccess,
+		reducer: state => ({
+			...state,
+			exportStudentsOfClassStatus: STATUS.SUCCESS,
+		}),
+	},
+	{
+		on: Action.exportExcelStudentsByTeacherFailure,
+		reducer: state => {
+			return {
+				...state,
+				exportStudentsOfClassStatus: STATUS.FAILURE,
 			};
 		},
 	},

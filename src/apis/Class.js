@@ -1,6 +1,6 @@
 import api from './restful';
 
-const { restful } = api;
+const { restful ,exportExcel} = api;
 
 async function getInfoClassByAccount() {
 	try {
@@ -19,6 +19,14 @@ async function getInfoTeacherByClassID(ID) {
 	}
 }
 
+async function exportExcelStudentsOfClass(ID) {
+	try {
+		const res = await exportExcel(`/api/v1/classeDetails/export-students-class/${ID}`);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 async function getAndSearchStudentOfClass(req) {
 	try {
 		const res = await restful.GET('/api/v1/classeDetails', req);
@@ -124,4 +132,5 @@ export default {
 	addAccountToClass,
 	removeStudentOfClass,
 	getInfoTeacherByClassID,
+	exportExcelStudentsOfClass,
 };
