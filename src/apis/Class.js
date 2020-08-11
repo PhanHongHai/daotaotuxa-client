@@ -19,9 +19,9 @@ async function getInfoTeacherByClassID(ID) {
 	}
 }
 
-async function exportExcelStudentsOfClass(ID) {
+async function exportExcelStudentsOfClass(ID,fileName) {
 	try {
-		const res = await exportExcel(`/api/v1/classeDetails/export-students-class/${ID}`);
+		const res = await exportExcel(`/api/v1/classeDetails/export-students-class/${ID}`,fileName);
 		return res;
 	} catch (err) {
 		return err;

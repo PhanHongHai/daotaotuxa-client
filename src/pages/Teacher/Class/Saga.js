@@ -226,13 +226,8 @@ function* handleExportLogSchedule(action) {
 function* handleExportStudentsOfClass(action) {
 	try {
 		const { ID } = action.payload;
-		const res = yield call(ClassApi.exportExcelStudentsOfClass, ID);
-		if (!res && !res.errors) {
-			yield put(Action.exportExcelStudentsByTeacherSuccess());
-		} else {
-			yield put(Action.exportExcelStudentsByTeacherFailure());
-			filterError(res.errors, 'notification');
-		}
+		yield call(ClassApi.exportExcelStudentsOfClass, ID, 'danhsachhocvien');
+		yield put(Action.exportExcelStudentsByTeacherSuccess());
 	} catch (error) {
 		yield put(Action.exportExcelStudentsByTeacherFailure());
 		message.error('Xuất excel danh sách học viên của lớp học không thành công ! Xin thử lại');
@@ -317,5 +312,5 @@ export default createSagas([
 	getPointSubjectOfStudentSaga,
 	getPointsOfStudentSaga,
 	updatePointMiddleSaga,
-	exportStudentsOfClassSaga
+	exportStudentsOfClassSaga,
 ]);

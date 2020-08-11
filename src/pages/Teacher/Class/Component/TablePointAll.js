@@ -127,7 +127,7 @@ function TablePointAll(props) {
 										alignItems: 'center',
 									}}
 								>
-									{isEditRow ? (
+									{isEditRow === row._id ? (
 										<div
 											style={{
 												display: 'flex',
@@ -159,7 +159,7 @@ function TablePointAll(props) {
 															ID: row._id,
 															cb: res => {
 																if (res && res.isUpdated) {
-																	setIsEditRow(false);
+																	setIsEditRow(null);
 																	setValueMiddlePoint(null);
 																	customMessage('notification', 'success', res.msg);
 																}
@@ -173,7 +173,7 @@ function TablePointAll(props) {
 												/>
 												<Button
 													style={{}}
-													onClick={() => setIsEditRow(false)}
+													onClick={() => setIsEditRow(null)}
 													icon="close"
 													className="btn-transparent"
 												/>
@@ -190,7 +190,7 @@ function TablePointAll(props) {
 														right: '10%',
 														cursor: 'pointer',
 													}}
-													onClick={() => setIsEditRow(true)}
+													onClick={() => setIsEditRow(row._id)}
 													icon="edit"
 													className="btn-transparent"
 												/>

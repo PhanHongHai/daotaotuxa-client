@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Input, Button, DatePicker, Select } from 'antd';
+import { Row, Col, Card, Input, Button, DatePicker, Select, Tooltip } from 'antd';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 
@@ -332,7 +332,7 @@ function Component(props) {
 	const contentList = {
 		student: (
 			<Card className="phh-card">
-				<div className="phh-group-search mb-10 mt-10 " style={{ alignItems: 'center' }}>
+				<div className="phh-group-search mb-10 mt-10 flex" style={{ alignItems: 'center' }}>
 					<Input.Search
 						addonBefore={
 							<Button
@@ -350,15 +350,17 @@ function Component(props) {
 						enterButton
 						onSearch={handleSearch}
 					/>
-					<Button
-						className="ml-5"
-						loading={loadingExportStudentsClass}
-						style={{ height: '35px', color: 'white' }}
-						icon="file-excel"
-						onClick={() => exportStudentsClassReq({ ID })}
-					>
-						Xuất excel
-					</Button>
+					<span className="group-btn">
+						<Tooltip title="Xuất excel">
+							<Button
+								className="ml-5"
+								loading={loadingExportStudentsClass}
+								style={{ height: 40, color: 'white' }}
+								icon="file-excel"
+								onClick={() => exportStudentsClassReq({ ID })}
+							/>
+						</Tooltip>
+					</span>
 				</div>
 				<TableStudentData
 					data={studentsClass && studentsClass.data}
@@ -416,7 +418,12 @@ function Component(props) {
 							<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="file-excel">
 								Bảng điểm tổng
 							</Button>
-							<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
+							<Button
+								disabled={poinOfStudent.data && poinOfStudent.data.length < 1}
+								className=""
+								style={{ height: '35px', color: 'white' }}
+								icon="file-excel"
+							>
 								Xuất excel
 							</Button>
 						</div>
