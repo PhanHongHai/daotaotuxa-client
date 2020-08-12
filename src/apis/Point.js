@@ -1,13 +1,24 @@
 import api from './restful';
 
-const { restful } = api;
+const { restful, exportExcel } = api;
 
+/**
+ * export  points of subject in class
+ */
+async function exportPointsOfSubject({ classID, subjectID }, fileName) {
+	try {
+		const res = await exportExcel(`/api/v1/points/export-points-class-by-subject/${classID}/${subjectID}`,fileName);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 /**
  * get  points
  */
 async function getPoinSubjectOfStudent(req) {
 	try {
-		const res = await restful.GET('/api/v1/points/get-points-by-subject',req);
+		const res = await restful.GET('/api/v1/points/get-points-by-subject', req);
 		return res;
 	} catch (err) {
 		return err;
@@ -68,6 +79,7 @@ export default {
 	submitTask,
 	getPoinSubjectOfStudent,
 	getPoinByStudent,
-  getPointsByAccountID,
-  updatePointMiddle
+	getPointsByAccountID,
+	updatePointMiddle,
+	exportPointsOfSubject
 };

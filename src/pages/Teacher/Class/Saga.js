@@ -209,14 +209,9 @@ function* handleGetPointAllOfStudent(action) {
 
 function* handleExportLogSchedule(action) {
 	try {
-		const { scheduleID } = action.payload;
-		const res = yield call(ClassApi.updateClass, scheduleID);
-		if (!res.errors) {
-			yield put(Action.exportLogScheduleByTeacherSuccess());
-		} else {
-			yield put(Action.exportLogScheduleByTeacherFailure());
-			filterError(res.errors, 'notification');
-		}
+		const { scheduleID, classID } = action.payload;
+		yield call(LogsScheduleApi.exportLogPointsOfSchedule, { scheduleID, classID },'ketquathi');
+		yield put(Action.exportLogScheduleByTeacherSuccess());
 	} catch (error) {
 		yield put(Action.exportLogScheduleByTeacherFailure());
 		message.error('Xuất excel kết quả thi của lớp học không thành công ! Xin thử lại');
@@ -230,6 +225,17 @@ function* handleExportStudentsOfClass(action) {
 		yield put(Action.exportExcelStudentsByTeacherSuccess());
 	} catch (error) {
 		yield put(Action.exportExcelStudentsByTeacherFailure());
+		message.error('Xuất excel danh sách học viên của lớp học không thành công ! Xin thử lại');
+	}
+}
+
+function* handleExportPointsOfSubjectInClass(action) {
+	try {
+		const { classID, subjectID } = action.payload;
+		yield call(PointApi.exportPointsOfSubject, { classID, subjectID }, 'bangdiem');
+		yield put(Action.exportPointsOfSubjectInClassByTeacherSuccess());
+	} catch (error) {
+		yield put(Action.exportPointsOfSubjectInClassByTeacherFailure());
 		message.error('Xuất excel danh sách học viên của lớp học không thành công ! Xin thử lại');
 	}
 }
@@ -298,6 +304,11 @@ const exportStudentsOfClassSaga = {
 	worker: handleExportStudentsOfClass,
 };
 
+const exportPointsOfSubjectSaga = {
+	on: Action.exportPointsOfSubjectInClassByTeacherRequest,
+	worker: handleExportPointsOfSubjectInClass,
+};
+
 export default createSagas([
 	getDetailClassSaga,
 	getStudentOfClassSaga,
@@ -313,4 +324,5 @@ export default createSagas([
 	getPointsOfStudentSaga,
 	updatePointMiddleSaga,
 	exportStudentsOfClassSaga,
+	exportPointsOfSubjectSaga
 ]);

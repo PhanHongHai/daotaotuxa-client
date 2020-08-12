@@ -36,6 +36,8 @@ function Component(props) {
 		getPointSubjectOfStudentStatus,
 		updatePointMiddleStatus,
 		exportStudentsOfClassStatus,
+		exportLogScheduleStatus,
+		exportPointsOfSubjectInClassStatus,
 		detailClass: { infoClass, countStudent },
 		studentsClass,
 		subjectsClass,
@@ -56,6 +58,8 @@ function Component(props) {
 		getPointSubjectClassReq,
 		updatePointMiddleReq,
 		exportStudentsClassReq,
+		exportPointsOfSubjectReq,
+		exportLogsScheduleClassReq
 	} = props;
 	const { ID } = useParams();
 	useEffect(() => {
@@ -95,6 +99,8 @@ function Component(props) {
 	const loadingGetSubjectAllClass = getSubjectAllOfClassStatus === 'FETCHING';
 	const loadingUpdatePointMiddle = updatePointMiddleStatus === 'FETCHING';
 	const loadingExportStudentsClass = exportStudentsOfClassStatus === 'FETCHING';
+	const loadingExportLogScheduleClass = exportLogScheduleStatus === 'FETCHING';
+	const loadingExportPointsOfSubject = exportPointsOfSubjectInClassStatus === 'FETCHING';
 	const loadingGetPointSubjectClass = getPointSubjectOfStudentStatus === 'FETCHING';
 
 	const tabList = [
@@ -415,14 +421,21 @@ function Component(props) {
 							>
 								Làm mới
 							</Button>
-							<Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="file-excel">
+							{/* <Button className=" mr-5" style={{ height: '35px', color: 'white' }} icon="file-excel">
 								Bảng điểm tổng
-							</Button>
+							</Button> */}
 							<Button
 								disabled={poinOfStudent.data && poinOfStudent.data.length < 1}
 								className=""
 								style={{ height: '35px', color: 'white' }}
 								icon="file-excel"
+								loading={loadingExportPointsOfSubject}
+								onClick={() =>{
+									exportPointsOfSubjectReq({
+										classID:ID,
+										subjectID
+									});
+								}}
 							>
 								Xuất excel
 							</Button>
@@ -492,6 +505,7 @@ function Component(props) {
 					setVisibleLogSchedule={setVisibleLogSchedule}
 					getLogScheduleReq={getLogScheduleClassReq}
 					loadingGetLog={loadingGetLogSchedule}
+				
 				/>
 			</Card>
 		),
@@ -586,6 +600,8 @@ function Component(props) {
 				getLogScheduleReq={getLogScheduleClassReq}
 				dataLog={logsScheduleClass}
 				loading={loadingGetLogSchedule}
+				exportExcelReq={exportLogsScheduleClassReq}
+				loadingExportLogScheduleClass={loadingExportLogScheduleClass}
 			/>
 		</div>
 	);
@@ -604,6 +620,8 @@ Component.propTypes = {
 	getPointSubjectOfStudentStatus: PropTypes.string.isRequired,
 	updatePointMiddleStatus: PropTypes.string.isRequired,
 	exportStudentsOfClassStatus: PropTypes.string.isRequired,
+	exportLogScheduleStatus: PropTypes.string.isRequired,
+	exportPointsOfSubjectInClassStatus: PropTypes.string.isRequired,
 	detailClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	getDetailClassReq: PropTypes.func.isRequired,
 	getStudentClassReq: PropTypes.func.isRequired,
@@ -617,6 +635,8 @@ Component.propTypes = {
 	getPointSubjectClassReq: PropTypes.func.isRequired,
 	updatePointMiddleReq: PropTypes.func.isRequired,
 	exportStudentsClassReq: PropTypes.func.isRequired,
+	exportLogsScheduleClassReq: PropTypes.func.isRequired,
+	exportPointsOfSubjectReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	schedulesClass: PropTypes.objectOf(PropTypes.any).isRequired,

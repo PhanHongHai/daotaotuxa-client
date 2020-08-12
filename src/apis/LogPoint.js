@@ -1,7 +1,18 @@
 import api from './restful';
 
-const { restful } = api;
+const { restful, exportExcel } = api;
 
+/**
+ * get  points
+ */
+async function exportLogPointsOfSchedule({scheduleID,classID}, fileName) {
+	try {
+		const res = await exportExcel(`/api/v1/logs-point/export-logs-data-schedule/${scheduleID}/${classID}`,fileName);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 /**
  * get  points
  */
@@ -29,4 +40,5 @@ async function getLogPoinByTeacher(req) {
 export default {
 	getLogPoinByTeacher,
 	getLogPoinByStudent,
+	exportLogPointsOfSchedule
 };

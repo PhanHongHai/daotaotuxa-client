@@ -15,6 +15,8 @@ const mapStateToProps = state => ({
 	getPointSubjectOfStudentStatus: state.classOfTeacherPage.getPointSubjectOfStudentStatus,
 	updatePointMiddleStatus: state.classOfTeacherPage.updatePointMiddleStatus,
 	exportStudentsOfClassStatus: state.classOfTeacherPage.exportStudentsOfClassStatus,
+	exportLogScheduleStatus: state.classOfTeacherPage.exportLogScheduleStatus,
+	exportPointsOfSubjectInClassStatus: state.classOfTeacherPage.exportPointsOfSubjectInClassStatus,
 	detailClass: state.classOfTeacherPage.detailClass,
 	studentsClass: state.classOfTeacherPage.studentsClass,
 	subjectsClass: state.classOfTeacherPage.subjectsClass,
@@ -38,6 +40,8 @@ const mapDispatchToProps = {
 	getSubjectAllReq: Actions.getSubjectAllOfClassByTeacherRequest,
 	getPointSubjectClassReq: Actions.getPointSubjectStudentOfClassByTeacherRequest,
 	exportStudentsClassReq: Actions.exportExcelStudentsByTeacherRequest,
+	exportPointsOfSubjectReq: Actions.exportPointsOfSubjectInClassByTeacherRequest,
+	exportLogsScheduleClassReq: Actions.exportLogScheduleByTeacherRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

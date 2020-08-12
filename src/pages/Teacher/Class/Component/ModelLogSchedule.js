@@ -11,7 +11,9 @@ function ModelLogSchedule(props) {
 		setVisible,
 		dataLog: { data, pagination },
 		loading,
+		loadingExportLogScheduleClass,
 		getLogScheduleReq,
+		exportExcelReq,
 		scheduleID,
 		classID,
 	} = props;
@@ -94,7 +96,18 @@ function ModelLogSchedule(props) {
 				>
 					Làm mới
 				</Button>
-				<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
+				<Button
+					onClick={() =>
+						exportExcelReq({
+							scheduleID,
+							classID,
+						})
+					}
+					loading={loadingExportLogScheduleClass}
+					className=""
+					style={{ height: '35px', color: 'white' }}
+					icon="file-excel"
+				>
 					Xuất excel
 				</Button>
 			</div>
@@ -133,8 +146,10 @@ ModelLogSchedule.propTypes = {
 	classID: PropTypes.string.isRequired,
 	visible: PropTypes.bool.isRequired,
 	loading: PropTypes.bool.isRequired,
+	loadingExportLogScheduleClass: PropTypes.bool.isRequired,
 	setVisible: PropTypes.func.isRequired,
 	getLogScheduleReq: PropTypes.func.isRequired,
+	exportExcelReq: PropTypes.func.isRequired,
 	dataLog: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

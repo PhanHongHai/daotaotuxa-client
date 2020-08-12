@@ -79,6 +79,12 @@ const {
 } = createAsyncAction('exportLogScheduleByTeacher', 'EXPORT_LOG_SCHEDULE_BY_TEACHER');
 
 const {
+	exportPointsOfSubjectInClassByTeacherRequest,
+	exportPointsOfSubjectInClassByTeacherSuccess,
+	exportPointsOfSubjectInClassByTeacherFailure,
+} = createAsyncAction('exportPointsOfSubjectInClassByTeacher', 'EXPORT_POINTS_OF_SUBJECT_IN_CLASS_BY_TEACHER');
+
+const {
 	updatePointMiddleByTeacherRequest,
 	updatePointMiddleByTeacherSuccess,
 	updatePointMiddleByTeacherFailure,
@@ -140,6 +146,10 @@ const Actions = {
 	exportExcelStudentsByTeacherRequest,
 	exportExcelStudentsByTeacherSuccess,
 	exportExcelStudentsByTeacherFailure,
+
+	exportPointsOfSubjectInClassByTeacherRequest,
+	exportPointsOfSubjectInClassByTeacherSuccess,
+	exportPointsOfSubjectInClassByTeacherFailure,
 };
 
 export default Actions;
