@@ -22,12 +22,12 @@ function AccountSetting() {
 						<FormEditAccount />
 					</Card>
 				);
-			case 1:
-				return (
-					<Card title="Ảnh đại diện" className="phh-card-v2">
-						<UploadAvatar />
-					</Card>
-				);
+			// case 1:
+			// 	return (
+			// 		<Card title="Ảnh đại diện" className="phh-card-v2">
+			// 			<UploadAvatar />
+			// 		</Card>
+			// 	);
 			default:
 				return (
 					<Card title="Đổi mật khẩu" className="phh-card-v2">
@@ -60,7 +60,7 @@ function AccountSetting() {
 						onChange={curre => setCurrent(curre)}
 					>
 						<Step title={<h3>Thông tin cơ bản</h3>} />
-						<Step title={<h3>Ảnh đại diện</h3>} />
+						{/* <Step title={<h3>Ảnh đại diện</h3>} /> */}
 						<Step title={<h3>Đổi mật khẩu</h3>} />
 					</StepStyle>
 					<ButtonBack icon="rollback" onClick={() => history.push('/student/dashboard')}>

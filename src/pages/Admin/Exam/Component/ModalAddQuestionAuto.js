@@ -4,7 +4,6 @@ import { Modal, Form, Select, InputNumber, Row, Col, Button, Icon } from 'antd';
 
 import customMessage from '../../../../utils/customMessage';
 
-
 const formItemLayout = {
 	labelCol: {
 		xs: { span: 24 },
@@ -18,14 +17,14 @@ const formItemLayout = {
 
 function ModalAddQuestionAuto(props) {
 	const {
-		form: { resetFields, getFieldDecorator ,validateFields},
+		form: { resetFields, getFieldDecorator, validateFields },
 		visible,
 		setVisible,
-    loadingUpdate,
-    updateReq,
-    getTotalQuestionReq,
-    loadingGetTotalQuestion,
-    totalQuestion
+		loadingUpdate,
+		updateReq,
+		getTotalQuestionReq,
+		loadingGetTotalQuestion,
+		totalQuestion,
 	} = props;
 	const [typeLevel, setTypeLevel] = React.useState({
 		typeLevel1: 2,
@@ -33,7 +32,7 @@ function ModalAddQuestionAuto(props) {
 		typeLevel3: 2,
 		typeLevel4: 2,
 	});
-
+	const [numberQuestions, setNumberQuestions] = React.useState(0);
 	const handleSubmit = e => {
 		e.preventDefault();
 		validateFields((err, values) => {

@@ -37,6 +37,7 @@ function ModalCreateExamAuto(props) {
 		typeLevel4: 2,
 	});
 	const [subjectValue, setSubjectValue] = useState('');
+	const [numberQuestions, setNumberQuestions] = useState(0);
 
 	const handleSubmit = e => {
 		e.preventDefault();
@@ -44,12 +45,15 @@ function ModalCreateExamAuto(props) {
 			if (!err) {
 				if (values.level1 === 0 && values.level2 === 0 && values.level3 === 0 && values.level4 === 0)
 					customMessage('message', 'error', 'Số lượng câu hỏi không đủ để tạo đề thi');
+				if (values.level1 + values.level2 + values.level3 + values.level4 > numberQuestions)
+					customMessage('message', 'error', 'Số lượng câu hỏi không hợp lệ với số lượng đã chọn');
 				else
 					createReq({
 						req: {
 							title: values.title,
-							point: values.point,
 							subjectID: values.subjectID,
+							number: values.number,
+							point: parseFloat(10 / values.number),
 							level1: { number: values.level1, type: values.typeLevel1 },
 							level2: { number: values.level2, type: values.typeLevel2 },
 							level3: { number: values.level3, type: values.typeLevel3 },
@@ -61,6 +65,7 @@ function ModalCreateExamAuto(props) {
 							if (res && res.isCreated) {
 								customMessage('notification', 'success', res.msg);
 								setVisible(false);
+								setNumberQuestions(0);
 								resetFields();
 							}
 						},
@@ -105,7 +110,7 @@ function ModalCreateExamAuto(props) {
 							})(<Input placeholder="Nhập tiêu đề" />)}
 						</Form.Item>
 					</Col>
-					<Col xs={24} md={24}>
+					{/* <Col xs={24} md={24}>
 						<Form.Item label="Điểm mỗi câu hỏi" labelAlign="left">
 							{getFieldDecorator('point', {
 								rules: [
@@ -115,6 +120,25 @@ function ModalCreateExamAuto(props) {
 									},
 								],
 							})(<InputNumber placeholder="Nhập điểm" min={1} max={10} style={{ width: '100%' }} />)}
+						</Form.Item>
+					</Col> */}
+					<Col xs={24} md={24}>
+						<Form.Item label="Số lượng câu hỏi" labelAlign="left">
+							{getFieldDecorator('number', {
+								rules: [
+									{
+										required: true,
+										message: 'Vui lòng chọn số lượng câu hỏi',
+									},
+								],
+							})(
+								<Select placeholder="-- Số lượng câu hỏi --" style={{ width: '100%' }}>
+									<Select.Option value={25}>25</Select.Option>
+									<Select.Option value={40}>40</Select.Option>
+									<Select.Option value={60}>60</Select.Option>
+									<Select.Option value={120}>120</Select.Option>
+								</Select>,
+							)}
 						</Form.Item>
 					</Col>
 					<Col xs={24} md={24}>
@@ -170,7 +194,7 @@ function ModalCreateExamAuto(props) {
 										{loadingGetTotalQuestion ? (
 											<Icon type="loading" />
 										) : (
-											<span>Tối đa :{totalQuestion ? totalQuestion.level1 : 0}</span>
+											<span>Hiện có :{totalQuestion ? totalQuestion.level1 : 0}</span>
 										)}
 									</p>
 								</Form.Item>
@@ -203,7 +227,7 @@ function ModalCreateExamAuto(props) {
 										{loadingGetTotalQuestion ? (
 											<Icon type="loading" />
 										) : (
-											<span>Tối đa :{totalQuestion ? totalQuestion.level2 : 0}</span>
+											<span>Hiện có :{totalQuestion ? totalQuestion.level2 : 0}</span>
 										)}
 									</p>
 								</Form.Item>
@@ -236,7 +260,7 @@ function ModalCreateExamAuto(props) {
 										{loadingGetTotalQuestion ? (
 											<Icon type="loading" />
 										) : (
-											<span>Tối đa :{totalQuestion ? totalQuestion.level3 : 0}</span>
+											<span>Hiện có :{totalQuestion ? totalQuestion.level3 : 0}</span>
 										)}
 									</p>
 								</Form.Item>
@@ -269,7 +293,7 @@ function ModalCreateExamAuto(props) {
 										{loadingGetTotalQuestion ? (
 											<Icon type="loading" />
 										) : (
-											<span>Tối đa :{totalQuestion ? totalQuestion.level4 : 0}</span>
+											<span>Hiện có :{totalQuestion ? totalQuestion.level4 : 0}</span>
 										)}
 									</p>
 								</Form.Item>

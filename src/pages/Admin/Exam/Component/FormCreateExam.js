@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Button, Form, Input, Select, InputNumber } from 'antd';
+import { Row, Col, Button, Form, Input, Select } from 'antd';
 
 import customMess from '../../../../utils/customMessage';
 import { FormCreateQuestionStyle } from '../styled';
@@ -40,6 +40,7 @@ function FormCreateExam(props) {
 	const [levelPick, setLevelPick] = useState(0);
 	const [typePick, setTypePick] = useState(2);
 	const [subjectValue, setSubjectValue] = useState('');
+	const [numberQuestion, setNumberQuestion] = useState(0);
 
 	const handleSubmitCreate = e => {
 		e.preventDefault();
@@ -50,7 +51,7 @@ function FormCreateExam(props) {
 					req: {
 						...values,
 						questions: questionData,
-						number: questionData.length,
+						point: parseFloat(10 / values.number),
 					},
 					cb: res => {
 						if (res && res.isCreated) {
@@ -150,7 +151,9 @@ function FormCreateExam(props) {
 	};
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
-			if (selectedRows.length > 0) {
+			if (selectedRows.length > 0 && selectedRows.length > numberQuestion)
+				customMess('message', 'warn', 'Số lượng câu hỏi không phù hợp');
+			if (selectedRows.length > 0 && selectedRows.length <= numberQuestion) {
 				setQuestionData(selectedRowKeys);
 			} else setQuestionData(selectedRowKeys);
 		},
@@ -171,7 +174,7 @@ function FormCreateExam(props) {
 						})(<Input placeholder="Nhập tiêu đề" />)}
 					</Form.Item>
 				</Col>
-				<Col xs={24} md={24}>
+				{/* <Col xs={24} md={24}>
 					<Form.Item label="Điểm mỗi câu hỏi" labelAlign="left">
 						{getFieldDecorator('point', {
 							rules: [
@@ -182,14 +185,14 @@ function FormCreateExam(props) {
 							],
 						})(<InputNumber placeholder="Nhập điểm" min={0} max={10} style={{ width: '100%' }} />)}
 					</Form.Item>
-				</Col>
+				</Col> */}
 				<Col xs={24} md={24}>
 					<Form.Item label="Môn Học" labelAlign="left">
 						{getFieldDecorator('subjectID', {
 							rules: [
 								{
 									required: true,
-									message: 'Hãy nhập điểm cho mỗi câu hỏi',
+									message: 'Chọn môn học',
 								},
 							],
 						})(
@@ -221,10 +224,9 @@ function FormCreateExam(props) {
 						})(<Input placeholder="Nhập thời gian làm bài" addonAfter="phút" />)}
 					</Form.Item>
 				</Col> */}
-				{/* <Col xs={24} md={24}>
+				<Col xs={24} md={24}>
 					<Form.Item label="Số lượng câu hỏi" labelAlign="left">
-						{getFieldDecorator('content', {
-							initialValue: 25,
+						{getFieldDecorator('number', {
 							rules: [
 								{
 									required: true,
@@ -232,7 +234,11 @@ function FormCreateExam(props) {
 								},
 							],
 						})(
-							<Select style={{ width: '100%' }}>
+							<Select
+								onChange={value => setNumberQuestion(value)}
+								placeholder="-- Số lượng câu hỏi --"
+								style={{ width: '100%' }}
+							>
 								<Select.Option value={25}>25</Select.Option>
 								<Select.Option value={40}>40</Select.Option>
 								<Select.Option value={60}>60</Select.Option>
@@ -240,7 +246,7 @@ function FormCreateExam(props) {
 							</Select>,
 						)}
 					</Form.Item>
-				</Col> */}
+				</Col>
 				<Col xs={24} md={24}>
 					<div className="title">
 						<h4>

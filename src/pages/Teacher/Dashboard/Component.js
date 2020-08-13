@@ -71,20 +71,20 @@ function DashboadTeacher(props) {
 									onSelect={() => history.push('/teacher/dashboard/ngan-hang-cau-hoi')}
 								/>
 							</Col>
-							<Col xs={24} md={6} className="mb-10">
+							{/* <Col xs={24} md={6} className="mb-10">
 								<BoxFeature
 									icon="reconciliation"
 									title="Đề Thi"
 									onSelect={() => history.push('/teacher/dashboard/de-thi')}
 								/>
-							</Col>
-							<Col xs={24} md={6} className="mb-10">
+							</Col> */}
+							{/* <Col xs={24} md={6} className="mb-10">
 								<BoxFeature
 									icon="calendar"
 									title="Lịch thi"
 									onSelect={() => history.push('/teacher/dashboard/de-thi')}
 								/>
-							</Col>
+							</Col> */}
 							<Col xs={24} md={6} className="mb-10">
 								<BoxFeature
 									icon="calendar"
