@@ -52,15 +52,15 @@ function LayoutStudent(props) {
 
 	useEffect(() => {
 		configSocket();
-		getSocket().on('client-was-active', data => {
-			if (data) countDown();
-		});
+		// getSocket().on('client-was-active', data => {
+		// 	if (data) countDown();
+		// });
 		getProfileReq({
 			req: {},
 			cb: res => {
 				if (res.isRedirect) {
 					localStorage.clear();
-					history.push('/hoc-vien');
+					history.push('/dang-nhap');
 				}
 				if (res.role && res.role !== 'student') history.push(`/${res.role}/dashboard`);
 			},
@@ -78,7 +78,7 @@ function LayoutStudent(props) {
 	};
 	const handleLogout = () => {
 		localStorage.clear();
-		history.push('/hoc-vien');
+		history.push('/dang-nhap');
 		message.success('Đăng xuất thành công');
 	};
 

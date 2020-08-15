@@ -44,6 +44,33 @@ const reducer = [
 			};
 		},
 	},
+		// active when call action login
+		{
+			on: Action.loginStudentRequest,
+			reducer: state => ({
+				...state,
+				statusLogin: STATUS.FETCHING,
+			}),
+		},
+		{
+			on: Action.loginStudentSuccess,
+			reducer: state => ({
+				...state,
+				statusLogin: STATUS.SUCCESS,
+				isLogin: true,
+			}),
+		},
+		{
+			on: Action.loginStudentFailure,
+			reducer: (state, action) => {
+				const { payload } = action;
+				return {
+					...state,
+					statusLogin: STATUS.FAILURE,
+					isActived: payload,
+				};
+			},
+		},
 	// active when call action logout
 	{
 		on: Action.logoutRequest,

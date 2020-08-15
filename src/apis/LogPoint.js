@@ -24,7 +24,17 @@ async function getLogPoinByStudent(req) {
 		return err;
 	}
 }
-
+/**
+ * get  points
+ */
+async function checkStudentWasDoneSchedule(ID) {
+	try {
+		const res = await restful.GET(`/api/v1/logs-point/check-student/${ID}`);
+		return res;
+	} catch (err) {
+		return err;
+	}
+}
 /**
  * get  points
  */
@@ -40,5 +50,6 @@ async function getLogPoinByTeacher(req) {
 export default {
 	getLogPoinByTeacher,
 	getLogPoinByStudent,
-	exportLogPointsOfSchedule
+	exportLogPointsOfSchedule,
+	checkStudentWasDoneSchedule
 };

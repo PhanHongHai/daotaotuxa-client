@@ -8,6 +8,7 @@ import DocumentApi from '../../../apis/Document';
 import ScheduleApi from '../../../apis/Schedule';
 import PointApi from '../../../apis/Point';
 import LogPointApi from '../../../apis/LogPoint';
+import QuestionApi from '../../../apis/Question';
 import SubjectProgressApi from '../../../apis/SubjectProgress';
 import filterError from '../../../utils/filterError';
 
@@ -25,6 +26,22 @@ function* handleGetDetailOfClassByStudentID() {
 	} catch (error) {
 		yield put(Action.getDetailOfClassByStudentIDFailure());
 		message.error('Lấy thông tin lớp học không thành công ! Xin thử lại');
+	}
+}
+function* handleGetQuestionsForQuickTest(action) {
+	try {
+		const {req, cb} = action.payload;
+		const res = yield call(QuestionApi.getRandomQuestionsForQuickTest,req);
+		if (!res.errors) {
+			yield put(Action.getRandomQuestionForQuizSuccess(res));
+			if(cb && typeof cb === 'function') yield cb(res);
+		} else {
+			yield put(Action.getRandomQuestionForQuizFailure());
+			filterError(res.errors, 'notification');
+		}
+	} catch (error) {
+		yield put(Action.getRandomQuestionForQuizFailure());
+		message.error('Lấy danh sách câu hỏi không thành công ! Xin thử lại');
 	}
 }
 
@@ -204,7 +221,7 @@ function* handleGetScheduleOfClassByID(action) {
 }
 function* handleGetLogsPointByStudent(action) {
 	try {
-		const { req } = action.payload;
+		const { req,  } = action.payload;
 		const res = yield call(LogPointApi.getLogPoinByStudent, req);
 		if (!res.errors) {
 			yield put(Action.getLogsPointByStudentSuccess(res));
@@ -278,6 +295,10 @@ const getLogsPointByStudentSaga = {
 	on: Action.getLogsPointByStudentRequest,
 	worker: handleGetLogsPointByStudent,
 };
+const getRandomQuestionsForQuickTestSaga = {
+	on: Action.getRandomQuestionForQuizRequest,
+	worker: handleGetQuestionsForQuickTest,
+};
 
 export default createSagas([
 	getDetailOfClassByStudentIDSaga,
@@ -292,5 +313,6 @@ export default createSagas([
 	getProgressByStudentSaga,
 	getScheduleOfClassByIDSaga,
 	getPointsByStudentSaga,
-	getLogsPointByStudentSaga
+	getLogsPointByStudentSaga,
+	getRandomQuestionsForQuickTestSaga
 ]);

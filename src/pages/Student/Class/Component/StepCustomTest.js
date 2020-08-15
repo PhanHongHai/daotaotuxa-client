@@ -45,6 +45,24 @@ function StepCustomTest(props) {
 						</Select>,
 					)}
 				</Form.Item>
+				<Form.Item label="Số lượng câu hỏi" labelAlign="left">
+					{getFieldDecorator('level', {
+						initialValue: 1,
+						rules: [
+							{
+								required: true,
+								message: 'Xin hãy chọn số lượng câu hỏi',
+							},
+						],
+					})(
+						<Select onChange={value => setLevel(value)} placeholder="-- Mức độ --">
+							<Select.Option value={1}>Dễ</Select.Option>
+							<Select.Option value={2}>Trung bình</Select.Option>
+							<Select.Option value={3}>Khó</Select.Option>
+							<Select.Option value={4}>Rất Khó</Select.Option>
+						</Select>,
+					)}
+				</Form.Item>
 				<Form.Item label="Thời gian làm bài" labelAlign="left"></Form.Item>
 				<Form.Item>
 					<Button>Bắt đầu</Button>

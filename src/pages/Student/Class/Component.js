@@ -23,6 +23,7 @@ function ClassStudent(props) {
 		getScheduleReq,
 		getPointsReq,
 		getLogsPointReq,
+		getQuestionsForQuickTestReq,
 		studentsClass,
 		subjectsClass,
 		progressOfStudent,
@@ -30,6 +31,7 @@ function ClassStudent(props) {
 		pointsOfStudent,
 		scheduleOfClass,
 		logsPoint,
+		questionsForQuickTest,
 		getSubjectOfClassStatus,
 		getStudentsOfClassStatus,
 		getDetailOfClassByStudentIDStatus,
@@ -37,6 +39,8 @@ function ClassStudent(props) {
 		getScheduleOfClassStatus,
 		getPointsByStudentStatus,
 		getLogsPointByStudentStatus,
+	getRandomQuestionsForTestStatus,
+
 	} = props;
 	const { ID } = useParams();
 
@@ -78,6 +82,7 @@ function ClassStudent(props) {
 	const loadingGetScheduleOfClass = getScheduleOfClassStatus === 'FETCHING';
 	const loadingGetPointsOfStudent = getPointsByStudentStatus === 'FETCHING';
 	const loadingGetLogPoint = getLogsPointByStudentStatus === 'FETCHING';
+	const loadingGetRandomQuestionsForTest = getRandomQuestionsForTestStatus === 'FETCHING';
 	const loadingGetDetailOfClassByStudent = getDetailOfClassByStudentIDStatus === 'FETCHING';
 
 	return (
@@ -137,6 +142,9 @@ function ClassStudent(props) {
 				progressOfStudent={progressOfStudent}
 				getSubjectsReq={getSubjectsOfClassReq}
 				classID={ID}
+				getQuestionsReq={getQuestionsForQuickTestReq}
+				loadingGetQuestions={loadingGetRandomQuestionsForTest}
+				questionsData={questionsForQuickTest}
 			/>
 			<ModalPoint
 				visible={visibleModalPoint}
@@ -172,6 +180,7 @@ ClassStudent.propTypes = {
 	getScheduleReq: PropTypes.func.isRequired,
 	getPointsReq: PropTypes.func.isRequired,
 	getLogsPointReq: PropTypes.func.isRequired,
+	getQuestionsForQuickTestReq: PropTypes.func.isRequired,
 	studentsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	subjectsClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	detailOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -179,6 +188,7 @@ ClassStudent.propTypes = {
 	scheduleOfClass: PropTypes.objectOf(PropTypes.any).isRequired,
 	pointsOfStudent: PropTypes.objectOf(PropTypes.any).isRequired,
 	logsPoint: PropTypes.objectOf(PropTypes.any).isRequired,
+	questionsForQuickTest: PropTypes.objectOf(PropTypes.any).isRequired,
 	getSubjectOfClassStatus: PropTypes.string.isRequired,
 	getStudentsOfClassStatus: PropTypes.string.isRequired,
 	getDetailOfClassByStudentIDStatus: PropTypes.string.isRequired,
@@ -186,6 +196,7 @@ ClassStudent.propTypes = {
 	getScheduleOfClassStatus: PropTypes.string.isRequired,
 	getPointsByStudentStatus: PropTypes.string.isRequired,
 	getLogsPointByStudentStatus: PropTypes.string.isRequired,
+	getRandomQuestionsForTestStatus: PropTypes.string.isRequired,
 };
 
 export default ClassStudent;

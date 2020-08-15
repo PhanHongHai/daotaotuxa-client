@@ -45,6 +45,8 @@ function ModalCreateExamAuto(props) {
 			if (!err) {
 				if (values.level1 === 0 && values.level2 === 0 && values.level3 === 0 && values.level4 === 0)
 					customMessage('message', 'error', 'Số lượng câu hỏi không đủ để tạo đề thi');
+				console.log(numberQuestions);
+				console.log(values.level1 + values.level2 + values.level3 + values.level4);
 				if (values.level1 + values.level2 + values.level3 + values.level4 > numberQuestions)
 					customMessage('message', 'error', 'Số lượng câu hỏi không hợp lệ với số lượng đã chọn');
 				else
@@ -132,7 +134,11 @@ function ModalCreateExamAuto(props) {
 									},
 								],
 							})(
-								<Select placeholder="-- Số lượng câu hỏi --" style={{ width: '100%' }}>
+								<Select
+									onChange={value => setNumberQuestions(value)}
+									placeholder="-- Số lượng câu hỏi --"
+									style={{ width: '100%' }}
+								>
 									<Select.Option value={25}>25</Select.Option>
 									<Select.Option value={40}>40</Select.Option>
 									<Select.Option value={60}>60</Select.Option>

@@ -7,12 +7,13 @@ const { restful, exportExcel } = api;
  */
 async function exportPointsOfSubject({ classID, subjectID }, fileName) {
 	try {
-		const res = await exportExcel(`/api/v1/points/export-points-class-by-subject/${classID}/${subjectID}`,fileName);
+		const res = await exportExcel(`/api/v1/points/export-points-class-by-subject/${classID}/${subjectID}`, fileName);
 		return res;
 	} catch (err) {
 		return err;
 	}
 }
+
 /**
  * get  points
  */
@@ -81,5 +82,5 @@ export default {
 	getPoinByStudent,
 	getPointsByAccountID,
 	updatePointMiddle,
-	exportPointsOfSubject
+	exportPointsOfSubject,
 };

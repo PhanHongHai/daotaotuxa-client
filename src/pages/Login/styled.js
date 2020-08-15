@@ -12,6 +12,7 @@ export const LoginContainer = styled.div`
 	align-item: center;
 	background-image: url(${bgLogin});
 	background-color: rgb(0, 189, 135);
+
 `;
 // ##### end loging container
 
@@ -53,6 +54,9 @@ export const Container = styled.div`
 			}
 		}
 	}
+	form.phh-form-get-start{
+		padding: 3em;
+	}
 	@media only screen and (max-width: 425px) {
 		width: 90% !important;
 		.phh-form-login {
@@ -76,4 +80,23 @@ export const LoginButton = styled(Button)`
 		filter: brightness(115%);
 	}
 	background-color: rgb(0, 189, 135) !important;
+`;
+
+export const StyleButton = styled(Button)`
+display: block;
+margin: auto;
+width: 100%;
+height: 50px !important;
+color: #fff !important;
+margin-top: 10px;
+&:hover,
+&:active,
+&:focus {
+	border-color:${prop => prop.color} !important;
+	color: #fff;
+	filter: brightness(115%);
+}
+background-color: ${prop => prop.color} !important;
+
+
 `;

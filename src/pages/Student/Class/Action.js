@@ -75,6 +75,12 @@ const {
 	getLogsPointByStudentFailure,
 } = createAsyncAction('getLogsPointByStudent', 'GET_LOGS_POINT_BY_STUDENT');
 
+const {
+	getRandomQuestionForQuizRequest,
+	getRandomQuestionForQuizSuccess,
+	getRandomQuestionForQuizFailure,
+} = createAsyncAction('getRandomQuestionForQuiz', 'GET_RANDOM_QUESTION_FOR_QUIZ');
+
 const Actions = {
 	getDetailOfClassByStudentIDRequest,
 	getDetailOfClassByStudentIDSuccess,
@@ -127,6 +133,10 @@ const Actions = {
 	getLogsPointByStudentRequest,
 	getLogsPointByStudentSuccess,
 	getLogsPointByStudentFailure,
+
+	getRandomQuestionForQuizRequest,
+	getRandomQuestionForQuizSuccess,
+	getRandomQuestionForQuizFailure,
 };
 
 export default Actions;

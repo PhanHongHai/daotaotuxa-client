@@ -4,10 +4,28 @@ import Redux from '../../../utils/redux';
 import ScheduleApi from '../../../apis/Schedule';
 import ExamApi from '../../../apis/Exam';
 import PointApi from '../../../apis/Point';
+import LogPointApi from '../../../apis/LogPoint';
 import ScheduleAction from './Action';
 import filterError from '../../../utils/filterError';
 
 const { createSagas } = Redux;
+
+function* handleCheckStudentWasDoneTest(action) {
+	try {
+		const { ID, cb } = action.payload;
+		const res = yield call(LogPointApi.checkStudentWasDoneSchedule, ID);
+		if (!res.errors) {
+			yield put(ScheduleAction.checkExistPointInSCheduleSuccess(res));
+			if (cb && typeof cb === 'function') yield cb(res);
+		} else {
+			yield put(ScheduleAction.checkExistPointInSCheduleFailure());
+			filterError(res.errors, 'message');
+		}
+	} catch (error) {
+		yield put(ScheduleAction.checkExistPointInSCheduleFailure());
+		message.error('Kiểm tra thông tin học viên và lịch thi không thành công ! Xin thử lại');
+	}
+}
 
 function* handleGetScheduleDetail(action) {
 	try {
@@ -27,7 +45,7 @@ function* handleGetScheduleDetail(action) {
 function* handleSubmitTask(action) {
 	try {
 		const { req, cb } = action.payload;
-		const res = yield call(PointApi.submitTask,req);
+		const res = yield call(PointApi.submitTask, req);
 		if (!res.errors) {
 			yield put(ScheduleAction.submitTaskSuccess(res));
 			if (cb && typeof cb === 'function') yield cb({ isSubmited: true, msg: 'Gửi bài thi thành công' });
@@ -70,4 +88,9 @@ const submitTaskSaga = {
 	worker: handleSubmitTask,
 };
 
-export default createSagas([getScheduleDetailSaga, getExamDetailSaga, submitTaskSaga]);
+const checkStudentWasDoneScheduleSaga = {
+	on: ScheduleAction.checkExistPointInSCheduleRequest,
+	worker: handleCheckStudentWasDoneTest,
+};
+
+export default createSagas([getScheduleDetailSaga, getExamDetailSaga, submitTaskSaga, checkStudentWasDoneScheduleSaga]);

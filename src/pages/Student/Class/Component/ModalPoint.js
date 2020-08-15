@@ -42,9 +42,9 @@ function ModalPoint(props) {
 				>
 					Làm mới
 				</Button>
-				<Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
+				{/* <Button className="" style={{ height: '35px', color: 'white' }} icon="file-excel">
 					Xuất excel
-				</Button>
+				</Button> */}
 			</div>
 			<TablePoint onChangePage={onChangeTable} loading={loading} points={data} />
 		</Modal>

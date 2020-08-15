@@ -12,6 +12,12 @@ const { getExamDetailByQuizRequest, getExamDetailByQuizSuccess, getExamDetailByQ
 	'GET_EXAM_DETAIL_BY_QUIZ',
 );
 
+const {
+	checkExistPointInSCheduleRequest,
+	checkExistPointInSCheduleSuccess,
+	checkExistPointInSCheduleFailure,
+} = createAsyncAction('checkExistPointInSChedule', 'CHECK_EXIST_POINT_IN_SCHEDULE');
+
 const { submitTaskRequest, submitTaskSuccess, submitTaskFailure } = createAsyncAction('submitTask', 'SUBMIT_TASK');
 
 const Actions = {
@@ -22,6 +28,10 @@ const Actions = {
 	getExamDetailByQuizRequest,
 	getExamDetailByQuizSuccess,
 	getExamDetailByQuizFailure,
+
+	checkExistPointInSCheduleRequest,
+	checkExistPointInSCheduleSuccess,
+	checkExistPointInSCheduleFailure,
 
 	submitTaskRequest,
 	submitTaskSuccess,

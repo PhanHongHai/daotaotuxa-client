@@ -39,7 +39,7 @@ function LayoutLearning(props) {
 	const loadingGetProfile = statusFetch === 'FETCHING';
 	const handleLogout = () => {
 		localStorage.clear();
-		history.push('/login');
+		history.push('/dang-nhap');
 		message.success('Đăng xuất thành công');
 	};
 	const handleRenderRoute = () => {

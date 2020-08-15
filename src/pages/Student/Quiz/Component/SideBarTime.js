@@ -73,7 +73,12 @@ function SideBarTime(props) {
 									<h2>Thông tin học viên</h2>
 								</div>
 								<div className="info-student">
-									<Avatar shape="square" src={`${HOST_SERVER}/${userProfile.avatar}`} size={100} />
+									{userProfile && userProfile.avatar ? (
+										<Avatar shape="square" src={`${HOST_SERVER}/${userProfile.avatar}`} size={100} />
+									) : (
+										<Avatar shape="square" icon='user' size={100} />
+									)}
+
 									<ul>
 										<li>Họ tên :&ensp;{userProfile && userProfile.name} </li>
 										<li>

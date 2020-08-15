@@ -9,7 +9,6 @@ import { DashboardStyle } from './styled';
 // import TimeLineStudent from './Component/TimeLine';
 // import Discussions from './Component/Discussions';
 import InfoClass from './Component/InfoClass';
-import InfoTeacher from './Component/InfoTeacher';
 import CalendarAttendance from './Component/CalendarAttendance';
 import ProgressOnline from './Component/ProgressOnline';
 import LoadingCustom from '../../../components/LoadingCustom';
@@ -19,7 +18,7 @@ function DashboardStudent(props) {
 		getInfoClassStatus,
 		getTimeKeepingOfStudentStatus,
 		attendanceByStudentStatus,
-		infoClass: { countStudent, infoTeacher, infoClass },
+		infoClass: { countStudent, infoClass },
 		timeKeeping,
 		getInfoClassReq,
 		getTimeKeepingReq,

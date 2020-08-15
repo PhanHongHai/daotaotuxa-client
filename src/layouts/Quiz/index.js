@@ -28,7 +28,7 @@ function LayoutLearning(props) {
 			cb: res => {
 				if (res.isRedirect) {
 					localStorage.clear();
-					history.push('/login');
+					history.push('/dang-nhap');
 				}
 				if (res.role && res.role !== 'student') history.push(`/${res.role}/dashboard`);
 			},
@@ -42,7 +42,7 @@ function LayoutLearning(props) {
 	const loadingGetProfile = statusFetch === 'FETCHING';
 	const handleLogout = () => {
 		localStorage.clear();
-		history.push('/login');
+		history.push('/dang-nhap');
 		message.success('Đăng xuất thành công');
 	};
 	const handleRenderRoute = () => {

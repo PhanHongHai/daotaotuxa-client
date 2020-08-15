@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConfigProvider, Icon, Table, Button } from 'antd';
+import { ConfigProvider, Icon, Table, Button, Tag } from 'antd';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ function TableStudentData(props) {
 	const history = useHistory();
 	const column = [
 		{
-			title: '#',
-			key: 'stt',
-			render: (value, row, index) => index + 1,
+			title: 'MSHV',
+			dataIndex: 'account.tag',
+			key: value => <Tag>#{value}</Tag>,
 		},
 		{
 			title: 'Họ Tên',
@@ -58,7 +58,9 @@ function TableStudentData(props) {
 			key: 'actions',
 			render: row => (
 				<div className="phh-group-btn-default" style={{ width: '100%', display: 'flex' }}>
-					<Button onClick={() => history.push(`/teacher/dashboard/hoc-vien/${classID}/${row.account._id}`)}>Xem chi tiết</Button>
+					<Button onClick={() => history.push(`/teacher/dashboard/hoc-vien/${classID}/${row.account._id}`)}>
+						Xem chi tiết
+					</Button>
 					{/* <Button className="ml-5">Xóa</Button> */}
 				</div>
 			),

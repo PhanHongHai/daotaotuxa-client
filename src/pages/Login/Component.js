@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
-import { Row, Col, Form, Input, Icon, notification } from 'antd';
+import React, { useState, useCallback } from 'react';
+import { Row, Form, Col, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { useHistory, Link } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 // styled
-import { LoginContainer, LoginButton, Container } from './styled';
+import { LoginContainer, Container, StyleButton } from './styled';
 import Logo from '../../assets/images/logo.png';
+import FormStudent from './Component/FormStudent';
+import FormOther from './Component/FormOther';
+import customMess from '../../utils/customMessage';
 
 function LoginComponent(props) {
-	const { form, statusLogin, loginRequest, isActived, resendActiveReq, statusResendActiveMail } = props;
-	const [emailCurrent, setEmailCurrent] = useState('');
+	const { statusLogin, loginRequest, isActived, resendActiveReq, statusResendActiveMail,loginStudentRequest } = props;
+
+	const [typeLogin, setTypeLogin] = useState(null);
 	const loadingLogin = statusLogin === 'FETCHING';
 	const loadingResendActive = statusResendActiveMail === 'FETCHING';
 
+	const [formInitRef, setFormInitRef] = useState(null);
 	const history = useHistory();
 
-	const handleSubmit = e => {
+	const [emailCurrent, setEmailCurrent] = useState('');
+	const saveFormRef = useCallback(node => {
+		if (node !== null) {
+			setFormInitRef(node);
+		}
+	}, []);
+	const handleSubmitFormOther = e => {
 		e.preventDefault();
-		form.validateFields((err, values) => {
+		formInitRef.validateFields((err, values) => {
 			if (!err) {
 				setEmailCurrent(values.email);
 				loginRequest({
@@ -44,11 +55,8 @@ function LoginComponent(props) {
 									history.push('/teacher/dashboard');
 									break;
 							}
-							notification.success({
-								message: 'Thông báo !',
-								description: 'Đăng nhập thành công',
-								placement: 'bottomRight',
-							});
+							customMess('notification','success','Đăng nhập thành công');
+						
 						}
 					},
 				});
@@ -62,89 +70,86 @@ function LoginComponent(props) {
 			},
 		});
 	};
+	const handleSubmitFormStudent = e => {
+		e.preventDefault();
+		formInitRef.validateFields((err, values) => {
+			if (!err) {
+				loginStudentRequest({
+					req: {
+						...values,
+					},
+					cb: res => {
+						if (res) {
+							history.push('/student/dashboard');
+							customMess('notification','success','Đăng nhập thành công');
+						}
+					},
+				});
+			}
+		});
+	};
+	const backStartForm = () => setTypeLogin(null);
+	const renderFormLogin = () => {
+		switch (typeLogin) {
+			case 'student':
+				return (
+					<FormStudent
+						ref={saveFormRef}
+						handleSubmitFormStudent={handleSubmitFormStudent}
+						loadingLogin={loadingLogin}
+						backStartForm={backStartForm}
+					/>
+				);
+			case 'other':
+				return (
+					<FormOther
+						ref={saveFormRef}
+						isActived={isActived}
+						handleSubmitFormOther={handleSubmitFormOther}
+						onResendActiveMail={onResendActiveMail}
+						loadingResendActive={loadingResendActive}
+						loadingLogin={loadingLogin}
+						backStartForm={backStartForm}
+					/>
+				);
+			default:
+				return '';
+		}
+	};
 	return (
 		<LoginContainer>
 			<Row type="flex" justify="center" align="middle">
 				<Container>
-					<Form className="phh-form-login" onSubmit={handleSubmit}>
-						<Col span={24}>
-							<div className="logo">
-								<img alt="logo" src={Logo} />
-								<h1>ACADEMY</h1>
-								HCM
-							</div>
-						</Col>
-						<Col span={24}>
-							<h3>Email</h3>
-							<Form.Item>
-								{form.getFieldDecorator('email', {
-									rules: [
-										{
-											required: true,
-											message: 'Không được để trống Email',
-										},
-										{
-											type: 'email',
-											message: 'Email không hợp lệ',
-										},
-										{
-											whitespace: true,
-											message: 'Chứa ký tự không hợp lệ',
-										},
-									],
-								})(<Input type="email" prefix={<Icon type="mail" />} placeholder="Nhập email" />)}
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<h3>Mật khẩu</h3>
-							<Form.Item>
-								{form.getFieldDecorator('password', {
-									rules: [
-										{
-											required: true,
-											message: 'Không được để trống mật khẩu',
-										},
-										{
-											whitespace: true,
-											message: 'Chứa ký tự không hợp lệ',
-										},
-									],
-								})(<Input.Password prefix={<Icon type="lock" />} placeholder="Nhập mật khẩu" />)}
-							</Form.Item>
-						</Col>
-						{!isActived ? (
-							<span style={{ float: 'right' }}>
-								Nhận mail kích hoạt
-								<button
-									type="button"
-									onClick={onResendActiveMail}
-									style={{
-										boxShadow: 'none',
-										color: 'blue',
-										background: 'transparent',
-										padding: '0 4px',
-										cursor: 'pointer',
-										border: 'none',
-										outline: 'none',
-									}}
-								>
-									tại đây&ensp;{loadingResendActive ? <Icon type="loading" /> : ''}
-								</button>
-							</span>
-						) : (
-							''
-						)}
-						<Col span={24}>
-							<Form.Item>
-								<LoginButton icon="login" loading={loadingLogin} htmlType="submit">
-									ĐĂNG NHẬP
-								</LoginButton>
-								<Link style={{ float: 'right' }} to="/forgot-password">
-									Quên mật khẩu ?
-								</Link>
-							</Form.Item>
-						</Col>
-					</Form>
+					{typeLogin === null ? (
+						<Form className="phh-form-get-start">
+							<Col span={24}>
+								<div className="logo">
+									<img alt="logo" src={Logo} />
+									<h1>ACADEMY</h1>
+									HCM
+								</div>
+							</Col>
+							<Col span={24}>
+								<Typography>
+									<Typography.Title level={4}>Trang đăng nhập</Typography.Title>
+								</Typography>
+								<p style={{ lineHeight: '20px !important' }}>Xin hãy chọn loại người dùng</p>
+							</Col>
+							<Col span={24}>
+								<Form.Item>
+									<StyleButton color="#47A1DD" onClick={() => setTypeLogin('student')} className="mb-10" icon="user">
+										HỌC VIÊN
+									</StyleButton>
+									<StyleButton color="#1bb394" onClick={() => setTypeLogin('other')} icon="login">
+										LOẠI TÀI KHOẢN KHÁC..
+									</StyleButton>
+								</Form.Item>
+							</Col>
+						</Form>
+					) : (
+						''
+					)}
+					{renderFormLogin()}
 				</Container>
 			</Row>
 		</LoginContainer>
@@ -152,12 +157,12 @@ function LoginComponent(props) {
 }
 
 LoginComponent.propTypes = {
-	form: PropTypes.objectOf(PropTypes.any).isRequired,
 	loginRequest: PropTypes.func.isRequired,
+	loginStudentRequest: PropTypes.func.isRequired,
 	resendActiveReq: PropTypes.func.isRequired,
 	statusLogin: PropTypes.string.isRequired,
 	statusResendActiveMail: PropTypes.string.isRequired,
 	isActived: PropTypes.bool.isRequired,
 };
 
-export default Form.create({ name: 'phh-login' })(LoginComponent);
+export default LoginComponent;

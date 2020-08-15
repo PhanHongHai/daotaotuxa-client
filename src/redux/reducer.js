@@ -18,7 +18,6 @@ import ScheduleReducer from '../pages/Admin/Schedule/Reducer';
 // partner
 import PartnerDashboardReducer from '../pages/Partner/Dashboard/Reducer';
 // student
-import LoginStudentReducer from '../pages/Student/Login/Reducer';
 import DashboardStudentReducer from '../pages/Student/Dashboard/Reducer';
 import ClassStudentReducer from '../pages/Student/Class/Reducer';
 import QuizStudentReducer from '../pages/Student/Quiz/Reducer';
@@ -54,7 +53,6 @@ const appReducer = combineReducers({
 	...SubjectTeacherReducer,
 	...QuestionTeacherReducer,
 	...ExamTeacherReducer,
-	...LoginStudentReducer,
 	...QuizStudentReducer
 });
 

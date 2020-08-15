@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionToProps = {
   loginRequest:LoginAction.loginRequest,
+  loginStudentRequest:LoginAction.loginStudentRequest,
   resendActiveReq:LoginAction.resendActiveMailRequest,
 };
 

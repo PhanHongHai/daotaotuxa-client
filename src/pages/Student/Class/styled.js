@@ -321,3 +321,116 @@ export const ButtonListStyle = styled(Button)`
 		filter: brightness(115%);
 	}
 `;
+
+export const TestFrameStyle = styled.div`
+	.steps-content {
+		.question-item {
+			.box-question {
+				.question-title {
+					border: 2px solid #ded8d8;
+					padding: 0.5em;
+					width: 100%;
+					text-align: justify;
+					word-break: break-word;
+					.question-name {
+						margin: 0 !important;
+						width: 30px;
+						height: 30px;
+						background: ${BASE_COLOR};
+						text-align: center;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						border-radius: 20px;
+						color: white;
+						font-size: 15px;
+						font-weight: bold;
+					}
+					.text {
+						color: black !important;
+					}
+				}
+				.question-content {
+					border: 2px solid #ded8d8;
+					padding: 0.5em;
+					width: 100%;
+					.radio-custom {
+						.ant-radio-wrapper {
+							color: #585858 !important;
+						}
+					}
+				}
+			}
+		}
+	}
+	.steps-action {
+		border: 2px solid silver;
+		background-color: #efefef;
+		.group-btn-event {
+			float: right;
+			.btn-next {
+				margin: 0 5px 0 5px;
+				height: 35px;
+				box-shadow: unset !important;
+				background-color: ${BASE_COLOR} !important;
+				color: white;
+				&:hover {
+					color: white !important;
+				}
+				color: black;
+				border-color: ${BASE_COLOR};
+				&:hover {
+					color: ${BASE_COLOR};
+				}
+			}
+			.btn-cancel {
+				height: 35px !important;
+				&:hover,
+				&:focus {
+					color: ${BASE_COLOR} !important;
+					border-color: ${BASE_COLOR} !important;
+				}
+			}
+		}
+		.choice {
+			float: left;
+			display: flex;
+			align-items: center;
+			span {
+				display: inline-block;
+				&:first-child {
+					background: #d4d4d4;
+					height: 40px;
+					text-align: center;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					color: black;
+					font-weight: 500;
+					padding: 0 1em;
+					margin-right: 15px;
+				}
+				&:last-child {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					h2,
+					h1 {
+						margin: 0 !important;
+					}
+					h2 {
+						&:first-child {
+							color: green;
+							font-weight: bold;
+						}
+						&:last-child {
+							color: red;
+							font-weight: bold;
+						}
+					}
+				}
+			}
+		}
+	}
+`;
+export const ResuleQuizStyle = styled.div``;

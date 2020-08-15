@@ -30,6 +30,25 @@ function* hanldeLogin(action) {
 		message.error('Đăng nhập không thành công ! Xin thử lại');
 	}
 }
+
+function* hanldeLoginStudent(action) {
+	try {
+		const { req, cb } = action.payload;
+		const res = yield call(AccountApi.loginStudent, req);
+		if (!res.errors) {
+			yield put(LoginAction.loginStudentSuccess());
+			yield localStorage.setItem('token', res.token);
+			if (cb && typeof cb === 'function') yield cb({ role: res.role });
+			//	yield put(LoginAction.getProfileRequest({}));
+		} else {
+			yield put(LoginAction.loginStudentFailure());
+			filterError(res.errors, 'message');
+		}
+	} catch (error) {
+		yield put(LoginAction.loginStudentFailure());
+		message.error('Đăng nhập không thành công ! Xin thử lại');
+	}
+}
 function* hanldeLogout() {
 	try {
 		yield put(LoginAction.logoutSuccess());
@@ -80,6 +99,11 @@ const loginSaga = {
 	worker: hanldeLogin,
 };
 
+const loginStudentSaga = {
+	on: LoginAction.loginStudentRequest,
+	worker: hanldeLoginStudent,
+};
+
 const logoutSaga = {
 	on: LoginAction.logoutRequest,
 	worker: hanldeLogout,
@@ -94,4 +118,4 @@ const fetchSaga = {
 	on: LoginAction.getProfileRequest,
 	worker: handleFetch,
 };
-export default createSagas([loginSaga, logoutSaga, fetchSaga, resendActiveAccountSaga]);
+export default createSagas([loginSaga, logoutSaga, fetchSaga, resendActiveAccountSaga, loginStudentSaga]);

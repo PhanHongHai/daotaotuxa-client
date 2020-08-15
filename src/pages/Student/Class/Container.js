@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
 	getScheduleOfClassStatus: state.classOfStudentPage.getScheduleOfClassStatus,
 	getPointsByStudentStatus: state.classOfStudentPage.getPointsByStudentStatus,
 	getLogsPointByStudentStatus: state.classOfStudentPage.getLogsPointByStudentStatus,
+	getRandomQuestionsForTestStatus: state.classOfStudentPage.getRandomQuestionsForTestStatus,
 	studentsClass: state.classOfStudentPage.studentsClass,
 	subjectsClass: state.classOfStudentPage.subjectsClass,
 	detailOfClass: state.classOfStudentPage.detailOfClass,
@@ -18,6 +19,7 @@ const mapStateToProps = state => ({
 	userData:state.loginPage.profileUser,
 	pointsOfStudent:state.classOfStudentPage.pointsOfStudent,
 	logsPoint:state.classOfStudentPage.logsPoint,
+	questionsForQuickTest:state.classOfStudentPage.questionsForQuickTest,
 });
 
 const mapDispatchToProps = {
@@ -28,6 +30,7 @@ const mapDispatchToProps = {
 	getScheduleReq: Action.getScheduleOfClassByIDRequest,
 	getPointsReq: Action.getPointsByStudentRequest,
 	getLogsPointReq: Action.getLogsPointByStudentRequest,
+	getQuestionsForQuickTestReq: Action.getRandomQuestionForQuizRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

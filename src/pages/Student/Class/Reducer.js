@@ -18,6 +18,7 @@ const initialState = {
 	getScheduleOfClassStatus: STATUS.DEFAULT,
 	getPointsByStudentStatus: STATUS.DEFAULT,
 	getLogsPointByStudentStatus: STATUS.DEFAULT,
+	getRandomQuestionsForTestStatus: STATUS.DEFAULT,
 	detailOfClass: {},
 	infoSubject: {},
 	detailDocument: {},
@@ -51,6 +52,7 @@ const initialState = {
 	},
 	detailSubjectProgress: {},
 	progressOfStudent: [],
+	questionsForQuickTest: [],
 };
 
 const reducer = [
@@ -396,6 +398,31 @@ const reducer = [
 			return {
 				...state,
 				getScheduleOfClassStatus: STATUS.FAILURE,
+			};
+		},
+	},
+	// active when call action get random questions for quick test
+	{
+		on: Action.getRandomQuestionForQuizRequest,
+		reducer: state => ({
+			...state,
+			getRandomQuestionsForTestStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.getRandomQuestionForQuizSuccess,
+		reducer: (state, action) => ({
+			...state,
+			getRandomQuestionsForTestStatus: STATUS.SUCCESS,
+			questionsForQuickTest:action.payload
+		}),
+	},
+	{
+		on: Action.getRandomQuestionForQuizFailure,
+		reducer: state => {
+			return {
+				...state,
+				getRandomQuestionsForTestStatus: STATUS.FAILURE,
 			};
 		},
 	},

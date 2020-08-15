@@ -93,6 +93,7 @@ function TableStudentData(props) {
 					spinning: loading,
 					indicator: <LoadingCustom margin={0} />,
 				}}
+				onChange={onChangePage}
 				pagination={{
 					current: pagination.page && Number(pagination.page),
 					total: pagination.total,

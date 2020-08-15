@@ -8,12 +8,37 @@ const initialState = {
 	getScheduleDetailStatus: STATUS.DEFAULT,
 	submitTaskStatus: STATUS.DEFAULT,
 	getExamByQuizStatus: STATUS.DEFAULT,
+	checkExistPointInScheduleStatus: STATUS.DEFAULT,
 	scheduleDetail: {},
 	examDetail: {},
 	resultTask: {},
 };
 
 const reducer = [
+	// active when call action check exist point in schedule of student
+	{
+		on: Action.checkExistPointInSCheduleRequest,
+		reducer: state => ({
+			...state,
+			checkExistPointInScheduleStatus: STATUS.FETCHING,
+		}),
+	},
+	{
+		on: Action.checkExistPointInSCheduleSuccess,
+		reducer: (state) => ({
+			...state,
+			checkExistPointInScheduleStatus: STATUS.SUCCESS,
+		}),
+	},
+	{
+		on: Action.checkExistPointInSCheduleFailure,
+		reducer: state => {
+			return {
+				...state,
+				checkExistPointInScheduleStatus: STATUS.FAILURE,
+			};
+		},
+	},
 	// active when call action get schedule detail
 	{
 		on: Action.getScheduleDetailRequest,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Result, Button, BackTop, Icon, Spin, Tag } from 'antd';
-import { useParams } from 'react-router-dom';
+import { Result, Button, BackTop, Icon, Spin, Tag, Modal } from 'antd';
+import { useParams, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'moment/locale/vi';
@@ -11,6 +11,7 @@ import FrameQuestion from './Component/FrameQuestion';
 import SideBarTime from './Component/SideBarTime';
 import ResuleQuizStyle from './Component/ResuleQuiz';
 import LoadingCustom from '../../../components/LoadingCustom';
+import customMess from '../../../utils/customMessage';
 
 import { NotiStyle, QuizStyle } from './styled';
 
@@ -24,6 +25,8 @@ function QuizComponent(props) {
 		submitTaskReq,
 		scheduleDetail,
 		getExamByQuizStatus,
+		checkExistStudentDoneTestReq,
+		checkExistPointInScheduleStatus,
 		examDetail,
 		getExamReq,
 		resultTask,
@@ -34,13 +37,41 @@ function QuizComponent(props) {
 	const [dataChoice, setDataChoice] = useState([]);
 	const { classID, scheduleID } = useParams();
 
+	const history = useHistory();
+
 	useEffect(() => {
-		getScheduleDetailReq({ ID:scheduleID });
+		getScheduleDetailReq({ ID: scheduleID });
+		checkExistStudentDoneTestReq({
+			ID: scheduleID,
+			cb: res => {
+				if (res && res.isDone) {
+					history.goBack();
+					let secondsToGo = 10;
+					const modal = Modal.warn({
+						title: 'Thông báo?',
+						content: `Điểm thi của bạn đã tồn tại trong lịch thi này, bạn không được phép vào lại phòng thi. Thông báo sẽ đóng sau ${secondsToGo} giây`,
+						okText: 'Đóng',
+						className: 'model-confirm',
+					});
+					const timer = setInterval(() => {
+						secondsToGo -= 1;
+						modal.update({
+							content: `Điểm thi của bạn đã tồn tại trong lịch thi này, bạn không được phép vào lại phòng thi. Thông báo sẽ đóng sau ${secondsToGo} giây`,
+						});
+					}, 1000);
+					setTimeout(() => {
+						clearInterval(timer);
+						modal.destroy();
+					}, secondsToGo * 1000);
+				}
+			},
+		});
 	}, [scheduleID]);
 
 	const loadingGetScheduleDetail = getScheduleDetailStatus === 'FETCHING';
 	const loadingGetExam = getExamByQuizStatus === 'FETCHING';
 	const loadingSubmitTask = submitTaskStatus === 'FETCHING';
+	const loadingCheckExistPointInSchedule = checkExistPointInScheduleStatus === 'FETCHING';
 
 	const renderQuestions = id => {
 		getExamReq({ ID: id });
@@ -134,7 +165,10 @@ function QuizComponent(props) {
 
 		return (
 			<NotiStyle className="mt-25">
-				<Spin spinning={loadingGetScheduleDetail} indicator={<LoadingCustom margin={10} />}>
+				<Spin
+					spinning={loadingGetScheduleDetail || loadingCheckExistPointInSchedule}
+					indicator={<LoadingCustom margin={10} />}
+				>
 					<Result
 						icon={<img width="250" src={IconQuiz} alt="kiem tra" />}
 						title="Kiểm tra giữa kỳ"
@@ -179,9 +213,11 @@ QuizComponent.propTypes = {
 	getScheduleDetailStatus: PropTypes.string.isRequired,
 	submitTaskStatus: PropTypes.string.isRequired,
 	getExamByQuizStatus: PropTypes.string.isRequired,
+	checkExistPointInScheduleStatus: PropTypes.string.isRequired,
 	getScheduleDetailReq: PropTypes.func.isRequired,
 	getExamReq: PropTypes.func.isRequired,
 	submitTaskReq: PropTypes.func.isRequired,
+	checkExistStudentDoneTestReq: PropTypes.func.isRequired,
 	scheduleDetail: PropTypes.objectOf(PropTypes.any).isRequired,
 	examDetail: PropTypes.objectOf(PropTypes.any).isRequired,
 	resultTask: PropTypes.objectOf(PropTypes.any).isRequired,

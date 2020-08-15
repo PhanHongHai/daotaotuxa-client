@@ -4,10 +4,13 @@ const { createAsyncAction } = Redux;
 
 const { loginRequest, loginSuccess, loginFailure } = createAsyncAction('login', 'LOGIN');
 
+const { loginStudentRequest, loginStudentSuccess, loginStudentFailure } = createAsyncAction(
+	'loginStudent',
+	'LOGIN_STUDENT',
+);
 const { logoutRequest, logoutSuccess, logoutFailure } = createAsyncAction('logout', 'LOGOUT');
 
 const { getProfileRequest, getProfileSuccess, getProfileFailure } = createAsyncAction('getProfile', 'GET_PROFILE');
-
 
 const { resendActiveMailRequest, resendActiveMailSuccess, resendActiveMailFailure } = createAsyncAction(
 	'resendActiveMail',
@@ -29,19 +32,21 @@ const Actions = {
 	loginSuccess,
 	loginFailure,
 
+	loginStudentRequest,
+	loginStudentSuccess,
+	loginStudentFailure,
+
 	logoutRequest,
 	logoutSuccess,
 	logoutFailure,
 
 	getProfileRequest,
 	getProfileSuccess,
-  getProfileFailure,
-  
+	getProfileFailure,
+
 	resendActiveMailRequest,
 	resendActiveMailSuccess,
-  resendActiveMailFailure,
-  
-	
+	resendActiveMailFailure,
 
 	resendForgotPasswordMailRequest,
 	resendForgotPasswordMailSuccess,
