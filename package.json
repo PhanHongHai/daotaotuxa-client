@@ -6,7 +6,7 @@
     "@ckeditor/ckeditor5-build-classic": "^19.0.2",
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "antd": "^3.26.13",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "customize-cra": "^0.2.12",
     "i18next": "^17.3.0",
     "less": "^3.9.0",
